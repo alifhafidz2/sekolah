@@ -60,22 +60,35 @@
             </field>
         </record>
 
-        <record id="view_jadwal_calendar" model="ir.ui.view">
-            <field name="name">sekolah.jadwal.calendar</field>
+        <record id="view_jadwal_search" model="ir.ui.view">
+            <field name="name">sekolah.jadwal.search</field>
             <field name="model">sekolah.jadwal</field>
             <field name="arch" type="xml">
-                <calendar string="Jadwal" date_start="jam_mulai" color="kelas_id" mode="week">
+                <search string="Cari Jadwal">
                     <field name="name"/>
                     <field name="kelas_id"/>
+                    <field name="mata_pelajaran_id"/>
                     <field name="guru_id"/>
-                </calendar>
+                    <filter string="Senin" name="filter_senin" domain="[('hari', '=', 'senin')]"/>
+                    <filter string="Selasa" name="filter_selasa" domain="[('hari', '=', 'selasa')]"/>
+                    <filter string="Rabu" name="filter_rabu" domain="[('hari', '=', 'rabu')]"/>
+                    <filter string="Kamis" name="filter_kamis" domain="[('hari', '=', 'kamis')]"/>
+                    <filter string="Jumat" name="filter_jumat" domain="[('hari', '=', 'jumat')]"/>
+                    <filter string="Sabtu" name="filter_sabtu" domain="[('hari', '=', 'sabtu')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Hari" name="group_hari" context="{'group_by': 'hari'}"/>
+                        <filter string="Kelas" name="group_kelas" context="{'group_by': 'kelas_id'}"/>
+                        <filter string="Guru" name="group_guru" context="{'group_by': 'guru_id'}"/>
+                        <filter string="Mata Pelajaran" name="group_mapel" context="{'group_by': 'mata_pelajaran_id'}"/>
+                    </group>
+                </search>
             </field>
         </record>
 
         <record id="action_jadwal" model="ir.actions.act_window">
             <field name="name">Jadwal Pelajaran</field>
             <field name="res_model">sekolah.jadwal</field>
-            <field name="view_mode">calendar,list,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
         <menuitem id="menu_jadwal"
