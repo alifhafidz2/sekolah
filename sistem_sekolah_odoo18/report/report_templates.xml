@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_report_rapor" model="ir.actions.report">
+            <field name="name">Rapor Siswa</field>
+            <field name="model">sekolah.siswa</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sistem_sekolah_odoo18.report_rapor_template</field>
+            <field name="report_file">sistem_sekolah_odoo18.report_rapor_template</field>
+            <field name="binding_model_id" ref="model_sekolah_siswa"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>

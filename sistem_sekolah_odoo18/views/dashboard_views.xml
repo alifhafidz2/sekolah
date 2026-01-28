@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_tahun_ajaran_tree" model="ir.ui.view">
+            <field name="name">sekolah.tahun_ajaran.tree</field>
+            <field name="model">sekolah.tahun_ajaran</field>
+            <field name="arch" type="xml">
+                <list string="Tahun Ajaran">
+                    <field name="name"/>
+                    <field name="tahun_mulai"/>
+                    <field name="tahun_selesai"/>
+                    <field name="semester"/>
+                    <field name="tanggal_mulai"/>
+                    <field name="tanggal_selesai"/>
+                    <field name="is_active" widget="boolean_toggle"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_tahun_ajaran_form" model="ir.ui.view">
+            <field name="name">sekolah.tahun_ajaran.form</field>
+            <field name="model">sekolah.tahun_ajaran</field>
+            <field name="arch" type="xml">
+                <form string="Tahun Ajaran">
+                    <header>
+                        <button name="action_set_active" type="object" string="Set Aktif" class="oe_highlight"
+                                invisible="state == 'active'"/>
+                        <button name="action_set_done" type="object" string="Selesai"
+                                invisible="state != 'active'"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="tahun_mulai"/>
+                                <field name="tahun_selesai"/>
+                                <field name="semester"/>
+                            </group>
+                            <group>
+                                <field name="tanggal_mulai"/>
+                                <field name="tanggal_selesai"/>
+                                <field name="is_active"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="keterangan" nolabel="1" placeholder="Keterangan..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_tahun_ajaran" model="ir.actions.act_window">
+            <field name="name">Tahun Ajaran</field>
+            <field name="res_model">sekolah.tahun_ajaran</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <menuitem id="menu_tahun_ajaran"
+                  name="Tahun Ajaran"
+                  parent="menu_sekolah_konfigurasi"
+                  action="action_tahun_ajaran"
+                  sequence="10"/>
+
+    </data>
+</odoo>

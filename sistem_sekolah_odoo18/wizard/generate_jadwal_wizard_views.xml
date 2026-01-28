@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_generate_jadwal_wizard_form" model="ir.ui.view">
+            <field name="name">sekolah.generate.jadwal.wizard.form</field>
+            <field name="model">sekolah.generate.jadwal.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate Jadwal">
+                    <group>
+                        <group>
+                            <field name="kelas_id"/>
+                            <field name="tahun_ajaran_id"/>
+                        </group>
+                        <group>
+                            <field name="jam_mulai_default" widget="float_time"/>
+                            <field name="durasi_per_sesi" widget="float_time"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="mata_pelajaran_ids" widget="many2many_tags" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_generate" type="object" string="Generate Jadwal" class="btn-primary"/>
+                        <button string="Batal" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_generate_jadwal_wizard" model="ir.actions.act_window">
+            <field name="name">Generate Jadwal</field>
+            <field name="res_model">sekolah.generate.jadwal.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_generate_jadwal"
+                  name="Generate Jadwal"
+                  parent="menu_sekolah_akademik"
+                  action="action_generate_jadwal_wizard"
+                  sequence="11"/>
+
+    </data>
+</odoo>

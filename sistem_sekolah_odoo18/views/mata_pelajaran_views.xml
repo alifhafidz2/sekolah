@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_mata_pelajaran_tree" model="ir.ui.view">
+            <field name="name">sekolah.mata_pelajaran.tree</field>
+            <field name="model">sekolah.mata_pelajaran</field>
+            <field name="arch" type="xml">
+                <list string="Mata Pelajaran">
+                    <field name="kode"/>
+                    <field name="name"/>
+                    <field name="kategori"/>
+                    <field name="kelompok"/>
+                    <field name="sks"/>
+                    <field name="kkm"/>
+                    <field name="jumlah_guru"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_mata_pelajaran_form" model="ir.ui.view">
+            <field name="name">sekolah.mata_pelajaran.form</field>
+            <field name="model">sekolah.mata_pelajaran</field>
+            <field name="arch" type="xml">
+                <form string="Mata Pelajaran">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Nama Mata Pelajaran"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="kode"/>
+                                <field name="kategori"/>
+                                <field name="kelompok"/>
+                            </group>
+                            <group>
+                                <field name="sks"/>
+                                <field name="kkm"/>
+                                <field name="jumlah_guru"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Guru Pengampu">
+                                <field name="guru_ids" nolabel="1">
+                                    <list>
+                                        <field name="nip"/>
+                                        <field name="name"/>
+                                        <field name="spesialisasi"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Deskripsi">
+                                <field name="deskripsi" nolabel="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_mata_pelajaran" model="ir.actions.act_window">
+            <field name="name">Mata Pelajaran</field>
+            <field name="res_model">sekolah.mata_pelajaran</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <menuitem id="menu_mata_pelajaran"
+                  name="Mata Pelajaran"
+                  parent="menu_sekolah_master"
+                  action="action_mata_pelajaran"
+                  sequence="30"/>
+
+    </data>
+</odoo>

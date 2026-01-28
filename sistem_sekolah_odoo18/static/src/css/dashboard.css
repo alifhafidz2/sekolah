@@ -1,0 +1,46 @@
+/* Dashboard Styles */
+.sekolah_dashboard {
+    padding: 20px;
+}
+
+.sekolah_stat_box {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+}
+
+.sekolah_stat_box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.sekolah_stat_box .stat_number {
+    font-size: 36px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.sekolah_stat_box .stat_label {
+    font-size: 14px;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.stat_box_primary {
+    border-left: 4px solid #007bff;
+}
+
+.stat_box_success {
+    border-left: 4px solid #28a745;
+}
+
+.stat_box_warning {
+    border-left: 4px solid #ffc107;
+}
+
+.stat_box_danger {
+    border-left: 4px solid #dc3545;
+}

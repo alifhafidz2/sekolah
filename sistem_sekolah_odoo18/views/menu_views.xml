@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem id="menu_sekolah_root"
+                  name="Sistem Sekolah"
+                  sequence="10"
+                  web_icon="sistem_sekolah_odoo18,static/description/icon.png"/>
+
+        <menuitem id="menu_sekolah_master"
+                  name="Master Data"
+                  parent="menu_sekolah_root"
+                  sequence="10"/>
+
+        <menuitem id="menu_sekolah_akademik"
+                  name="Akademik"
+                  parent="menu_sekolah_root"
+                  sequence="20"/>
+
+        <menuitem id="menu_sekolah_kesiswaan"
+                  name="Kesiswaan"
+                  parent="menu_sekolah_root"
+                  sequence="30"/>
+
+        <menuitem id="menu_sekolah_laporan"
+                  name="Laporan"
+                  parent="menu_sekolah_root"
+                  sequence="40"/>
+
+        <menuitem id="menu_sekolah_konfigurasi"
+                  name="Konfigurasi"
+                  parent="menu_sekolah_root"
+                  sequence="50"
+                  groups="group_sekolah_admin"/>
+
+    </data>
+</odoo>

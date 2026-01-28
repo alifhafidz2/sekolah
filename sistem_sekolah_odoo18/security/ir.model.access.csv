@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sekolah_siswa_user,sekolah.siswa.user,model_sekolah_siswa,group_sekolah_user,1,1,1,1
+access_sekolah_guru_user,sekolah.guru.user,model_sekolah_guru,group_sekolah_user,1,1,1,1
+access_sekolah_kelas_user,sekolah.kelas.user,model_sekolah_kelas,group_sekolah_user,1,1,1,1
+access_sekolah_mata_pelajaran_user,sekolah.mata_pelajaran.user,model_sekolah_mata_pelajaran,group_sekolah_user,1,1,1,1
+access_sekolah_jadwal_user,sekolah.jadwal.user,model_sekolah_jadwal,group_sekolah_user,1,1,1,1
+access_sekolah_absensi_user,sekolah.absensi.user,model_sekolah_absensi,group_sekolah_user,1,1,1,1
+access_sekolah_nilai_user,sekolah.nilai.user,model_sekolah_nilai,group_sekolah_user,1,1,1,1
+access_sekolah_tahun_ajaran_user,sekolah.tahun_ajaran.user,model_sekolah_tahun_ajaran,group_sekolah_user,1,1,1,1
+access_sekolah_siswa_portal,sekolah.siswa.portal,model_sekolah_siswa,base.group_portal,1,0,0,0
+access_sekolah_guru_portal,sekolah.guru.portal,model_sekolah_guru,base.group_portal,1,0,0,0
+access_sekolah_kelas_portal,sekolah.kelas.portal,model_sekolah_kelas,base.group_portal,1,0,0,0
+access_sekolah_mata_pelajaran_portal,sekolah.mata_pelajaran.portal,model_sekolah_mata_pelajaran,base.group_portal,1,0,0,0
+access_sekolah_jadwal_portal,sekolah.jadwal.portal,model_sekolah_jadwal,base.group_portal,1,0,0,0
+access_sekolah_absensi_portal,sekolah.absensi.portal,model_sekolah_absensi,base.group_portal,1,0,0,0
+access_sekolah_nilai_portal,sekolah.nilai.portal,model_sekolah_nilai,base.group_portal,1,0,0,0
+access_sekolah_tahun_ajaran_portal,sekolah.tahun_ajaran.portal,model_sekolah_tahun_ajaran,base.group_portal,1,0,0,0

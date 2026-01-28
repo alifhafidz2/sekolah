@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_nilai_tree" model="ir.ui.view">
+            <field name="name">sekolah.nilai.tree</field>
+            <field name="model">sekolah.nilai</field>
+            <field name="arch" type="xml">
+                <list string="Nilai Siswa">
+                    <field name="siswa_id"/>
+                    <field name="kelas_id"/>
+                    <field name="mata_pelajaran_id"/>
+                    <field name="tahun_ajaran_id"/>
+                    <field name="semester"/>
+                    <field name="nilai_akhir"/>
+                    <field name="predikat"/>
+                    <field name="status_kelulusan" decoration-success="status_kelulusan == 'lulus'" decoration-warning="status_kelulusan == 'remedial'" decoration-danger="status_kelulusan == 'tidak_lulus'"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_nilai_form" model="ir.ui.view">
+            <field name="name">sekolah.nilai.form</field>
+            <field name="model">sekolah.nilai</field>
+            <field name="arch" type="xml">
+                <form string="Nilai Siswa">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="siswa_id" placeholder="Pilih Siswa"/>
+                            </h1>
+                            <h3>
+                                <field name="mata_pelajaran_id" placeholder="Pilih Mata Pelajaran"/>
+                            </h3>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="kelas_id"/>
+                                <field name="guru_id"/>
+                                <field name="tahun_ajaran_id"/>
+                                <field name="semester"/>
+                            </group>
+                            <group>
+                                <field name="kkm" readonly="1"/>
+                                <field name="nilai_akhir" readonly="1"/>
+                                <field name="predikat" readonly="1"/>
+                                <field name="status_kelulusan" readonly="1"/>
+                            </group>
+                        </group>
+                        <group string="Komponen Nilai">
+                            <group>
+                                <label for="nilai_tugas"/>
+                                <div class="o_row">
+                                    <field name="nilai_tugas"/>
+                                    <span> (</span>
+                                    <field name="bobot_tugas"/>
+                                    <span>%)</span>
+                                </div>
+                                <label for="nilai_uts"/>
+                                <div class="o_row">
+                                    <field name="nilai_uts"/>
+                                    <span> (</span>
+                                    <field name="bobot_uts"/>
+                                    <span>%)</span>
+                                </div>
+                            </group>
+                            <group>
+                                <label for="nilai_uas"/>
+                                <div class="o_row">
+                                    <field name="nilai_uas"/>
+                                    <span> (</span>
+                                    <field name="bobot_uas"/>
+                                    <span>%)</span>
+                                </div>
+                                <label for="nilai_praktik"/>
+                                <div class="o_row">
+                                    <field name="nilai_praktik"/>
+                                    <span> (</span>
+                                    <field name="bobot_praktik"/>
+                                    <span>%)</span>
+                                </div>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="catatan" nolabel="1" placeholder="Catatan guru..."/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_nilai" model="ir.actions.act_window">
+            <field name="name">Nilai Siswa</field>
+            <field name="res_model">sekolah.nilai</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <menuitem id="menu_nilai"
+                  name="Nilai"
+                  parent="menu_sekolah_akademik"
+                  action="action_nilai"
+                  sequence="30"/>
+
+    </data>
+</odoo>

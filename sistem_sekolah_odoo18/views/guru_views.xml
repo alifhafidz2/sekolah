@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_guru_tree" model="ir.ui.view">
+            <field name="name">sekolah.guru.tree</field>
+            <field name="model">sekolah.guru</field>
+            <field name="arch" type="xml">
+                <list string="Data Guru">
+                    <field name="nip"/>
+                    <field name="name"/>
+                    <field name="jenis_kelamin"/>
+                    <field name="spesialisasi"/>
+                    <field name="status_kepegawaian"/>
+                    <field name="status" decoration-success="status == 'aktif'"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_guru_form" model="ir.ui.view">
+            <field name="name">sekolah.guru.form</field>
+            <field name="model">sekolah.guru</field>
+            <field name="arch" type="xml">
+                <form string="Data Guru">
+                    <header>
+                        <field name="status" widget="statusbar" options="{'clickable': '1'}"/>
+                    </header>
+                    <sheet>
+                        <field name="foto" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nama Lengkap Guru"/>
+                            </h1>
+                            <h3>
+                                <field name="nip" placeholder="NIP"/>
+                            </h3>
+                        </div>
+                        <group>
+                            <group string="Data Pribadi">
+                                <field name="nuptk"/>
+                                <field name="jenis_kelamin" widget="radio"/>
+                                <field name="tempat_lahir"/>
+                                <field name="tanggal_lahir"/>
+                                <field name="telepon"/>
+                                <field name="email"/>
+                            </group>
+                            <group string="Data Kepegawaian">
+                                <field name="spesialisasi"/>
+                                <field name="pendidikan_terakhir"/>
+                                <field name="institusi_pendidikan"/>
+                                <field name="jurusan"/>
+                                <field name="status_kepegawaian"/>
+                                <field name="tanggal_bergabung"/>
+                                <field name="user_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Alamat">
+                                <field name="alamat" nolabel="1"/>
+                            </page>
+                            <page string="Mata Pelajaran">
+                                <field name="mata_pelajaran_ids" nolabel="1">
+                                    <list>
+                                        <field name="kode"/>
+                                        <field name="name"/>
+                                        <field name="kategori"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Wali Kelas">
+                                <field name="is_wali_kelas" invisible="1"/>
+                                <field name="wali_kelas_ids" nolabel="1">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="tingkat"/>
+                                        <field name="jumlah_siswa"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_guru_kanban" model="ir.ui.view">
+            <field name="name">sekolah.guru.kanban</field>
+            <field name="model">sekolah.guru</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="nip"/>
+                    <field name="spesialisasi"/>
+                    <field name="status"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_image">
+                                    <img t-att-src="kanban_image('sekolah.guru', 'foto', record.id.raw_value)" alt="Foto"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                    <div class="o_kanban_record_subtitle">
+                                        NIP: <field name="nip"/>
+                                    </div>
+                                    <div>
+                                        <field name="spesialisasi"/>
+                                    </div>
+                                    <div>
+                                        <field name="status" widget="label_selection"
+                                               options="{'classes': {'aktif': 'success'}}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_guru_search" model="ir.ui.view">
+            <field name="name">sekolah.guru.search</field>
+            <field name="model">sekolah.guru</field>
+            <field name="arch" type="xml">
+                <search string="Cari Guru">
+                    <field name="name"/>
+                    <field name="nip"/>
+                    <field name="spesialisasi"/>
+                    <filter string="Aktif" name="filter_aktif" domain="[('status', '=', 'aktif')]"/>
+                    <filter string="Wali Kelas" name="filter_wali_kelas" domain="[('is_wali_kelas', '=', True)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Status Kepegawaian" name="group_status_kepegawaian" context="{'group_by': 'status_kepegawaian'}"/>
+                        <filter string="Pendidikan" name="group_pendidikan" context="{'group_by': 'pendidikan_terakhir'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_guru" model="ir.actions.act_window">
+            <field name="name">Data Guru</field>
+            <field name="res_model">sekolah.guru</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_filter_aktif': 1}</field>
+        </record>
+
+        <menuitem id="menu_guru"
+                  name="Guru"
+                  parent="menu_sekolah_master"
+                  action="action_guru"
+                  sequence="20"/>
+
+    </data>
+</odoo>

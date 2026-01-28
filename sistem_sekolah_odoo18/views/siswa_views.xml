@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_siswa_tree" model="ir.ui.view">
+            <field name="name">sekolah.siswa.tree</field>
+            <field name="model">sekolah.siswa</field>
+            <field name="arch" type="xml">
+                <list string="Data Siswa">
+                    <field name="nis"/>
+                    <field name="name"/>
+                    <field name="jenis_kelamin"/>
+                    <field name="kelas_id"/>
+                    <field name="status" decoration-success="status == 'aktif'" decoration-info="status == 'lulus'"/>
+                    <field name="tanggal_masuk"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_siswa_form" model="ir.ui.view">
+            <field name="name">sekolah.siswa.form</field>
+            <field name="model">sekolah.siswa</field>
+            <field name="arch" type="xml">
+                <form string="Data Siswa">
+                    <header>
+                        <field name="status" widget="statusbar" options="{'clickable': '1'}"/>
+                    </header>
+                    <sheet>
+                        <field name="foto" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nama Lengkap Siswa"/>
+                            </h1>
+                            <h3>
+                                <field name="nis" placeholder="NIS"/>
+                            </h3>
+                        </div>
+                        <group>
+                            <group string="Data Pribadi">
+                                <field name="nisn"/>
+                                <field name="jenis_kelamin" widget="radio"/>
+                                <field name="tempat_lahir"/>
+                                <field name="tanggal_lahir"/>
+                                <field name="umur"/>
+                            </group>
+                            <group string="Data Akademik">
+                                <field name="kelas_id"/>
+                                <field name="tingkat"/>
+                                <field name="tanggal_masuk"/>
+                                <field name="user_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Alamat &amp; Kontak">
+                                <group>
+                                    <group string="Alamat">
+                                        <field name="alamat" nolabel="1"/>
+                                        <field name="rt"/>
+                                        <field name="rw"/>
+                                        <field name="kelurahan"/>
+                                        <field name="kecamatan"/>
+                                        <field name="kota"/>
+                                        <field name="provinsi"/>
+                                        <field name="kode_pos"/>
+                                    </group>
+                                    <group string="Kontak">
+                                        <field name="telepon"/>
+                                        <field name="email"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Data Orang Tua">
+                                <group>
+                                    <group string="Data Ayah">
+                                        <field name="nama_ayah"/>
+                                        <field name="pekerjaan_ayah"/>
+                                        <field name="telepon_ayah"/>
+                                    </group>
+                                    <group string="Data Ibu">
+                                        <field name="nama_ibu"/>
+                                        <field name="pekerjaan_ibu"/>
+                                        <field name="telepon_ibu"/>
+                                    </group>
+                                </group>
+                                <group string="Data Wali">
+                                    <field name="nama_wali"/>
+                                    <field name="hubungan_wali"/>
+                                    <field name="telepon_wali"/>
+                                </group>
+                            </page>
+                            <page string="Statistik">
+                                <group>
+                                    <group string="Absensi">
+                                        <field name="total_absensi"/>
+                                        <field name="total_hadir"/>
+                                        <field name="total_izin"/>
+                                        <field name="total_sakit"/>
+                                        <field name="total_alfa"/>
+                                        <field name="persentase_kehadiran" widget="percentage"/>
+                                    </group>
+                                    <group string="Nilai">
+                                        <field name="rata_rata_nilai"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_siswa_kanban" model="ir.ui.view">
+            <field name="name">sekolah.siswa.kanban</field>
+            <field name="model">sekolah.siswa</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="nis"/>
+                    <field name="kelas_id"/>
+                    <field name="status"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_image">
+                                    <img t-att-src="kanban_image('sekolah.siswa', 'foto', record.id.raw_value)" alt="Foto"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                    <div class="o_kanban_record_subtitle">
+                                        NIS: <field name="nis"/>
+                                    </div>
+                                    <div>
+                                        Kelas: <field name="kelas_id"/>
+                                    </div>
+                                    <div>
+                                        <field name="status" widget="label_selection"
+                                               options="{'classes': {'aktif': 'success', 'lulus': 'info'}}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_siswa_search" model="ir.ui.view">
+            <field name="name">sekolah.siswa.search</field>
+            <field name="model">sekolah.siswa</field>
+            <field name="arch" type="xml">
+                <search string="Cari Siswa">
+                    <field name="name"/>
+                    <field name="nis"/>
+                    <field name="kelas_id"/>
+                    <filter string="Aktif" name="filter_aktif" domain="[('status', '=', 'aktif')]"/>
+                    <filter string="Lulus" name="filter_lulus" domain="[('status', '=', 'lulus')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Kelas" name="group_kelas" context="{'group_by': 'kelas_id'}"/>
+                        <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+                        <filter string="Jenis Kelamin" name="group_gender" context="{'group_by': 'jenis_kelamin'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_siswa" model="ir.actions.act_window">
+            <field name="name">Data Siswa</field>
+            <field name="res_model">sekolah.siswa</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_filter_aktif': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Tambahkan siswa baru
+                </p>
+                <p>
+                    Klik tombol Create untuk menambahkan data siswa baru.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_siswa"
+                  name="Siswa"
+                  parent="menu_sekolah_kesiswaan"
+                  action="action_siswa"
+                  sequence="10"/>
+
+    </data>
+</odoo>

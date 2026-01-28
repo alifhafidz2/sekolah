@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="report_rapor_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="siswa">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2 class="text-center">RAPOR SISWA</h2>
+                            <h4 class="text-center">TAHUN AJARAN <t t-out="siswa.kelas_id.tahun_ajaran_id.name if siswa.kelas_id and siswa.kelas_id.tahun_ajaran_id else '-'"/></h4>
+
+                            <div class="row mt-5">
+                                <div class="col-6">
+                                    <table class="table table-borderless">
+                                        <tr>
+                                            <td width="150"><strong>Nama</strong></td>
+                                            <td>: <t t-out="siswa.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>NIS</strong></td>
+                                            <td>: <t t-out="siswa.nis"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Kelas</strong></td>
+                                            <td>: <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-6">
+                                    <table class="table table-borderless">
+                                        <tr>
+                                            <td width="150"><strong>Tempat, Tgl Lahir</strong></td>
+                                            <td>: <t t-out="siswa.tempat_lahir"/>, <t t-out="siswa.tanggal_lahir"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Nama Orang Tua</strong></td>
+                                            <td>: <t t-out="siswa.nama_ayah or siswa.nama_ibu or '-'"/></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <h4 class="mt-4">A. NILAI AKADEMIK</h4>
+                            <table class="table table-bordered mt-3">
+                                <thead style="background-color: #f0f0f0;">
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th>Mata Pelajaran</th>
+                                        <th class="text-center">KKM</th>
+                                        <th class="text-center">Nilai</th>
+                                        <th class="text-center">Predikat</th>
+                                        <th>Keterangan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="no" t-value="1"/>
+                                    <t t-foreach="siswa.nilai_ids" t-as="nilai">
+                                        <tr>
+                                            <td class="text-center"><t t-out="no"/></td>
+                                            <td><t t-out="nilai.mata_pelajaran_id.name"/></td>
+                                            <td class="text-center"><t t-out="'%.0f' % nilai.kkm"/></td>
+                                            <td class="text-center"><t t-out="'%.2f' % nilai.nilai_akhir"/></td>
+                                            <td class="text-center"><t t-out="dict(nilai._fields['predikat'].selection).get(nilai.predikat)"/></td>
+                                            <td><t t-out="dict(nilai._fields['status_kelulusan'].selection).get(nilai.status_kelulusan)"/></td>
+                                        </tr>
+                                        <t t-set="no" t-value="no + 1"/>
+                                    </t>
+                                    <tr style="background-color: #f0f0f0;">
+                                        <td colspan="3" class="text-right"><strong>Rata-rata</strong></td>
+                                        <td class="text-center"><strong><t t-out="'%.2f' % siswa.rata_rata_nilai"/></strong></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h4 class="mt-4">B. KEHADIRAN</h4>
+                            <table class="table table-bordered mt-3" style="width: 50%;">
+                                <tr>
+                                    <td width="60%"><strong>Hadir</strong></td>
+                                    <td class="text-center"><t t-out="siswa.total_hadir"/> hari</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Izin</strong></td>
+                                    <td class="text-center"><t t-out="siswa.total_izin"/> hari</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sakit</strong></td>
+                                    <td class="text-center"><t t-out="siswa.total_sakit"/> hari</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Alfa</strong></td>
+                                    <td class="text-center"><t t-out="siswa.total_alfa"/> hari</td>
+                                </tr>
+                                <tr style="background-color: #f0f0f0;">
+                                    <td><strong>Persentase Kehadiran</strong></td>
+                                    <td class="text-center"><strong><t t-out="'%.2f' % siswa.persentase_kehadiran"/>%</strong></td>
+                                </tr>
+                            </table>
+
+                            <div class="row mt-5">
+                                <div class="col-6 text-center">
+                                    <p>Orang Tua/Wali</p>
+                                    <br/><br/><br/>
+                                    <p>(...........................)</p>
+                                </div>
+                                <div class="col-6 text-center">
+                                    <p>Wali Kelas</p>
+                                    <br/><br/><br/>
+                                    <p><t t-if="siswa.kelas_id and siswa.kelas_id.wali_kelas_id">
+                                        <t t-out="siswa.kelas_id.wali_kelas_id.name"/>
+                                    </t>
+                                    <t t-else="">(...........................)</t>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>
