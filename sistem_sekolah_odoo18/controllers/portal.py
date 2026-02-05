@@ -1,9 +1,72 @@
 from odoo import http
 from odoo.http import request
 from odoo.addons.portal.controllers.portal import CustomerPortal
+from werkzeug.utils import redirect
 
 
 class SekolahPortal(CustomerPortal):
+
+    @http.route(['/my', '/my/home'], type='http', auth='user', website=True)
+    def home(self, **kw):
+        return redirect('/my/sekolah')
+
+    @http.route(['/my/sekolah', '/sekolah/home'], type='http', auth='user', website=True)
+    def portal_sekolah_home(self, **kw):
+        user = request.env.user
+
+        siswa = request.env['sekolah.siswa'].sudo().search([
+            ('user_id', '=', user.id)
+        ], limit=1)
+
+        guru = request.env['sekolah.guru'].sudo().search([
+            ('user_id', '=', user.id)
+        ], limit=1)
+
+        total_siswa = request.env['sekolah.siswa'].sudo().search_count([('status', '=', 'aktif')])
+        total_guru = request.env['sekolah.guru'].sudo().search_count([('status', '=', 'aktif')])
+        total_kelas = request.env['sekolah.kelas'].sudo().search_count([])
+        total_mapel = request.env['sekolah.mata_pelajaran'].sudo().search_count([])
+
+        return request.render('sistem_sekolah_odoo18.portal_sekolah_home', {
+            'user': user,
+            'siswa': siswa,
+            'guru': guru,
+            'total_siswa': total_siswa,
+            'total_guru': total_guru,
+            'total_kelas': total_kelas,
+            'total_mapel': total_mapel,
+            'page_name': 'sekolah_home',
+        })
+
+    @http.route(['/my/sekolah/tentang-kami'], type='http', auth='user', website=True)
+    def portal_tentang_kami(self, **kw):
+        return request.render('sistem_sekolah_odoo18.portal_tentang_kami', {
+            'page_name': 'tentang_kami',
+        })
+
+    @http.route(['/my/sekolah/program-kurikulum'], type='http', auth='user', website=True)
+    def portal_program_kurikulum(self, **kw):
+        return request.render('sistem_sekolah_odoo18.portal_program_kurikulum', {
+            'page_name': 'program_kurikulum',
+        })
+
+    @http.route(['/my/sekolah/fasilitas'], type='http', auth='user', website=True)
+    def portal_fasilitas(self, **kw):
+        return request.render('sistem_sekolah_odoo18.portal_fasilitas', {
+            'page_name': 'fasilitas',
+        })
+
+    @http.route(['/my/sekolah/kehidupan-santri'], type='http', auth='user', website=True)
+    def portal_kehidupan_santri(self, **kw):
+        return request.render('sistem_sekolah_odoo18.portal_kehidupan_santri', {
+            'page_name': 'kehidupan_santri',
+        })
+
+    @http.route(['/my/sekolah/kontak'], type='http', auth='user', website=True)
+    def portal_kontak(self, **kw):
+        return request.render('sistem_sekolah_odoo18.portal_kontak', {
+            'page_name': 'kontak',
+        })
 
     @http.route(['/my/siswa'], type='http', auth='user', website=True)
     def portal_my_siswa(self, **kw):

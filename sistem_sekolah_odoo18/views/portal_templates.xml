@@ -2,6 +2,915 @@
 <odoo>
     <data>
 
+        <template id="portal_sekolah_home" name="Portal Sekolah Home">
+            <t t-call="portal.portal_layout">
+                <div class="sekolah-home-wrapper">
+                    <nav class="school-navbar">
+                        <div class="container">
+                            <div class="navbar-brand">
+                                <span class="brand-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                                    </svg>
+                                </span>
+                                <span class="brand-text">SMA Pondok Pesantren</span>
+                            </div>
+                            <ul class="navbar-menu">
+                                <li><a href="/my/sekolah" class="active">Beranda</a></li>
+                                <li><a href="/my/sekolah/tentang-kami">Tentang Kami</a></li>
+                                <li><a href="/my/sekolah/program-kurikulum">Program Kurikulum</a></li>
+                                <li><a href="/my/sekolah/fasilitas">Fasilitas</a></li>
+                                <li><a href="/my/sekolah/kehidupan-santri">Kehidupan Santri</a></li>
+                                <li><a href="/my/sekolah/kontak">Kontak</a></li>
+                            </ul>
+                            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="3" y1="12" x2="21" y2="12"/>
+                                    <line x1="3" y1="6" x2="21" y2="6"/>
+                                    <line x1="3" y1="18" x2="21" y2="18"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </nav>
+
+                    <section class="hero-section">
+                        <div class="hero-overlay"></div>
+                        <div class="container hero-content">
+                            <div class="row align-items-center min-vh-60">
+                                <div class="col-lg-8 mx-auto text-center">
+                                    <h1 class="hero-title">SMA Pondok Pesantren</h1>
+                                    <p class="hero-subtitle">Memadukan pendidikan formal berkualitas dengan nilai-nilai keislaman untuk mencetak generasi berilmu, berakhlak, dan berprestasi</p>
+
+                                    <div class="hero-stats">
+                                        <div class="stat-item">
+                                            <div class="stat-number"><t t-out="total_siswa"/></div>
+                                            <div class="stat-label">Siswa Aktif</div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <div class="stat-number"><t t-out="total_guru"/></div>
+                                            <div class="stat-label">Guru</div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <div class="stat-number"><t t-out="total_kelas"/></div>
+                                            <div class="stat-label">Kelas</div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <div class="stat-number"><t t-out="total_mapel"/></div>
+                                            <div class="stat-label">Mata Pelajaran</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="portal-selection-section">
+                        <div class="container">
+                            <div class="section-header text-center">
+                                <h2 class="section-title">Pilih Portal Anda</h2>
+                                <p class="section-desc">Akses portal sesuai dengan peran Anda di sekolah</p>
+                            </div>
+
+                            <div class="row justify-content-center portal-cards">
+                                <div class="col-md-5 col-lg-4">
+                                    <a href="/my/guru" class="portal-card guru-card">
+                                        <div class="card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                                            </svg>
+                                        </div>
+                                        <h3 class="card-title">Portal Guru</h3>
+                                        <p class="card-desc">Kelola jadwal mengajar, input nilai siswa, dan pantau kehadiran kelas</p>
+                                        <div class="card-features">
+                                            <span class="feature-tag">Jadwal Mengajar</span>
+                                            <span class="feature-tag">Input Nilai</span>
+                                            <span class="feature-tag">Absensi</span>
+                                        </div>
+                                        <div class="card-action">
+                                            <span>Masuk Portal</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                                            </svg>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-5 col-lg-4">
+                                    <a href="/my/siswa" class="portal-card siswa-card">
+                                        <div class="card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                            </svg>
+                                        </div>
+                                        <h3 class="card-title">Portal Siswa</h3>
+                                        <p class="card-desc">Lihat jadwal pelajaran, cek nilai akademik, dan pantau kehadiran Anda</p>
+                                        <div class="card-features">
+                                            <span class="feature-tag">Jadwal Kelas</span>
+                                            <span class="feature-tag">Nilai Rapor</span>
+                                            <span class="feature-tag">Rekap Absensi</span>
+                                        </div>
+                                        <div class="card-action">
+                                            <span>Masuk Portal</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                                            </svg>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <t t-if="siswa or guru">
+                                <div class="quick-access-section">
+                                    <h4 class="quick-access-title">Akses Cepat</h4>
+                                    <div class="quick-access-links">
+                                        <t t-if="siswa">
+                                            <a href="/my/siswa/nilai" class="quick-link">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                                    <polyline points="14 2 14 8 20 8"/>
+                                                    <line x1="16" y1="13" x2="8" y2="13"/>
+                                                    <line x1="16" y1="17" x2="8" y2="17"/>
+                                                </svg>
+                                                Lihat Nilai
+                                            </a>
+                                            <a href="/my/siswa/jadwal" class="quick-link">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                                </svg>
+                                                Jadwal Pelajaran
+                                            </a>
+                                            <a href="/my/siswa/absensi" class="quick-link">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                                    <polyline points="22 4 12 14.01 9 11.01"/>
+                                                </svg>
+                                                Rekap Absensi
+                                            </a>
+                                        </t>
+                                        <t t-if="guru">
+                                            <a href="/my/guru/jadwal" class="quick-link">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                                </svg>
+                                                Jadwal Mengajar
+                                            </a>
+                                        </t>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </section>
+
+                    <section class="features-section">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="feature-box">
+                                        <div class="feature-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <polyline points="12 6 12 12 16 14"/>
+                                            </svg>
+                                        </div>
+                                        <h4>Akses 24/7</h4>
+                                        <p>Akses informasi akademik kapan saja dan di mana saja melalui portal online</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="feature-box">
+                                        <div class="feature-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                            </svg>
+                                        </div>
+                                        <h4>Aman &amp; Terpercaya</h4>
+                                        <p>Data akademik tersimpan dengan aman dan hanya dapat diakses oleh pihak berwenang</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="feature-box">
+                                        <div class="feature-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 20h9"/>
+                                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                                            </svg>
+                                        </div>
+                                        <h4>Update Real-time</h4>
+                                        <p>Informasi nilai, absensi, dan jadwal selalu diperbarui secara real-time</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <script type="text/javascript">
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var toggleBtn = document.getElementById('mobileMenuToggle');
+                            var menu = document.querySelector('.navbar-menu');
+                            if (toggleBtn &amp;&amp; menu) {
+                                toggleBtn.addEventListener('click', function() {
+                                    menu.classList.toggle('active');
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+            </t>
+        </template>
+
+        <template id="portal_tentang_kami" name="Portal Tentang Kami">
+            <t t-call="portal.portal_layout">
+                <div class="sekolah-home-wrapper">
+                    <nav class="school-navbar">
+                        <div class="container">
+                            <div class="navbar-brand">
+                                <span class="brand-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                                    </svg>
+                                </span>
+                                <span class="brand-text">SMA Pondok Pesantren</span>
+                            </div>
+                            <ul class="navbar-menu">
+                                <li><a href="/my/sekolah">Beranda</a></li>
+                                <li><a href="/my/sekolah/tentang-kami" class="active">Tentang Kami</a></li>
+                                <li><a href="/my/sekolah/program-kurikulum">Program Kurikulum</a></li>
+                                <li><a href="/my/sekolah/fasilitas">Fasilitas</a></li>
+                                <li><a href="/my/sekolah/kehidupan-santri">Kehidupan Santri</a></li>
+                                <li><a href="/my/sekolah/kontak">Kontak</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <section class="page-header">
+                        <div class="container">
+                            <h1>Tentang Kami</h1>
+                            <p>Mengenal lebih dekat SMA Pondok Pesantren</p>
+                        </div>
+                    </section>
+
+                    <section class="content-section">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="about-content">
+                                        <h2 class="section-title-sm">Sejarah Singkat</h2>
+                                        <p>SMA Pondok Pesantren didirikan dengan visi untuk menciptakan lembaga pendidikan yang memadukan kurikulum nasional dengan pendidikan keislaman yang komprehensif. Berdiri sejak tahun 2005, kami telah meluluskan ribuan santri yang kini berkiprah di berbagai bidang.</p>
+                                        <p>Dengan dukungan tenaga pengajar profesional dan hafizh Al-Quran, kami berkomitmen mencetak generasi yang tidak hanya unggul dalam akademik, tetapi juga memiliki akhlak mulia dan pemahaman agama yang kuat.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="about-image">
+                                        <img src="https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt="Gedung Sekolah"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="visi-misi-section">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="info-card visi-card">
+                                            <div class="info-card-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <circle cx="12" cy="12" r="10"/>
+                                                    <circle cx="12" cy="12" r="6"/>
+                                                    <circle cx="12" cy="12" r="2"/>
+                                                </svg>
+                                            </div>
+                                            <h3>Visi</h3>
+                                            <p>Menjadi lembaga pendidikan Islam terdepan yang menghasilkan generasi berilmu, berakhlak mulia, dan berdaya saing global dengan tetap berpegang teguh pada nilai-nilai Al-Quran dan Sunnah.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info-card misi-card">
+                                            <div class="info-card-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                                    <polyline points="22 4 12 14.01 9 11.01"/>
+                                                </svg>
+                                            </div>
+                                            <h3>Misi</h3>
+                                            <ul>
+                                                <li>Menyelenggarakan pendidikan formal berkualitas tinggi</li>
+                                                <li>Mengintegrasikan kurikulum nasional dengan pendidikan pesantren</li>
+                                                <li>Membentuk karakter santri yang berakhlakul karimah</li>
+                                                <li>Mengembangkan potensi akademik dan non-akademik santri</li>
+                                                <li>Mencetak hafizh dan hafizhah Al-Quran</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="values-section">
+                                <h2 class="section-title-sm text-center">Nilai-Nilai Kami</h2>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="value-item">
+                                            <div class="value-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                                </svg>
+                                            </div>
+                                            <h4>Ilmu</h4>
+                                            <p>Menuntut ilmu adalah kewajiban setiap muslim</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="value-item">
+                                            <div class="value-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                                                </svg>
+                                            </div>
+                                            <h4>Akhlak</h4>
+                                            <p>Budi pekerti luhur adalah cerminan iman</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="value-item">
+                                            <div class="value-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                                    <circle cx="9" cy="7" r="4"/>
+                                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                                </svg>
+                                            </div>
+                                            <h4>Ukhuwah</h4>
+                                            <p>Persaudaraan sesama muslim adalah kekuatan</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="value-item">
+                                            <div class="value-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                                </svg>
+                                            </div>
+                                            <h4>Prestasi</h4>
+                                            <p>Berusaha menjadi yang terbaik dalam setiap hal</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </t>
+        </template>
+
+        <template id="portal_program_kurikulum" name="Portal Program Kurikulum">
+            <t t-call="portal.portal_layout">
+                <div class="sekolah-home-wrapper">
+                    <nav class="school-navbar">
+                        <div class="container">
+                            <div class="navbar-brand">
+                                <span class="brand-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                                    </svg>
+                                </span>
+                                <span class="brand-text">SMA Pondok Pesantren</span>
+                            </div>
+                            <ul class="navbar-menu">
+                                <li><a href="/my/sekolah">Beranda</a></li>
+                                <li><a href="/my/sekolah/tentang-kami">Tentang Kami</a></li>
+                                <li><a href="/my/sekolah/program-kurikulum" class="active">Program Kurikulum</a></li>
+                                <li><a href="/my/sekolah/fasilitas">Fasilitas</a></li>
+                                <li><a href="/my/sekolah/kehidupan-santri">Kehidupan Santri</a></li>
+                                <li><a href="/my/sekolah/kontak">Kontak</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <section class="page-header">
+                        <div class="container">
+                            <h1>Program Kurikulum</h1>
+                            <p>Kurikulum terintegrasi untuk pendidikan holistik</p>
+                        </div>
+                    </section>
+
+                    <section class="content-section">
+                        <div class="container">
+                            <div class="program-intro text-center">
+                                <h2>Kurikulum Terintegrasi</h2>
+                                <p>Kami menerapkan kurikulum yang memadukan Kurikulum Merdeka dari Kemendikbud dengan kurikulum pesantren, sehingga santri mendapatkan pendidikan yang seimbang antara ilmu dunia dan akhirat.</p>
+                            </div>
+
+                            <div class="row program-cards">
+                                <div class="col-md-6">
+                                    <div class="program-card">
+                                        <div class="program-card-header kurikulum-umum">
+                                            <h3>Kurikulum Nasional</h3>
+                                        </div>
+                                        <div class="program-card-body">
+                                            <p>Mengikuti standar Kurikulum Merdeka dengan penguatan pada:</p>
+                                            <ul>
+                                                <li>Matematika dan Sains</li>
+                                                <li>Bahasa Indonesia dan Inggris</li>
+                                                <li>Ilmu Pengetahuan Sosial</li>
+                                                <li>Pendidikan Kewarganegaraan</li>
+                                                <li>Teknologi Informasi</li>
+                                                <li>Seni dan Olahraga</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="program-card">
+                                        <div class="program-card-header kurikulum-pesantren">
+                                            <h3>Kurikulum Pesantren</h3>
+                                        </div>
+                                        <div class="program-card-body">
+                                            <p>Pendidikan keislaman yang komprehensif meliputi:</p>
+                                            <ul>
+                                                <li>Tahfizh Al-Quran (Target 5 Juz)</li>
+                                                <li>Bahasa Arab (Nahwu, Shorof, Muhadatsah)</li>
+                                                <li>Fiqih dan Ushul Fiqih</li>
+                                                <li>Aqidah dan Akhlak</li>
+                                                <li>Sirah Nabawiyah</li>
+                                                <li>Hadits dan Ulumul Hadits</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="extra-programs">
+                                <h2 class="section-title-sm text-center">Program Unggulan</h2>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="extra-program-item">
+                                            <div class="extra-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                                </svg>
+                                            </div>
+                                            <h4>Program Tahfizh</h4>
+                                            <p>Program unggulan menghafal Al-Quran dengan metode mutqin, target minimal 5 juz selama 3 tahun dengan bimbingan hafizh bersertifikat.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="extra-program-item">
+                                            <div class="extra-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <circle cx="12" cy="12" r="10"/>
+                                                    <line x1="2" y1="12" x2="22" y2="12"/>
+                                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                                </svg>
+                                            </div>
+                                            <h4>Program Bahasa</h4>
+                                            <p>Penguasaan Bahasa Arab dan Inggris aktif dengan sistem bilingual dan praktik percakapan harian di lingkungan asrama.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="extra-program-item">
+                                            <div class="extra-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                                </svg>
+                                            </div>
+                                            <h4>Program Prestasi</h4>
+                                            <p>Pembinaan intensif untuk kompetisi olimpiade sains, MTQ, debat, dan berbagai lomba tingkat regional hingga nasional.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </t>
+        </template>
+
+        <template id="portal_fasilitas" name="Portal Fasilitas">
+            <t t-call="portal.portal_layout">
+                <div class="sekolah-home-wrapper">
+                    <nav class="school-navbar">
+                        <div class="container">
+                            <div class="navbar-brand">
+                                <span class="brand-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                                    </svg>
+                                </span>
+                                <span class="brand-text">SMA Pondok Pesantren</span>
+                            </div>
+                            <ul class="navbar-menu">
+                                <li><a href="/my/sekolah">Beranda</a></li>
+                                <li><a href="/my/sekolah/tentang-kami">Tentang Kami</a></li>
+                                <li><a href="/my/sekolah/program-kurikulum">Program Kurikulum</a></li>
+                                <li><a href="/my/sekolah/fasilitas" class="active">Fasilitas</a></li>
+                                <li><a href="/my/sekolah/kehidupan-santri">Kehidupan Santri</a></li>
+                                <li><a href="/my/sekolah/kontak">Kontak</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <section class="page-header">
+                        <div class="container">
+                            <h1>Fasilitas</h1>
+                            <p>Sarana dan prasarana pendukung kegiatan belajar mengajar</p>
+                        </div>
+                    </section>
+
+                    <section class="content-section">
+                        <div class="container">
+                            <div class="row facility-grid">
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="facility-card">
+                                        <div class="facility-image">
+                                            <img src="https://images.pexels.com/photos/267507/pexels-photo-267507.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400" alt="Ruang Kelas"/>
+                                        </div>
+                                        <div class="facility-info">
+                                            <h4>Ruang Kelas Modern</h4>
+                                            <p>Ruang kelas ber-AC dengan kapasitas 25 siswa, dilengkapi proyektor dan papan tulis interaktif</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="facility-card">
+                                        <div class="facility-image">
+                                            <img src="https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400" alt="Masjid"/>
+                                        </div>
+                                        <div class="facility-info">
+                                            <h4>Masjid</h4>
+                                            <p>Masjid utama dengan kapasitas 1000 jamaah untuk sholat berjamaah dan kegiatan keagamaan</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="facility-card">
+                                        <div class="facility-image">
+                                            <img src="https://images.pexels.com/photos/1370296/pexels-photo-1370296.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400" alt="Asrama"/>
+                                        </div>
+                                        <div class="facility-info">
+                                            <h4>Asrama Santri</h4>
+                                            <p>Asrama putra dan putri terpisah dengan pengawasan 24 jam, kamar ber-AC untuk 4 santri</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="facility-card">
+                                        <div class="facility-image">
+                                            <img src="https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400" alt="Perpustakaan"/>
+                                        </div>
+                                        <div class="facility-info">
+                                            <h4>Perpustakaan</h4>
+                                            <p>Koleksi lebih dari 10.000 buku umum dan kitab kuning, ruang baca nyaman dengan WiFi</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="facility-card">
+                                        <div class="facility-image">
+                                            <img src="https://images.pexels.com/photos/356040/pexels-photo-356040.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400" alt="Laboratorium"/>
+                                        </div>
+                                        <div class="facility-info">
+                                            <h4>Laboratorium</h4>
+                                            <p>Lab IPA, Komputer, dan Bahasa dengan peralatan modern untuk praktikum siswa</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="facility-card">
+                                        <div class="facility-image">
+                                            <img src="https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400" alt="Lapangan Olahraga"/>
+                                        </div>
+                                        <div class="facility-info">
+                                            <h4>Fasilitas Olahraga</h4>
+                                            <p>Lapangan futsal, basket, voli, dan area jogging untuk menjaga kesehatan jasmani santri</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="other-facilities">
+                                <h3 class="text-center">Fasilitas Lainnya</h3>
+                                <div class="row">
+                                    <div class="col-md-3 col-6">
+                                        <div class="mini-facility">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+                                                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+                                                <line x1="6" y1="1" x2="6" y2="4"/>
+                                                <line x1="10" y1="1" x2="10" y2="4"/>
+                                                <line x1="14" y1="1" x2="14" y2="4"/>
+                                            </svg>
+                                            <span>Kantin Sehat</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <div class="mini-facility">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                                            </svg>
+                                            <span>Klinik Kesehatan</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <div class="mini-facility">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                                            </svg>
+                                            <span>Aula Serbaguna</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <div class="mini-facility">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+                                                <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+                                                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+                                                <line x1="12" y1="20" x2="12.01" y2="20"/>
+                                            </svg>
+                                            <span>WiFi Area</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </t>
+        </template>
+
+        <template id="portal_kehidupan_santri" name="Portal Kehidupan Santri">
+            <t t-call="portal.portal_layout">
+                <div class="sekolah-home-wrapper">
+                    <nav class="school-navbar">
+                        <div class="container">
+                            <div class="navbar-brand">
+                                <span class="brand-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                                    </svg>
+                                </span>
+                                <span class="brand-text">SMA Pondok Pesantren</span>
+                            </div>
+                            <ul class="navbar-menu">
+                                <li><a href="/my/sekolah">Beranda</a></li>
+                                <li><a href="/my/sekolah/tentang-kami">Tentang Kami</a></li>
+                                <li><a href="/my/sekolah/program-kurikulum">Program Kurikulum</a></li>
+                                <li><a href="/my/sekolah/fasilitas">Fasilitas</a></li>
+                                <li><a href="/my/sekolah/kehidupan-santri" class="active">Kehidupan Santri</a></li>
+                                <li><a href="/my/sekolah/kontak">Kontak</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <section class="page-header">
+                        <div class="container">
+                            <h1>Kehidupan Santri</h1>
+                            <p>Keseharian yang penuh makna di lingkungan pesantren</p>
+                        </div>
+                    </section>
+
+                    <section class="content-section">
+                        <div class="container">
+                            <div class="daily-schedule">
+                                <h2 class="section-title-sm text-center">Jadwal Harian Santri</h2>
+                                <div class="schedule-timeline">
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">04:00</div>
+                                        <div class="schedule-content">
+                                            <h5>Bangun &amp; Sholat Tahajud</h5>
+                                            <p>Memulai hari dengan qiyamul lail</p>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">04:30</div>
+                                        <div class="schedule-content">
+                                            <h5>Sholat Subuh Berjamaah</h5>
+                                            <p>Dilanjutkan dzikir pagi dan tilawah Al-Quran</p>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">05:30</div>
+                                        <div class="schedule-content">
+                                            <h5>Halaqah Tahfizh</h5>
+                                            <p>Setoran hafalan dan muroja'ah bersama musyrif</p>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">07:00</div>
+                                        <div class="schedule-content">
+                                            <h5>Sarapan &amp; Persiapan</h5>
+                                            <p>Makan pagi dan bersiap untuk sekolah</p>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">07:30</div>
+                                        <div class="schedule-content">
+                                            <h5>Kegiatan Belajar Mengajar</h5>
+                                            <p>Pelajaran formal kurikulum nasional</p>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">12:00</div>
+                                        <div class="schedule-content">
+                                            <h5>Sholat Dzuhur &amp; Makan Siang</h5>
+                                            <p>Istirahat dan makan siang bersama</p>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">14:00</div>
+                                        <div class="schedule-content">
+                                            <h5>Pelajaran Diniyah</h5>
+                                            <p>Kajian kitab kuning dan bahasa Arab</p>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">15:30</div>
+                                        <div class="schedule-content">
+                                            <h5>Sholat Ashar &amp; Olahraga</h5>
+                                            <p>Kegiatan ekstrakurikuler dan olahraga</p>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">18:00</div>
+                                        <div class="schedule-content">
+                                            <h5>Sholat Maghrib &amp; Kajian</h5>
+                                            <p>Kultum dan kajian kitab setelah maghrib</p>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">19:30</div>
+                                        <div class="schedule-content">
+                                            <h5>Sholat Isya &amp; Belajar Mandiri</h5>
+                                            <p>Waktu belajar dan mengerjakan tugas</p>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">22:00</div>
+                                        <div class="schedule-content">
+                                            <h5>Istirahat Malam</h5>
+                                            <p>Tidur malam untuk menjaga kesehatan</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="extracurricular">
+                                <h2 class="section-title-sm text-center">Kegiatan Ekstrakurikuler</h2>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="extra-card">
+                                            <h4>Keagamaan</h4>
+                                            <ul>
+                                                <li>Tilawatil Quran</li>
+                                                <li>Kaligrafi Arab</li>
+                                                <li>Marawis/Hadrah</li>
+                                                <li>Da'i Cilik</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="extra-card">
+                                            <h4>Akademik</h4>
+                                            <ul>
+                                                <li>English Club</li>
+                                                <li>Arabic Club</li>
+                                                <li>Olimpiade Sains</li>
+                                                <li>Jurnalistik</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="extra-card">
+                                            <h4>Olahraga &amp; Seni</h4>
+                                            <ul>
+                                                <li>Futsal &amp; Basket</li>
+                                                <li>Pencak Silat</li>
+                                                <li>Panahan</li>
+                                                <li>Pramuka</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </t>
+        </template>
+
+        <template id="portal_kontak" name="Portal Kontak">
+            <t t-call="portal.portal_layout">
+                <div class="sekolah-home-wrapper">
+                    <nav class="school-navbar">
+                        <div class="container">
+                            <div class="navbar-brand">
+                                <span class="brand-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                                    </svg>
+                                </span>
+                                <span class="brand-text">SMA Pondok Pesantren</span>
+                            </div>
+                            <ul class="navbar-menu">
+                                <li><a href="/my/sekolah">Beranda</a></li>
+                                <li><a href="/my/sekolah/tentang-kami">Tentang Kami</a></li>
+                                <li><a href="/my/sekolah/program-kurikulum">Program Kurikulum</a></li>
+                                <li><a href="/my/sekolah/fasilitas">Fasilitas</a></li>
+                                <li><a href="/my/sekolah/kehidupan-santri">Kehidupan Santri</a></li>
+                                <li><a href="/my/sekolah/kontak" class="active">Kontak</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <section class="page-header">
+                        <div class="container">
+                            <h1>Hubungi Kami</h1>
+                            <p>Kami siap menjawab pertanyaan Anda</p>
+                        </div>
+                    </section>
+
+                    <section class="content-section">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="contact-info-box">
+                                        <h3>Informasi Kontak</h3>
+                                        <div class="contact-item">
+                                            <div class="contact-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                                    <circle cx="12" cy="10" r="3"/>
+                                                </svg>
+                                            </div>
+                                            <div class="contact-detail">
+                                                <h5>Alamat</h5>
+                                                <p>Jl. Pesantren No. 123, Kecamatan Contoh<br/>Kabupaten Contoh, Provinsi 12345</p>
+                                            </div>
+                                        </div>
+                                        <div class="contact-item">
+                                            <div class="contact-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                                </svg>
+                                            </div>
+                                            <div class="contact-detail">
+                                                <h5>Telepon</h5>
+                                                <p>(021) 1234-5678<br/>+62 812-3456-7890 (WhatsApp)</p>
+                                            </div>
+                                        </div>
+                                        <div class="contact-item">
+                                            <div class="contact-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                                    <polyline points="22,6 12,13 2,6"/>
+                                                </svg>
+                                            </div>
+                                            <div class="contact-detail">
+                                                <h5>Email</h5>
+                                                <p>info@smapondokpesantren.sch.id<br/>pendaftaran@smapondokpesantren.sch.id</p>
+                                            </div>
+                                        </div>
+                                        <div class="contact-item">
+                                            <div class="contact-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <circle cx="12" cy="12" r="10"/>
+                                                    <polyline points="12 6 12 12 16 14"/>
+                                                </svg>
+                                            </div>
+                                            <div class="contact-detail">
+                                                <h5>Jam Operasional</h5>
+                                                <p>Senin - Jumat: 08:00 - 16:00 WIB<br/>Sabtu: 08:00 - 12:00 WIB</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="map-container">
+                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.82496631536309!3d-6.200000062611374!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5d2e764b12d%3A0x3d2ad6e1e0e9bcc8!2sMonumen%20Nasional!5e0!3m2!1sid!2sid!4v1620000000000!5m2!1sid!2sid" width="100%" height="350" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"></iframe>
+                                    </div>
+                                    <div class="social-links">
+                                        <h5>Ikuti Kami</h5>
+                                        <div class="social-icons">
+                                            <a href="#" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                                            <a href="#" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+                                            <a href="#" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg></a>
+                                            <a href="#" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </t>
+        </template>
+
         <template id="portal_no_data" name="Portal No Data">
             <t t-call="portal.portal_layout">
                 <div class="container mt-5">
