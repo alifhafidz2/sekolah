@@ -15,3 +15,6 @@ access_sekolah_jadwal_portal,sekolah.jadwal.portal,model_sekolah_jadwal,base.gro
 access_sekolah_absensi_portal,sekolah.absensi.portal,model_sekolah_absensi,base.group_portal,1,0,0,0
 access_sekolah_nilai_portal,sekolah.nilai.portal,model_sekolah_nilai,base.group_portal,1,0,0,0
 access_sekolah_tahun_ajaran_portal,sekolah.tahun_ajaran.portal,model_sekolah_tahun_ajaran,base.group_portal,1,0,0,0
+access_sekolah_absensi_massal_wizard_user,sekolah.absensi.massal.wizard.user,model_sekolah_absensi_massal_wizard,group_sekolah_user,1,1,1,1
+access_sekolah_absensi_massal_wizard_line_user,sekolah.absensi.massal.wizard.line.user,model_sekolah_absensi_massal_wizard_line,group_sekolah_user,1,1,1,1
+access_sekolah_generate_jadwal_wizard_user,sekolah.generate.jadwal.wizard.user,model_sekolah_generate_jadwal_wizard,group_sekolah_user,1,1,1,1

@@ -7,29 +7,64 @@
             <field name="model">sekolah.absensi.massal.wizard</field>
             <field name="arch" type="xml">
                 <form string="Input Absensi Massal">
-                    <group>
+                    <sheet>
                         <group>
-                            <field name="kelas_id"/>
-                            <field name="jadwal_id"/>
+                            <group>
+                                <field name="kelas_id"/>
+                                <field name="jadwal_id"/>
+                            </group>
+                            <group>
+                                <field name="tanggal"/>
+                                <field name="tahun_ajaran_id"/>
+                            </group>
                         </group>
-                        <group>
-                            <field name="tanggal"/>
-                            <field name="tahun_ajaran_id"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page string="Daftar Siswa">
-                            <field name="line_ids" nolabel="1">
-                                <list editable="bottom">
-                                    <field name="siswa_id" readonly="1"/>
-                                    <field name="status"/>
-                                    <field name="keterangan"/>
-                                </list>
-                            </field>
-                        </page>
-                    </notebook>
+
+                        <div class="row mt-3 mb-3" invisible="total_siswa == 0">
+                            <div class="col-12">
+                                <div class="d-flex gap-2 mb-2">
+                                    <button name="action_set_all_hadir" type="object" string="Semua Hadir" class="btn btn-success btn-sm" icon="fa-check"/>
+                                    <button name="action_set_all_alfa" type="object" string="Semua Alfa" class="btn btn-danger btn-sm" icon="fa-times"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" invisible="total_siswa == 0">
+                            <div class="col-12">
+                                <div class="alert alert-info d-flex justify-content-between align-items-center p-2">
+                                    <span>
+                                        <strong>Total: </strong><field name="total_siswa" class="oe_inline"/> siswa
+                                    </span>
+                                    <span class="badge bg-success ms-2">
+                                        Hadir: <field name="total_hadir" class="oe_inline"/>
+                                    </span>
+                                    <span class="badge bg-warning ms-2">
+                                        Izin: <field name="total_izin" class="oe_inline"/>
+                                    </span>
+                                    <span class="badge bg-info ms-2">
+                                        Sakit: <field name="total_sakit" class="oe_inline"/>
+                                    </span>
+                                    <span class="badge bg-danger ms-2">
+                                        Alfa: <field name="total_alfa" class="oe_inline"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <field name="line_ids" nolabel="1">
+                            <list editable="bottom" decoration-success="is_hadir and not is_izin and not is_sakit" decoration-warning="is_izin" decoration-info="is_sakit" decoration-danger="not is_hadir and not is_izin and not is_sakit">
+                                <field name="nomor_urut" string="No" readonly="1" force_save="1" width="50px"/>
+                                <field name="nis" readonly="1"/>
+                                <field name="siswa_id" readonly="1" force_save="1"/>
+                                <field name="is_hadir" string="Hadir" widget="boolean_toggle"/>
+                                <field name="is_izin" string="Izin" widget="boolean_toggle"/>
+                                <field name="is_sakit" string="Sakit" widget="boolean_toggle"/>
+                                <field name="status_display" string="Status" readonly="1"/>
+                                <field name="keterangan" placeholder="Keterangan (opsional)"/>
+                            </list>
+                        </field>
+                    </sheet>
                     <footer>
-                        <button name="action_create_absensi" type="object" string="Buat Absensi" class="btn-primary"/>
+                        <button name="action_create_absensi" type="object" string="Simpan Absensi" class="btn-primary" icon="fa-save"/>
                         <button string="Batal" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
