@@ -11,12 +11,24 @@
                         <group string="Pengaturan Umum">
                             <field name="kelas_id"/>
                             <field name="tahun_ajaran_id"/>
-                            <field name="include_sabtu"/>
+                            <field name="hapus_jadwal_lama"/>
                         </group>
                         <group string="Waktu">
                             <field name="jam_mulai_default" widget="float_time"/>
                             <field name="jam_selesai_default" widget="float_time"/>
                             <field name="durasi_per_sesi" widget="float_time"/>
+                        </group>
+                    </group>
+                    <group string="Pilih Hari">
+                        <group>
+                            <field name="hari_senin"/>
+                            <field name="hari_selasa"/>
+                            <field name="hari_rabu"/>
+                        </group>
+                        <group>
+                            <field name="hari_kamis"/>
+                            <field name="hari_jumat"/>
+                            <field name="hari_sabtu"/>
                         </group>
                     </group>
                     <group>

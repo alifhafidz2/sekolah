@@ -15,6 +15,19 @@ class GenerateJadwalWizard(models.TransientModel):
     durasi_per_sesi = fields.Float(string='Durasi per Sesi (jam)', default=1.5)
     jam_selesai_default = fields.Float(string='Jam Selesai Harian', default=15.0)
 
+    hari_senin = fields.Boolean(string='Senin', default=True)
+    hari_selasa = fields.Boolean(string='Selasa', default=True)
+    hari_rabu = fields.Boolean(string='Rabu', default=True)
+    hari_kamis = fields.Boolean(string='Kamis', default=True)
+    hari_jumat = fields.Boolean(string='Jumat', default=True)
+    hari_sabtu = fields.Boolean(string='Sabtu', default=False)
+
+    hapus_jadwal_lama = fields.Boolean(
+        string='Hapus Jadwal Lama',
+        default=True,
+        help='Hapus jadwal yang sudah ada untuk kelas dan hari yang dipilih sebelum generate yang baru',
+    )
+
     istirahat_1 = fields.Boolean(string='Istirahat 1', default=True)
     jam_istirahat_1 = fields.Float(string='Jam Istirahat 1', default=10.0)
     durasi_istirahat_1 = fields.Float(string='Durasi Istirahat 1', default=0.25)
@@ -23,7 +36,21 @@ class GenerateJadwalWizard(models.TransientModel):
     jam_istirahat_2 = fields.Float(string='Jam Istirahat 2', default=12.0)
     durasi_istirahat_2 = fields.Float(string='Durasi Istirahat 2', default=0.5)
 
-    include_sabtu = fields.Boolean(string='Termasuk Sabtu', default=False)
+    def _get_selected_hari(self):
+        hari_list = []
+        if self.hari_senin:
+            hari_list.append('senin')
+        if self.hari_selasa:
+            hari_list.append('selasa')
+        if self.hari_rabu:
+            hari_list.append('rabu')
+        if self.hari_kamis:
+            hari_list.append('kamis')
+        if self.hari_jumat:
+            hari_list.append('jumat')
+        if self.hari_sabtu:
+            hari_list.append('sabtu')
+        return hari_list
 
     def _get_breaks(self):
         breaks = []
@@ -46,10 +73,20 @@ class GenerateJadwalWizard(models.TransientModel):
         if not self.mata_pelajaran_ids:
             raise ValidationError('Pilih minimal satu mata pelajaran!')
 
+        hari_list = self._get_selected_hari()
+        if not hari_list:
+            raise ValidationError('Pilih minimal satu hari!')
+
         jadwal_obj = self.env['sekolah.jadwal']
-        hari_list = ['senin', 'selasa', 'rabu', 'kamis', 'jumat']
-        if self.include_sabtu:
-            hari_list.append('sabtu')
+
+        if self.hapus_jadwal_lama:
+            existing = jadwal_obj.search([
+                ('kelas_id', '=', self.kelas_id.id),
+                ('tahun_ajaran_id', '=', self.tahun_ajaran_id.id),
+                ('hari', 'in', hari_list),
+            ])
+            if existing:
+                existing.unlink()
 
         breaks = self._get_breaks()
 
@@ -67,6 +104,18 @@ class GenerateJadwalWizard(models.TransientModel):
 
             jam_mulai = self._apply_break(jam_mulai, breaks_applied, breaks)
             jam_selesai = jam_mulai + self.durasi_per_sesi
+
+            if jam_selesai > self.jam_selesai_default:
+                hari_idx += 1
+                jam_mulai = self.jam_mulai_default
+                jam_ke = 1
+                breaks_applied = set()
+
+                if hari_idx >= len(hari_list):
+                    break
+
+                jam_mulai = self._apply_break(jam_mulai, breaks_applied, breaks)
+                jam_selesai = jam_mulai + self.durasi_per_sesi
 
             jadwal_obj.create({
                 'kelas_id': self.kelas_id.id,
