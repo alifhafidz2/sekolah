@@ -1,7 +1,8 @@
-from odoo import http
+from odoo import http, fields
 from odoo.http import request
 from odoo.addons.portal.controllers.portal import CustomerPortal
 from werkzeug.utils import redirect
+from datetime import datetime, date
 
 
 class SekolahPortal(CustomerPortal):
@@ -232,4 +233,246 @@ class SekolahPortal(CustomerPortal):
             'jadwal_with_breaks': jadwal_with_breaks,
             'hari_list': hari_list,
             'page_name': 'guru_jadwal',
+        })
+
+    @http.route(['/my/guru/absensi'], type='http', auth='user', website=True)
+    def portal_guru_absensi(self, **kw):
+        guru = request.env['sekolah.guru'].sudo().search([
+            ('user_id', '=', request.env.user.id)
+        ], limit=1)
+
+        if not guru:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Data guru tidak ditemukan'
+            })
+
+        jadwal_list = request.env['sekolah.jadwal'].sudo().search([
+            ('guru_id', '=', guru.id)
+        ], order='kelas_id, hari, jam_mulai')
+
+        kelas_dict = {}
+        for jadwal in jadwal_list:
+            if jadwal.kelas_id.id not in kelas_dict:
+                kelas_dict[jadwal.kelas_id.id] = {
+                    'kelas': jadwal.kelas_id,
+                    'jadwal_count': 0,
+                    'siswa_count': len(jadwal.kelas_id.siswa_ids),
+                }
+            kelas_dict[jadwal.kelas_id.id]['jadwal_count'] += 1
+
+        kelas_list = list(kelas_dict.values())
+
+        return request.render('sistem_sekolah_odoo18.portal_guru_absensi_home', {
+            'guru': guru,
+            'kelas_list': kelas_list,
+            'page_name': 'guru_absensi',
+        })
+
+    @http.route(['/my/guru/absensi/kelas/<int:kelas_id>'], type='http', auth='user', website=True)
+    def portal_guru_absensi_kelas(self, kelas_id, **kw):
+        guru = request.env['sekolah.guru'].sudo().search([
+            ('user_id', '=', request.env.user.id)
+        ], limit=1)
+
+        if not guru:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Data guru tidak ditemukan'
+            })
+
+        kelas = request.env['sekolah.kelas'].sudo().browse(kelas_id)
+        if not kelas.exists():
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Kelas tidak ditemukan'
+            })
+
+        jadwal_list = request.env['sekolah.jadwal'].sudo().search([
+            ('guru_id', '=', guru.id),
+            ('kelas_id', '=', kelas_id)
+        ], order='hari, jam_mulai')
+
+        today = date.today()
+        hari_map = {
+            0: 'senin', 1: 'selasa', 2: 'rabu',
+            3: 'kamis', 4: 'jumat', 5: 'sabtu', 6: 'minggu'
+        }
+        hari_ini = hari_map.get(today.weekday(), 'senin')
+
+        jadwal_hari_ini = [j for j in jadwal_list if j.hari == hari_ini]
+
+        return request.render('sistem_sekolah_odoo18.portal_guru_absensi_kelas', {
+            'guru': guru,
+            'kelas': kelas,
+            'jadwal_list': jadwal_list,
+            'jadwal_hari_ini': jadwal_hari_ini,
+            'hari_ini': hari_ini,
+            'tanggal_hari_ini': today,
+            'page_name': 'guru_absensi_kelas',
+        })
+
+    @http.route(['/my/guru/absensi/input/<int:jadwal_id>'], type='http', auth='user', website=True)
+    def portal_guru_absensi_input(self, jadwal_id, tanggal=None, **kw):
+        guru = request.env['sekolah.guru'].sudo().search([
+            ('user_id', '=', request.env.user.id)
+        ], limit=1)
+
+        if not guru:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Data guru tidak ditemukan'
+            })
+
+        jadwal = request.env['sekolah.jadwal'].sudo().browse(jadwal_id)
+        if not jadwal.exists() or jadwal.guru_id.id != guru.id:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Jadwal tidak ditemukan atau Anda tidak memiliki akses'
+            })
+
+        if tanggal:
+            try:
+                selected_date = datetime.strptime(tanggal, '%Y-%m-%d').date()
+            except ValueError:
+                selected_date = date.today()
+        else:
+            selected_date = date.today()
+
+        siswa_list = request.env['sekolah.siswa'].sudo().search([
+            ('kelas_id', '=', jadwal.kelas_id.id),
+            ('status', '=', 'aktif')
+        ], order='name')
+
+        existing_absensi = request.env['sekolah.absensi'].sudo().search([
+            ('jadwal_id', '=', jadwal_id),
+            ('tanggal', '=', selected_date)
+        ])
+        absensi_dict = {ab.siswa_id.id: ab for ab in existing_absensi}
+
+        siswa_absensi = []
+        for siswa in siswa_list:
+            absensi = absensi_dict.get(siswa.id)
+            siswa_absensi.append({
+                'siswa': siswa,
+                'absensi': absensi,
+                'status': absensi.status if absensi else 'hadir',
+                'keterangan': absensi.keterangan if absensi else '',
+            })
+
+        stats = {
+            'total': len(siswa_list),
+            'hadir': sum(1 for sa in siswa_absensi if sa['status'] == 'hadir'),
+            'izin': sum(1 for sa in siswa_absensi if sa['status'] == 'izin'),
+            'sakit': sum(1 for sa in siswa_absensi if sa['status'] == 'sakit'),
+            'alfa': sum(1 for sa in siswa_absensi if sa['status'] == 'alfa'),
+        }
+
+        return request.render('sistem_sekolah_odoo18.portal_guru_absensi_input', {
+            'guru': guru,
+            'jadwal': jadwal,
+            'siswa_absensi': siswa_absensi,
+            'selected_date': selected_date,
+            'stats': stats,
+            'has_existing': len(existing_absensi) > 0,
+            'page_name': 'guru_absensi_input',
+        })
+
+    @http.route(['/my/guru/absensi/submit'], type='http', auth='user', website=True, methods=['POST'], csrf=True)
+    def portal_guru_absensi_submit(self, **post):
+        guru = request.env['sekolah.guru'].sudo().search([
+            ('user_id', '=', request.env.user.id)
+        ], limit=1)
+
+        if not guru:
+            return redirect('/my/guru/absensi')
+
+        jadwal_id = int(post.get('jadwal_id', 0))
+        tanggal_str = post.get('tanggal', '')
+
+        jadwal = request.env['sekolah.jadwal'].sudo().browse(jadwal_id)
+        if not jadwal.exists() or jadwal.guru_id.id != guru.id:
+            return redirect('/my/guru/absensi')
+
+        try:
+            tanggal = datetime.strptime(tanggal_str, '%Y-%m-%d').date()
+        except ValueError:
+            tanggal = date.today()
+
+        absensi_obj = request.env['sekolah.absensi'].sudo()
+
+        siswa_list = request.env['sekolah.siswa'].sudo().search([
+            ('kelas_id', '=', jadwal.kelas_id.id),
+            ('status', '=', 'aktif')
+        ])
+
+        tahun_ajaran = request.env['sekolah.tahun_ajaran'].sudo().search([
+            ('is_active', '=', True)
+        ], limit=1)
+
+        for siswa in siswa_list:
+            status = post.get(f'status_{siswa.id}', 'hadir')
+            keterangan = post.get(f'keterangan_{siswa.id}', '')
+
+            existing = absensi_obj.search([
+                ('siswa_id', '=', siswa.id),
+                ('jadwal_id', '=', jadwal_id),
+                ('tanggal', '=', tanggal)
+            ], limit=1)
+
+            if existing:
+                existing.write({
+                    'status': status,
+                    'keterangan': keterangan,
+                })
+            else:
+                absensi_obj.create({
+                    'siswa_id': siswa.id,
+                    'jadwal_id': jadwal_id,
+                    'tanggal': tanggal,
+                    'status': status,
+                    'keterangan': keterangan,
+                    'tahun_ajaran_id': tahun_ajaran.id if tahun_ajaran else False,
+                })
+
+        return redirect(f'/my/guru/absensi/input/{jadwal_id}?tanggal={tanggal_str}&success=1')
+
+    @http.route(['/my/guru/absensi/riwayat/<int:jadwal_id>'], type='http', auth='user', website=True)
+    def portal_guru_absensi_riwayat(self, jadwal_id, **kw):
+        guru = request.env['sekolah.guru'].sudo().search([
+            ('user_id', '=', request.env.user.id)
+        ], limit=1)
+
+        if not guru:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Data guru tidak ditemukan'
+            })
+
+        jadwal = request.env['sekolah.jadwal'].sudo().browse(jadwal_id)
+        if not jadwal.exists() or jadwal.guru_id.id != guru.id:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Jadwal tidak ditemukan atau Anda tidak memiliki akses'
+            })
+
+        absensi_list = request.env['sekolah.absensi'].sudo().search([
+            ('jadwal_id', '=', jadwal_id)
+        ], order='tanggal desc, siswa_id')
+
+        dates_dict = {}
+        for ab in absensi_list:
+            date_key = ab.tanggal
+            if date_key not in dates_dict:
+                dates_dict[date_key] = {
+                    'tanggal': date_key,
+                    'hadir': 0,
+                    'izin': 0,
+                    'sakit': 0,
+                    'alfa': 0,
+                    'total': 0,
+                }
+            dates_dict[date_key][ab.status] += 1
+            dates_dict[date_key]['total'] += 1
+
+        riwayat_list = sorted(dates_dict.values(), key=lambda x: x['tanggal'], reverse=True)
+
+        return request.render('sistem_sekolah_odoo18.portal_guru_absensi_riwayat', {
+            'guru': guru,
+            'jadwal': jadwal,
+            'riwayat_list': riwayat_list,
+            'page_name': 'guru_absensi_riwayat',
         })

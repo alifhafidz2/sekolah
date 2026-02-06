@@ -924,65 +924,134 @@
 
         <template id="portal_siswa_profile" name="Portal Siswa Profile">
             <t t-call="portal.portal_layout">
-                <div class="container mt-4">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <img t-if="siswa.foto" t-att-src="image_data_uri(siswa.foto)" class="img-fluid rounded" alt="Foto Siswa"/>
-                            <div t-else="" class="bg-secondary text-white text-center p-5 rounded">
-                                <i class="fa fa-user fa-5x"/>
-                            </div>
+                <div class="portal-profile-wrapper">
+                    <div class="profile-header">
+                        <div style="position: relative; padding: 0 48px;">
+                            <h1 style="color: white; font-size: 2rem; font-weight: 700; margin: 0;">Portal Siswa</h1>
+                            <p style="color: rgba(255,255,255,0.8); margin: 8px 0 0 0;">Selamat datang di portal akademik</p>
                         </div>
-                        <div class="col-md-9">
-                            <h2><t t-out="siswa.name"/></h2>
-                            <p class="lead">NIS: <t t-out="siswa.nis"/></p>
+                    </div>
 
-                            <div class="card mt-3">
-                                <div class="card-header bg-primary text-white">
-                                    <h5 class="mb-0">Data Pribadi</h5>
+                    <div class="profile-content">
+                        <div class="profile-card">
+                            <div class="profile-main">
+                                <div class="profile-sidebar">
+                                    <div class="profile-avatar">
+                                        <t t-if="siswa.foto">
+                                            <img t-att-src="image_data_uri(siswa.foto)" alt="Foto Siswa"/>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="profile-avatar-placeholder">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                                </svg>
+                                            </div>
+                                        </t>
+                                    </div>
+                                    <h2 class="profile-name"><t t-out="siswa.name"/></h2>
+                                    <p class="profile-id">NIS: <t t-out="siswa.nis"/></p>
+                                    <span class="profile-status">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                            <polyline points="22 4 12 14.01 9 11.01" fill="none" stroke="currentColor" stroke-width="2"/>
+                                        </svg>
+                                        <t t-out="dict(siswa._fields['status'].selection).get(siswa.status)"/>
+                                    </span>
                                 </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <p><strong>Jenis Kelamin:</strong> <t t-out="dict(siswa._fields['jenis_kelamin'].selection).get(siswa.jenis_kelamin)"/></p>
-                                            <p><strong>Tempat, Tanggal Lahir:</strong> <t t-out="siswa.tempat_lahir"/>, <t t-out="siswa.tanggal_lahir"/></p>
-                                            <p><strong>Umur:</strong> <t t-out="siswa.umur"/> tahun</p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p><strong>Kelas:</strong> <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/></p>
-                                            <p><strong>Status:</strong> <span t-att-class="'badge ' + ('badge-success' if siswa.status == 'aktif' else 'badge-info')"><t t-out="dict(siswa._fields['status'].selection).get(siswa.status)"/></span></p>
-                                            <p><strong>Tanggal Masuk:</strong> <t t-out="siswa.tanggal_masuk"/></p>
+
+                                <div class="profile-body">
+                                    <div class="info-section">
+                                        <h3 class="info-section-title">Data Pribadi</h3>
+                                        <div class="info-grid">
+                                            <div class="info-item">
+                                                <div class="info-label">Jenis Kelamin</div>
+                                                <div class="info-value"><t t-out="dict(siswa._fields['jenis_kelamin'].selection).get(siswa.jenis_kelamin)"/></div>
+                                            </div>
+                                            <div class="info-item">
+                                                <div class="info-label">Tempat, Tanggal Lahir</div>
+                                                <div class="info-value"><t t-out="siswa.tempat_lahir"/>, <t t-out="siswa.tanggal_lahir"/></div>
+                                            </div>
+                                            <div class="info-item">
+                                                <div class="info-label">Umur</div>
+                                                <div class="info-value"><t t-out="siswa.umur"/> tahun</div>
+                                            </div>
+                                            <div class="info-item">
+                                                <div class="info-label">Kelas</div>
+                                                <div class="info-value"><t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/></div>
+                                            </div>
+                                            <div class="info-item">
+                                                <div class="info-label">Tanggal Masuk</div>
+                                                <div class="info-value"><t t-out="siswa.tanggal_masuk"/></div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <div class="card mt-3">
-                                <div class="card-header bg-info text-white">
-                                    <h5 class="mb-0">Statistik</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h6>Kehadiran</h6>
-                                            <p>Total Absensi: <strong><t t-out="siswa.total_absensi"/></strong></p>
-                                            <p>Hadir: <strong><t t-out="siswa.total_hadir"/></strong></p>
-                                            <p>Izin: <strong><t t-out="siswa.total_izin"/></strong></p>
-                                            <p>Sakit: <strong><t t-out="siswa.total_sakit"/></strong></p>
-                                            <p>Alfa: <strong><t t-out="siswa.total_alfa"/></strong></p>
-                                            <p>Persentase Kehadiran: <strong><t t-out="'%.2f' % siswa.persentase_kehadiran"/>%</strong></p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <h6>Akademik</h6>
-                                            <p>Rata-rata Nilai: <strong><t t-out="'%.2f' % siswa.rata_rata_nilai"/></strong></p>
+                                    <div class="info-section">
+                                        <h3 class="info-section-title">Statistik Kehadiran</h3>
+                                        <div class="info-grid">
+                                            <div class="info-item">
+                                                <div class="info-label">Total Absensi</div>
+                                                <div class="info-value"><t t-out="siswa.total_absensi"/></div>
+                                            </div>
+                                            <div class="info-item">
+                                                <div class="info-label">Hadir</div>
+                                                <div class="info-value" style="color: #047857;"><t t-out="siswa.total_hadir"/></div>
+                                            </div>
+                                            <div class="info-item">
+                                                <div class="info-label">Izin</div>
+                                                <div class="info-value" style="color: #0ea5e9;"><t t-out="siswa.total_izin"/></div>
+                                            </div>
+                                            <div class="info-item">
+                                                <div class="info-label">Sakit</div>
+                                                <div class="info-value" style="color: #f59e0b;"><t t-out="siswa.total_sakit"/></div>
+                                            </div>
+                                            <div class="info-item">
+                                                <div class="info-label">Alfa</div>
+                                                <div class="info-value" style="color: #ef4444;"><t t-out="siswa.total_alfa"/></div>
+                                            </div>
+                                            <div class="info-item">
+                                                <div class="info-label">Persentase Kehadiran</div>
+                                                <div class="info-value" style="font-size: 1.2rem;"><t t-out="'%.2f' % siswa.persentase_kehadiran"/>%</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <div class="mt-3">
-                                <a href="/my/siswa/nilai" class="btn btn-primary mr-2">Lihat Nilai</a>
-                                <a href="/my/siswa/absensi" class="btn btn-info mr-2">Lihat Absensi</a>
-                                <a href="/my/siswa/jadwal" class="btn btn-success">Lihat Jadwal</a>
+                                    <div class="info-section">
+                                        <h3 class="info-section-title">Akademik</h3>
+                                        <div class="info-grid">
+                                            <div class="info-item">
+                                                <div class="info-label">Rata-rata Nilai</div>
+                                                <div class="info-value" style="font-size: 1.5rem; color: #0a1628;"><t t-out="'%.2f' % siswa.rata_rata_nilai"/></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="profile-actions">
+                                        <a href="/my/siswa/nilai" class="btn-luxury btn-luxury-primary">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                                <polyline points="14 2 14 8 20 8"/>
+                                            </svg>
+                                            Lihat Nilai
+                                        </a>
+                                        <a href="/my/siswa/jadwal" class="btn-luxury btn-luxury-success">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                                <line x1="3" y1="10" x2="21" y2="10"/>
+                                            </svg>
+                                            Lihat Jadwal
+                                        </a>
+                                        <a href="/my/siswa/absensi" class="btn-luxury btn-luxury-outline">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                                <polyline points="22 4 12 14.01 9 11.01"/>
+                                            </svg>
+                                            Lihat Absensi
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -992,13 +1061,38 @@
 
         <template id="portal_siswa_nilai" name="Portal Siswa Nilai">
             <t t-call="portal.portal_layout">
-                <div class="container mt-4">
-                    <h2>Nilai - <t t-out="siswa.name"/></h2>
-                    <a href="/my/siswa" class="btn btn-secondary mb-3">Kembali ke Profil</a>
+                <div class="portal-profile-wrapper">
+                    <div class="profile-header" style="padding: 50px 48px;">
+                        <div style="position: relative;">
+                            <nav aria-label="breadcrumb" style="margin-bottom: 12px;">
+                                <ol class="breadcrumb bg-transparent p-0 mb-0" style="font-size: 0.9rem;">
+                                    <li class="breadcrumb-item"><a href="/my/siswa" style="color: rgba(255,255,255,0.8);">Portal Siswa</a></li>
+                                    <li class="breadcrumb-item active" style="color: rgba(255,255,255,0.6);">Nilai</li>
+                                </ol>
+                            </nav>
+                            <h1 style="color: white; font-size: 2rem; font-weight: 700; margin: 0;">Nilai Akademik</h1>
+                            <p style="color: rgba(255,255,255,0.8); margin: 8px 0 0 0;"><t t-out="siswa.name"/></p>
+                        </div>
+                    </div>
 
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead class="thead-dark">
+                    <div class="luxury-table-wrapper">
+                        <div class="luxury-table-header">
+                            <h3 class="luxury-table-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                </svg>
+                                Daftar Nilai
+                            </h3>
+                            <a href="/my/siswa" class="btn-luxury btn-luxury-outline" style="padding: 10px 20px; font-size: 0.9rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                </svg>
+                                Kembali
+                            </a>
+                        </div>
+                        <table class="luxury-table">
+                            <thead>
                                 <tr>
                                     <th>Mata Pelajaran</th>
                                     <th>Tahun Ajaran</th>
@@ -1015,17 +1109,17 @@
                             <tbody>
                                 <t t-foreach="nilai_list" t-as="nilai">
                                     <tr>
-                                        <td><t t-out="nilai.mata_pelajaran_id.name"/></td>
+                                        <td><strong><t t-out="nilai.mata_pelajaran_id.name"/></strong></td>
                                         <td><t t-out="nilai.tahun_ajaran_id.name if nilai.tahun_ajaran_id else '-'"/></td>
                                         <td><t t-out="dict(nilai._fields['semester'].selection).get(nilai.semester) if nilai.semester else '-'"/></td>
                                         <td><t t-out="'%.2f' % nilai.nilai_tugas"/></td>
                                         <td><t t-out="'%.2f' % nilai.nilai_uts"/></td>
                                         <td><t t-out="'%.2f' % nilai.nilai_uas"/></td>
                                         <td><t t-out="'%.2f' % nilai.nilai_praktik"/></td>
-                                        <td><strong><t t-out="'%.2f' % nilai.nilai_akhir"/></strong></td>
-                                        <td><t t-out="dict(nilai._fields['predikat'].selection).get(nilai.predikat)"/></td>
+                                        <td><strong style="font-size: 1.1rem; color: #0a1628;"><t t-out="'%.2f' % nilai.nilai_akhir"/></strong></td>
+                                        <td><span style="background: #f1f5f9; padding: 6px 12px; border-radius: 50px; font-weight: 600; font-size: 0.85rem;"><t t-out="dict(nilai._fields['predikat'].selection).get(nilai.predikat)"/></span></td>
                                         <td>
-                                            <span t-att-class="'badge ' + ('badge-success' if nilai.status_kelulusan == 'lulus' else ('badge-warning' if nilai.status_kelulusan == 'remedial' else 'badge-danger'))">
+                                            <span t-att-style="'padding: 6px 14px; border-radius: 50px; font-weight: 600; font-size: 0.8rem; color: white; background: ' + ('#047857' if nilai.status_kelulusan == 'lulus' else ('#f59e0b' if nilai.status_kelulusan == 'remedial' else '#ef4444'))">
                                                 <t t-out="dict(nilai._fields['status_kelulusan'].selection).get(nilai.status_kelulusan)"/>
                                             </span>
                                         </td>
@@ -1040,72 +1134,128 @@
 
         <template id="portal_siswa_absensi" name="Portal Siswa Absensi">
             <t t-call="portal.portal_layout">
-                <div class="container mt-4">
-                    <h2>Absensi - <t t-out="siswa.name"/></h2>
-                    <a href="/my/siswa" class="btn btn-secondary mb-3">Kembali ke Profil</a>
-
-                    <div class="row mb-4">
-                        <div class="col-md-3">
-                            <div class="card text-center bg-success text-white">
-                                <div class="card-body">
-                                    <h3><t t-out="siswa.total_hadir"/></h3>
-                                    <p>Hadir</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-center bg-info text-white">
-                                <div class="card-body">
-                                    <h3><t t-out="siswa.total_izin"/></h3>
-                                    <p>Izin</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-center bg-warning text-white">
-                                <div class="card-body">
-                                    <h3><t t-out="siswa.total_sakit"/></h3>
-                                    <p>Sakit</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-center bg-danger text-white">
-                                <div class="card-body">
-                                    <h3><t t-out="siswa.total_alfa"/></h3>
-                                    <p>Alfa</p>
-                                </div>
-                            </div>
+                <div class="portal-profile-wrapper">
+                    <div class="profile-header" style="padding: 50px 48px;">
+                        <div style="position: relative;">
+                            <nav aria-label="breadcrumb" style="margin-bottom: 12px;">
+                                <ol class="breadcrumb bg-transparent p-0 mb-0" style="font-size: 0.9rem;">
+                                    <li class="breadcrumb-item"><a href="/my/siswa" style="color: rgba(255,255,255,0.8);">Portal Siswa</a></li>
+                                    <li class="breadcrumb-item active" style="color: rgba(255,255,255,0.6);">Absensi</li>
+                                </ol>
+                            </nav>
+                            <h1 style="color: white; font-size: 2rem; font-weight: 700; margin: 0;">Rekap Absensi</h1>
+                            <p style="color: rgba(255,255,255,0.8); margin: 8px 0 0 0;"><t t-out="siswa.name"/></p>
                         </div>
                     </div>
 
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Tanggal</th>
-                                    <th>Mata Pelajaran</th>
-                                    <th>Guru</th>
-                                    <th>Status</th>
-                                    <th>Keterangan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-foreach="absensi_list" t-as="absensi">
+                    <div class="absensi-content">
+                        <div class="stats-row mb-4">
+                            <div class="stat-card stat-hadir">
+                                <div class="stat-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                        <polyline points="22 4 12 14.01 9 11.01"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-content">
+                                    <span class="stat-number"><t t-out="siswa.total_hadir"/></span>
+                                    <span class="stat-label">Hadir</span>
+                                </div>
+                            </div>
+                            <div class="stat-card stat-izin">
+                                <div class="stat-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-content">
+                                    <span class="stat-number"><t t-out="siswa.total_izin"/></span>
+                                    <span class="stat-label">Izin</span>
+                                </div>
+                            </div>
+                            <div class="stat-card stat-sakit">
+                                <div class="stat-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-content">
+                                    <span class="stat-number"><t t-out="siswa.total_sakit"/></span>
+                                    <span class="stat-label">Sakit</span>
+                                </div>
+                            </div>
+                            <div class="stat-card stat-alfa">
+                                <div class="stat-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="15" y1="9" x2="9" y2="15"/>
+                                        <line x1="9" y1="9" x2="15" y2="15"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-content">
+                                    <span class="stat-number"><t t-out="siswa.total_alfa"/></span>
+                                    <span class="stat-label">Alfa</span>
+                                </div>
+                            </div>
+                            <div class="stat-card stat-total">
+                                <div class="stat-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2v20M2 12h20"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-content">
+                                    <span class="stat-number"><t t-out="'%.0f' % siswa.persentase_kehadiran"/>%</span>
+                                    <span class="stat-label">Kehadiran</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="luxury-table-wrapper" style="margin: 0;">
+                            <div class="luxury-table-header">
+                                <h3 class="luxury-table-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                        <line x1="16" y1="2" x2="16" y2="6"/>
+                                        <line x1="8" y1="2" x2="8" y2="6"/>
+                                        <line x1="3" y1="10" x2="21" y2="10"/>
+                                    </svg>
+                                    Riwayat Absensi
+                                </h3>
+                                <a href="/my/siswa" class="btn-luxury btn-luxury-outline" style="padding: 10px 20px; font-size: 0.9rem;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                    </svg>
+                                    Kembali
+                                </a>
+                            </div>
+                            <table class="luxury-table">
+                                <thead>
                                     <tr>
-                                        <td><t t-out="absensi.tanggal"/></td>
-                                        <td><t t-out="absensi.mata_pelajaran_id.name if absensi.mata_pelajaran_id else '-'"/></td>
-                                        <td><t t-out="absensi.guru_id.name if absensi.guru_id else '-'"/></td>
-                                        <td>
-                                            <span t-att-class="'badge ' + ('badge-success' if absensi.status == 'hadir' else ('badge-warning' if absensi.status in ['izin', 'sakit'] else 'badge-danger'))">
-                                                <t t-out="dict(absensi._fields['status'].selection).get(absensi.status)"/>
-                                            </span>
-                                        </td>
-                                        <td><t t-out="absensi.keterangan or '-'"/></td>
+                                        <th>Tanggal</th>
+                                        <th>Mata Pelajaran</th>
+                                        <th>Guru</th>
+                                        <th>Status</th>
+                                        <th>Keterangan</th>
                                     </tr>
-                                </t>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="absensi_list" t-as="absensi">
+                                        <tr>
+                                            <td><strong><t t-out="absensi.tanggal"/></strong></td>
+                                            <td><t t-out="absensi.mata_pelajaran_id.name if absensi.mata_pelajaran_id else '-'"/></td>
+                                            <td><t t-out="absensi.guru_id.name if absensi.guru_id else '-'"/></td>
+                                            <td>
+                                                <span t-att-style="'padding: 6px 14px; border-radius: 50px; font-weight: 600; font-size: 0.8rem; color: white; background: ' + ('#047857' if absensi.status == 'hadir' else ('#0ea5e9' if absensi.status == 'izin' else ('#f59e0b' if absensi.status == 'sakit' else '#ef4444')))">
+                                                    <t t-out="dict(absensi._fields['status'].selection).get(absensi.status)"/>
+                                                </span>
+                                            </td>
+                                            <td><t t-out="absensi.keterangan or '-'"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </t>
@@ -1113,41 +1263,74 @@
 
         <template id="portal_siswa_jadwal" name="Portal Siswa Jadwal">
             <t t-call="portal.portal_layout">
-                <div class="container mt-4">
-                    <h2>Jadwal Pelajaran - <t t-out="siswa.kelas_id.name"/></h2>
-                    <a href="/my/siswa" class="btn btn-secondary mb-3">Kembali ke Profil</a>
+                <div class="portal-profile-wrapper">
+                    <div class="profile-header" style="padding: 50px 48px;">
+                        <div style="position: relative;">
+                            <nav aria-label="breadcrumb" style="margin-bottom: 12px;">
+                                <ol class="breadcrumb bg-transparent p-0 mb-0" style="font-size: 0.9rem;">
+                                    <li class="breadcrumb-item"><a href="/my/siswa" style="color: rgba(255,255,255,0.8);">Portal Siswa</a></li>
+                                    <li class="breadcrumb-item active" style="color: rgba(255,255,255,0.6);">Jadwal</li>
+                                </ol>
+                            </nav>
+                            <h1 style="color: white; font-size: 2rem; font-weight: 700; margin: 0;">Jadwal Pelajaran</h1>
+                            <p style="color: rgba(255,255,255,0.8); margin: 8px 0 0 0;">Kelas <t t-out="siswa.kelas_id.name"/></p>
+                        </div>
+                    </div>
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead class="thead-dark">
+                    <div class="luxury-table-wrapper">
+                        <div class="luxury-table-header">
+                            <h3 class="luxury-table-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                                Jadwal Mingguan
+                            </h3>
+                            <a href="/my/siswa" class="btn-luxury btn-luxury-outline" style="padding: 10px 20px; font-size: 0.9rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                </svg>
+                                Kembali
+                            </a>
+                        </div>
+                        <table class="luxury-table">
+                            <thead>
                                 <tr>
-                                    <th>Hari</th>
+                                    <th style="width: 150px;">Hari</th>
                                     <th>Jadwal</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <t t-foreach="hari_list" t-as="hari">
                                     <tr>
-                                        <td class="font-weight-bold text-capitalize"><t t-out="hari"/></td>
+                                        <td>
+                                            <span class="badge-hari text-capitalize"><t t-out="hari"/></span>
+                                        </td>
                                         <td>
                                             <t t-if="jadwal_with_breaks[hari]">
                                                 <t t-foreach="jadwal_with_breaks[hari]" t-as="item">
                                                     <t t-if="item.get('type') == 'istirahat'">
-                                                        <div class="mb-2 p-2 rounded" style="background-color: #fff3cd; border-left: 4px solid #ffc107;">
-                                                            <strong style="color: #856404;">Istirahat (<t t-out="item.get('display_time')"/>)</strong>
+                                                        <div style="margin-bottom: 12px; padding: 12px 16px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(251, 191, 36, 0.05)); border-left: 4px solid #f59e0b; border-radius: 8px;">
+                                                            <strong style="color: #b45309;">Istirahat</strong>
+                                                            <span style="margin-left: 8px; color: #92400e; font-size: 0.9rem;">(<t t-out="item.get('display_time')"/>)</span>
                                                         </div>
                                                     </t>
                                                     <t t-if="item.get('type') == 'jadwal'">
-                                                        <div class="mb-2">
-                                                            <strong>Jam ke-<t t-out="item['record'].jam_ke"/> (<t t-out="item['record'].get_display_time()"/>)</strong><br/>
-                                                            <t t-out="item['record'].mata_pelajaran_id.name"/> - <t t-out="item['record'].guru_id.name"/><br/>
-                                                            <small class="text-muted">Ruangan: <t t-out="item['record'].ruangan or '-'"/></small>
+                                                        <div style="margin-bottom: 12px; padding: 16px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                                                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                                                <span style="background: linear-gradient(135deg, #047857, #10b981); color: white; padding: 6px 14px; border-radius: 50px; font-size: 0.8rem; font-weight: 700;">Jam ke-<t t-out="item['record'].jam_ke"/></span>
+                                                                <span style="color: #64748b; font-size: 0.9rem; font-family: monospace;"><t t-out="item['record'].get_display_time()"/></span>
+                                                            </div>
+                                                            <div style="font-size: 1.05rem; font-weight: 600; color: #0f172a; margin-bottom: 4px;"><t t-out="item['record'].mata_pelajaran_id.name"/></div>
+                                                            <div style="color: #64748b; font-size: 0.9rem;"><t t-out="item['record'].guru_id.name"/> <t t-if="item['record'].ruangan">| Ruangan: <t t-out="item['record'].ruangan"/></t></div>
                                                         </div>
                                                     </t>
                                                 </t>
                                             </t>
                                             <t t-else="">
-                                                <em class="text-muted">Tidak ada jadwal</em>
+                                                <em style="color: #94a3b8;">Tidak ada jadwal</em>
                                             </t>
                                         </td>
                                     </tr>
@@ -1161,32 +1344,83 @@
 
         <template id="portal_guru_profile" name="Portal Guru Profile">
             <t t-call="portal.portal_layout">
-                <div class="container mt-4">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <img t-if="guru.foto" t-att-src="image_data_uri(guru.foto)" class="img-fluid rounded" alt="Foto Guru"/>
-                            <div t-else="" class="bg-secondary text-white text-center p-5 rounded">
-                                <i class="fa fa-user fa-5x"/>
-                            </div>
+                <div class="portal-profile-wrapper">
+                    <div class="profile-header">
+                        <div style="position: relative; padding: 0 48px;">
+                            <h1 style="color: white; font-size: 2rem; font-weight: 700; margin: 0;">Portal Guru</h1>
+                            <p style="color: rgba(255,255,255,0.8); margin: 8px 0 0 0;">Selamat datang di portal akademik</p>
                         </div>
-                        <div class="col-md-9">
-                            <h2><t t-out="guru.name"/></h2>
-                            <p class="lead">NIP: <t t-out="guru.nip"/></p>
+                    </div>
 
-                            <div class="card mt-3">
-                                <div class="card-header bg-primary text-white">
-                                    <h5 class="mb-0">Data Kepegawaian</h5>
+                    <div class="profile-content">
+                        <div class="profile-card">
+                            <div class="profile-main">
+                                <div class="profile-sidebar">
+                                    <div class="profile-avatar">
+                                        <t t-if="guru.foto">
+                                            <img t-att-src="image_data_uri(guru.foto)" alt="Foto Guru"/>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="profile-avatar-placeholder">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                                                </svg>
+                                            </div>
+                                        </t>
+                                    </div>
+                                    <h2 class="profile-name"><t t-out="guru.name"/></h2>
+                                    <p class="profile-id">NIP: <t t-out="guru.nip"/></p>
+                                    <span class="profile-status">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                            <polyline points="22 4 12 14.01 9 11.01" fill="none" stroke="currentColor" stroke-width="2"/>
+                                        </svg>
+                                        <t t-out="dict(guru._fields['status'].selection).get(guru.status)"/>
+                                    </span>
                                 </div>
-                                <div class="card-body">
-                                    <p><strong>Spesialisasi:</strong> <t t-out="guru.spesialisasi or '-'"/></p>
-                                    <p><strong>Pendidikan Terakhir:</strong> <t t-out="dict(guru._fields['pendidikan_terakhir'].selection).get(guru.pendidikan_terakhir) if guru.pendidikan_terakhir else '-'"/></p>
-                                    <p><strong>Status Kepegawaian:</strong> <t t-out="dict(guru._fields['status_kepegawaian'].selection).get(guru.status_kepegawaian)"/></p>
-                                    <p><strong>Status:</strong> <span t-att-class="'badge ' + ('badge-success' if guru.status == 'aktif' else 'badge-secondary')"><t t-out="dict(guru._fields['status'].selection).get(guru.status)"/></span></p>
-                                </div>
-                            </div>
 
-                            <div class="mt-3">
-                                <a href="/my/guru/jadwal" class="btn btn-primary">Lihat Jadwal Mengajar</a>
+                                <div class="profile-body">
+                                    <div class="info-section">
+                                        <h3 class="info-section-title">Data Kepegawaian</h3>
+                                        <div class="info-grid">
+                                            <div class="info-item">
+                                                <div class="info-label">Spesialisasi</div>
+                                                <div class="info-value"><t t-out="guru.spesialisasi or '-'"/></div>
+                                            </div>
+                                            <div class="info-item">
+                                                <div class="info-label">Pendidikan Terakhir</div>
+                                                <div class="info-value"><t t-out="dict(guru._fields['pendidikan_terakhir'].selection).get(guru.pendidikan_terakhir) if guru.pendidikan_terakhir else '-'"/></div>
+                                            </div>
+                                            <div class="info-item">
+                                                <div class="info-label">Status Kepegawaian</div>
+                                                <div class="info-value"><t t-out="dict(guru._fields['status_kepegawaian'].selection).get(guru.status_kepegawaian)"/></div>
+                                            </div>
+                                            <div class="info-item">
+                                                <div class="info-label">Status</div>
+                                                <div class="info-value" t-att-style="'color: #047857;' if guru.status == 'aktif' else 'color: #64748b;'"><t t-out="dict(guru._fields['status'].selection).get(guru.status)"/></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="profile-actions">
+                                        <a href="/my/guru/jadwal" class="btn-luxury btn-luxury-primary">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                                <line x1="3" y1="10" x2="21" y2="10"/>
+                                            </svg>
+                                            Lihat Jadwal Mengajar
+                                        </a>
+                                        <a href="/my/guru/absensi" class="btn-luxury btn-luxury-success">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                                <polyline points="22 4 12 14.01 9 11.01"/>
+                                            </svg>
+                                            Input Absensi Siswa
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1196,47 +1430,709 @@
 
         <template id="portal_guru_jadwal" name="Portal Guru Jadwal">
             <t t-call="portal.portal_layout">
-                <div class="container mt-4">
-                    <h2>Jadwal Mengajar - <t t-out="guru.name"/></h2>
-                    <a href="/my/guru" class="btn btn-secondary mb-3">Kembali ke Profil</a>
+                <div class="portal-profile-wrapper">
+                    <div class="profile-header" style="padding: 50px 48px;">
+                        <div style="position: relative;">
+                            <nav aria-label="breadcrumb" style="margin-bottom: 12px;">
+                                <ol class="breadcrumb bg-transparent p-0 mb-0" style="font-size: 0.9rem;">
+                                    <li class="breadcrumb-item"><a href="/my/guru" style="color: rgba(255,255,255,0.8);">Portal Guru</a></li>
+                                    <li class="breadcrumb-item active" style="color: rgba(255,255,255,0.6);">Jadwal</li>
+                                </ol>
+                            </nav>
+                            <h1 style="color: white; font-size: 2rem; font-weight: 700; margin: 0;">Jadwal Mengajar</h1>
+                            <p style="color: rgba(255,255,255,0.8); margin: 8px 0 0 0;"><t t-out="guru.name"/></p>
+                        </div>
+                    </div>
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead class="thead-dark">
+                    <div class="luxury-table-wrapper">
+                        <div class="luxury-table-header">
+                            <h3 class="luxury-table-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                                Jadwal Mingguan
+                            </h3>
+                            <a href="/my/guru" class="btn-luxury btn-luxury-outline" style="padding: 10px 20px; font-size: 0.9rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                </svg>
+                                Kembali
+                            </a>
+                        </div>
+                        <table class="luxury-table">
+                            <thead>
                                 <tr>
-                                    <th>Hari</th>
+                                    <th style="width: 150px;">Hari</th>
                                     <th>Jadwal</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <t t-foreach="hari_list" t-as="hari">
                                     <tr>
-                                        <td class="font-weight-bold text-capitalize"><t t-out="hari"/></td>
+                                        <td>
+                                            <span class="badge-hari text-capitalize"><t t-out="hari"/></span>
+                                        </td>
                                         <td>
                                             <t t-if="jadwal_with_breaks[hari]">
                                                 <t t-foreach="jadwal_with_breaks[hari]" t-as="item">
                                                     <t t-if="item.get('type') == 'istirahat'">
-                                                        <div class="mb-2 p-2 rounded" style="background-color: #fff3cd; border-left: 4px solid #ffc107;">
-                                                            <strong style="color: #856404;">Istirahat (<t t-out="item.get('display_time')"/>)</strong>
+                                                        <div style="margin-bottom: 12px; padding: 12px 16px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(251, 191, 36, 0.05)); border-left: 4px solid #f59e0b; border-radius: 8px;">
+                                                            <strong style="color: #b45309;">Istirahat</strong>
+                                                            <span style="margin-left: 8px; color: #92400e; font-size: 0.9rem;">(<t t-out="item.get('display_time')"/>)</span>
                                                         </div>
                                                     </t>
                                                     <t t-if="item.get('type') == 'jadwal'">
-                                                        <div class="mb-2">
-                                                            <strong>Jam ke-<t t-out="item['record'].jam_ke"/> (<t t-out="item['record'].get_display_time()"/>)</strong><br/>
-                                                            <t t-out="item['record'].mata_pelajaran_id.name"/> - <t t-out="item['record'].kelas_id.name"/><br/>
-                                                            <small class="text-muted">Ruangan: <t t-out="item['record'].ruangan or '-'"/></small>
+                                                        <div style="margin-bottom: 12px; padding: 16px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                                                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                                                <span style="background: linear-gradient(135deg, #0a1628, #1a2d4a); color: white; padding: 6px 14px; border-radius: 50px; font-size: 0.8rem; font-weight: 700;">Jam ke-<t t-out="item['record'].jam_ke"/></span>
+                                                                <span style="color: #64748b; font-size: 0.9rem; font-family: monospace;"><t t-out="item['record'].get_display_time()"/></span>
+                                                            </div>
+                                                            <div style="font-size: 1.05rem; font-weight: 600; color: #0f172a; margin-bottom: 4px;"><t t-out="item['record'].mata_pelajaran_id.name"/></div>
+                                                            <div style="color: #64748b; font-size: 0.9rem;">Kelas: <strong><t t-out="item['record'].kelas_id.name"/></strong><t t-if="item['record'].ruangan"> | Ruangan: <t t-out="item['record'].ruangan"/></t></div>
                                                         </div>
                                                     </t>
                                                 </t>
                                             </t>
                                             <t t-else="">
-                                                <em class="text-muted">Tidak ada jadwal</em>
+                                                <em style="color: #94a3b8;">Tidak ada jadwal</em>
                                             </t>
                                         </td>
                                     </tr>
                                 </t>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="portal_guru_absensi_home" name="Portal Guru Absensi Home">
+            <t t-call="portal.portal_layout">
+                <t t-set="additional_title">Absensi Siswa</t>
+                <div class="absensi-portal-wrapper">
+                    <div class="absensi-header" style="padding: 50px 48px 60px;">
+                        <div>
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb bg-transparent p-0 mb-2">
+                                            <li class="breadcrumb-item"><a href="/my/guru">Portal Guru</a></li>
+                                            <li class="breadcrumb-item active">Absensi</li>
+                                        </ol>
+                                    </nav>
+                                    <h1 class="absensi-title">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="9" cy="7" r="4"/>
+                                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                        </svg>
+                                        Input Absensi Siswa
+                                    </h1>
+                                    <p class="absensi-subtitle">Kelola kehadiran siswa untuk setiap kelas yang Anda ajar</p>
+                                </div>
+                                <div class="col-md-4 text-md-right">
+                                    <div class="guru-info-card">
+                                        <div class="guru-avatar">
+                                            <t t-if="guru.foto">
+                                                <img t-att-src="image_data_uri(guru.foto)" alt="Foto"/>
+                                            </t>
+                                            <t t-else="">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                                </svg>
+                                            </t>
+                                        </div>
+                                        <div class="guru-details">
+                                            <span class="guru-name"><t t-out="guru.name"/></span>
+                                            <span class="guru-nip">NIP: <t t-out="guru.nip"/></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="absensi-content">
+                        <t t-if="kelas_list">
+                            <div class="row">
+                                <t t-foreach="kelas_list" t-as="item">
+                                    <div class="col-md-6 col-lg-4 mb-4">
+                                        <a t-attf-href="/my/guru/absensi/kelas/#{item['kelas'].id}" class="kelas-card">
+                                            <div class="kelas-card-header">
+                                                <div class="kelas-icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/>
+                                                    </svg>
+                                                </div>
+                                                <h3 class="kelas-name"><t t-out="item['kelas'].name"/></h3>
+                                            </div>
+                                            <div class="kelas-card-body">
+                                                <div class="kelas-stats">
+                                                    <div class="kelas-stat">
+                                                        <span class="stat-value"><t t-out="item['siswa_count']"/></span>
+                                                        <span class="stat-label">Siswa</span>
+                                                    </div>
+                                                    <div class="kelas-stat">
+                                                        <span class="stat-value"><t t-out="item['jadwal_count']"/></span>
+                                                        <span class="stat-label">Jadwal</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="kelas-card-footer">
+                                                <span class="kelas-action">
+                                                    Kelola Absensi
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </t>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="empty-state">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/>
+                                </svg>
+                                <h3>Belum Ada Kelas</h3>
+                                <p>Anda belum memiliki jadwal mengajar di kelas manapun.</p>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="portal_guru_absensi_kelas" name="Portal Guru Absensi Kelas">
+            <t t-call="portal.portal_layout">
+                <t t-set="additional_title">Absensi - <t t-out="kelas.name"/></t>
+                <div class="absensi-portal-wrapper">
+                    <div class="absensi-header absensi-header-kelas" style="padding: 50px 48px 60px;">
+                        <div>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb bg-transparent p-0 mb-2">
+                                    <li class="breadcrumb-item"><a href="/my/guru">Portal Guru</a></li>
+                                    <li class="breadcrumb-item"><a href="/my/guru/absensi">Absensi</a></li>
+                                    <li class="breadcrumb-item active"><t t-out="kelas.name"/></li>
+                                </ol>
+                            </nav>
+                            <h1 class="absensi-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/>
+                                </svg>
+                                <t t-out="kelas.name"/>
+                            </h1>
+                            <p class="absensi-subtitle">
+                                <t t-out="len(kelas.siswa_ids)"/> siswa terdaftar
+                                <span class="mx-2">|</span>
+                                <t t-out="len(jadwal_list)"/> jadwal pelajaran
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="absensi-content">
+                        <t t-if="jadwal_hari_ini">
+                            <div class="today-section mb-5">
+                                <h4 class="section-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <polyline points="12 6 12 12 16 14"/>
+                                    </svg>
+                                    Jadwal Hari Ini (<span class="text-capitalize"><t t-out="hari_ini"/></span>, <t t-out="tanggal_hari_ini.strftime('%d %B %Y')"/>)
+                                </h4>
+                                <div class="row">
+                                    <t t-foreach="jadwal_hari_ini" t-as="jadwal">
+                                        <div class="col-md-6 col-lg-4 mb-3">
+                                            <div class="jadwal-card jadwal-card-today">
+                                                <div class="jadwal-time">
+                                                    <t t-out="jadwal.get_display_time()"/>
+                                                </div>
+                                                <div class="jadwal-info">
+                                                    <h5><t t-out="jadwal.mata_pelajaran_id.name"/></h5>
+                                                    <p class="mb-2">Jam ke-<t t-out="jadwal.jam_ke"/></p>
+                                                </div>
+                                                <div class="jadwal-actions">
+                                                    <a t-attf-href="/my/guru/absensi/input/#{jadwal.id}" class="btn btn-success btn-sm">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                                            <polyline points="22 4 12 14.01 9 11.01"/>
+                                                        </svg>
+                                                        Input Absensi
+                                                    </a>
+                                                    <a t-attf-href="/my/guru/absensi/riwayat/#{jadwal.id}" class="btn btn-outline-secondary btn-sm">
+                                                        Riwayat
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </t>
+
+                        <div class="all-jadwal-section">
+                            <h4 class="section-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                                Semua Jadwal di Kelas Ini
+                            </h4>
+                            <div class="table-responsive">
+                                <table class="table table-hover jadwal-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Hari</th>
+                                            <th>Jam</th>
+                                            <th>Mata Pelajaran</th>
+                                            <th class="text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="jadwal_list" t-as="jadwal">
+                                            <tr>
+                                                <td>
+                                                    <span class="badge badge-hari text-capitalize"><t t-out="jadwal.hari"/></span>
+                                                </td>
+                                                <td>
+                                                    <span class="jadwal-time-badge">
+                                                        <t t-out="jadwal.get_display_time()"/>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <strong><t t-out="jadwal.mata_pelajaran_id.name"/></strong>
+                                                    <br/>
+                                                    <small class="text-muted">Jam ke-<t t-out="jadwal.jam_ke"/></small>
+                                                </td>
+                                                <td class="text-center">
+                                                    <a t-attf-href="/my/guru/absensi/input/#{jadwal.id}" class="btn btn-success btn-sm mr-1">
+                                                        Input
+                                                    </a>
+                                                    <a t-attf-href="/my/guru/absensi/riwayat/#{jadwal.id}" class="btn btn-outline-info btn-sm">
+                                                        Riwayat
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <a href="/my/guru/absensi" class="btn btn-secondary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                </svg>
+                                Kembali ke Daftar Kelas
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="portal_guru_absensi_input" name="Portal Guru Absensi Input">
+            <t t-call="portal.portal_layout">
+                <t t-set="additional_title">Input Absensi</t>
+                <div class="absensi-portal-wrapper">
+                    <div class="absensi-header absensi-header-input" style="padding: 50px 48px 60px;">
+                        <div>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb bg-transparent p-0 mb-2">
+                                    <li class="breadcrumb-item"><a href="/my/guru">Portal Guru</a></li>
+                                    <li class="breadcrumb-item"><a href="/my/guru/absensi">Absensi</a></li>
+                                    <li class="breadcrumb-item"><a t-attf-href="/my/guru/absensi/kelas/#{jadwal.kelas_id.id}"><t t-out="jadwal.kelas_id.name"/></a></li>
+                                    <li class="breadcrumb-item active">Input</li>
+                                </ol>
+                            </nav>
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h1 class="absensi-title">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                            <polyline points="22 4 12 14.01 9 11.01"/>
+                                        </svg>
+                                        Input Absensi
+                                    </h1>
+                                    <div class="absensi-meta">
+                                        <span class="meta-item">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/>
+                                            </svg>
+                                            <t t-out="jadwal.kelas_id.name"/>
+                                        </span>
+                                        <span class="meta-item">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                            </svg>
+                                            <t t-out="jadwal.mata_pelajaran_id.name"/>
+                                        </span>
+                                        <span class="meta-item text-capitalize">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                                <line x1="3" y1="10" x2="21" y2="10"/>
+                                            </svg>
+                                            <t t-out="jadwal.hari"/>
+                                        </span>
+                                        <span class="meta-item">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <polyline points="12 6 12 12 16 14"/>
+                                            </svg>
+                                            <t t-out="jadwal.get_display_time()"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="date-picker-card">
+                                        <label>Tanggal Absensi:</label>
+                                        <form method="get" class="d-flex">
+                                            <input type="date" name="tanggal" class="form-control" t-att-value="selected_date.strftime('%Y-%m-%d')"/>
+                                            <button type="submit" class="btn btn-primary ml-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <circle cx="11" cy="11" r="8"/>
+                                                    <path d="m21 21-4.35-4.35"/>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="absensi-content">
+                        <t t-if="request.params.get('success')">
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                    <polyline points="22 4 12 14.01 9 11.01"/>
+                                </svg>
+                                <strong>Berhasil!</strong> Data absensi telah disimpan.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">x</span>
+                                </button>
+                            </div>
+                        </t>
+
+                        <div class="stats-row mb-4">
+                            <div class="stat-card stat-total">
+                                <div class="stat-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="9" cy="7" r="4"/>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-content">
+                                    <span class="stat-number" id="stat-total"><t t-out="stats['total']"/></span>
+                                    <span class="stat-label">Total Siswa</span>
+                                </div>
+                            </div>
+                            <div class="stat-card stat-hadir">
+                                <div class="stat-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                        <polyline points="22 4 12 14.01 9 11.01"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-content">
+                                    <span class="stat-number" id="stat-hadir"><t t-out="stats['hadir']"/></span>
+                                    <span class="stat-label">Hadir</span>
+                                </div>
+                            </div>
+                            <div class="stat-card stat-izin">
+                                <div class="stat-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-content">
+                                    <span class="stat-number" id="stat-izin"><t t-out="stats['izin']"/></span>
+                                    <span class="stat-label">Izin</span>
+                                </div>
+                            </div>
+                            <div class="stat-card stat-sakit">
+                                <div class="stat-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-content">
+                                    <span class="stat-number" id="stat-sakit"><t t-out="stats['sakit']"/></span>
+                                    <span class="stat-label">Sakit</span>
+                                </div>
+                            </div>
+                            <div class="stat-card stat-alfa">
+                                <div class="stat-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="15" y1="9" x2="9" y2="15"/>
+                                        <line x1="9" y1="9" x2="15" y2="15"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-content">
+                                    <span class="stat-number" id="stat-alfa"><t t-out="stats['alfa']"/></span>
+                                    <span class="stat-label">Alfa</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quick-actions mb-4">
+                            <span class="quick-action-label">Tandai Semua:</span>
+                            <button type="button" class="btn btn-sm btn-outline-success" onclick="setAllStatus('hadir')">Hadir</button>
+                            <button type="button" class="btn btn-sm btn-outline-info" onclick="setAllStatus('izin')">Izin</button>
+                            <button type="button" class="btn btn-sm btn-outline-warning" onclick="setAllStatus('sakit')">Sakit</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="setAllStatus('alfa')">Alfa</button>
+                        </div>
+
+                        <form method="post" action="/my/guru/absensi/submit" class="absensi-form">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="jadwal_id" t-att-value="jadwal.id"/>
+                            <input type="hidden" name="tanggal" t-att-value="selected_date.strftime('%Y-%m-%d')"/>
+
+                            <div class="siswa-list">
+                                <t t-foreach="siswa_absensi" t-as="sa">
+                                    <div class="siswa-card" t-att-data-status="sa['status']">
+                                        <div class="siswa-info">
+                                            <div class="siswa-avatar">
+                                                <t t-if="sa['siswa'].foto">
+                                                    <img t-att-src="image_data_uri(sa['siswa'].foto)" alt="Foto"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span class="avatar-placeholder"><t t-out="sa['siswa'].name[:2].upper()"/></span>
+                                                </t>
+                                            </div>
+                                            <div class="siswa-details">
+                                                <h5 class="siswa-name"><t t-out="sa['siswa'].name"/></h5>
+                                                <span class="siswa-nis">NIS: <t t-out="sa['siswa'].nis"/></span>
+                                            </div>
+                                        </div>
+                                        <div class="siswa-status">
+                                            <div class="status-buttons">
+                                                <label class="status-btn status-hadir">
+                                                    <input type="radio" t-attf-name="status_#{sa['siswa'].id}" value="hadir" t-att-checked="'checked' if sa['status'] == 'hadir' else None" onchange="updateStats()"/>
+                                                    <span class="status-icon">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <polyline points="20 6 9 17 4 12"/>
+                                                        </svg>
+                                                    </span>
+                                                    <span class="status-text">Hadir</span>
+                                                </label>
+                                                <label class="status-btn status-izin">
+                                                    <input type="radio" t-attf-name="status_#{sa['siswa'].id}" value="izin" t-att-checked="'checked' if sa['status'] == 'izin' else None" onchange="updateStats()"/>
+                                                    <span class="status-icon">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                                            <polyline points="14 2 14 8 20 8"/>
+                                                        </svg>
+                                                    </span>
+                                                    <span class="status-text">Izin</span>
+                                                </label>
+                                                <label class="status-btn status-sakit">
+                                                    <input type="radio" t-attf-name="status_#{sa['siswa'].id}" value="sakit" t-att-checked="'checked' if sa['status'] == 'sakit' else None" onchange="updateStats()"/>
+                                                    <span class="status-icon">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                                                        </svg>
+                                                    </span>
+                                                    <span class="status-text">Sakit</span>
+                                                </label>
+                                                <label class="status-btn status-alfa">
+                                                    <input type="radio" t-attf-name="status_#{sa['siswa'].id}" value="alfa" t-att-checked="'checked' if sa['status'] == 'alfa' else None" onchange="updateStats()"/>
+                                                    <span class="status-icon">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <line x1="18" y1="6" x2="6" y2="18"/>
+                                                            <line x1="6" y1="6" x2="18" y2="18"/>
+                                                        </svg>
+                                                    </span>
+                                                    <span class="status-text">Alfa</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="siswa-keterangan">
+                                            <input type="text" class="form-control form-control-sm" t-attf-name="keterangan_#{sa['siswa'].id}" placeholder="Keterangan (opsional)" t-att-value="sa['keterangan']"/>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <div class="form-actions">
+                                <a t-attf-href="/my/guru/absensi/kelas/#{jadwal.kelas_id.id}" class="btn btn-secondary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                    </svg>
+                                    Kembali
+                                </a>
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                                        <polyline points="17 21 17 13 7 13 7 21"/>
+                                        <polyline points="7 3 7 8 15 8"/>
+                                    </svg>
+                                    Simpan Absensi
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <script type="text/javascript">
+                        function setAllStatus(status) {
+                            var radios = document.querySelectorAll('input[type="radio"][value="' + status + '"]');
+                            radios.forEach(function(radio) {
+                                radio.checked = true;
+                                var card = radio.closest('.siswa-card');
+                                if (card) {
+                                    card.setAttribute('data-status', status);
+                                }
+                            });
+                            updateStats();
+                        }
+
+                        function updateStats() {
+                            var statuses = ['hadir', 'izin', 'sakit', 'alfa'];
+                            statuses.forEach(function(status) {
+                                var count = document.querySelectorAll('input[type="radio"][value="' + status + '"]:checked').length;
+                                var statEl = document.getElementById('stat-' + status);
+                                if (statEl) {
+                                    statEl.textContent = count;
+                                }
+                            });
+
+                            document.querySelectorAll('.siswa-card').forEach(function(card) {
+                                var checkedRadio = card.querySelector('input[type="radio"]:checked');
+                                if (checkedRadio) {
+                                    card.setAttribute('data-status', checkedRadio.value);
+                                }
+                            });
+                        }
+
+                        document.addEventListener('DOMContentLoaded', function() {
+                            updateStats();
+                        });
+                    </script>
+                </div>
+            </t>
+        </template>
+
+        <template id="portal_guru_absensi_riwayat" name="Portal Guru Absensi Riwayat">
+            <t t-call="portal.portal_layout">
+                <t t-set="additional_title">Riwayat Absensi</t>
+                <div class="absensi-portal-wrapper">
+                    <div class="absensi-header" style="padding: 50px 48px 60px;">
+                        <div>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb bg-transparent p-0 mb-2">
+                                    <li class="breadcrumb-item"><a href="/my/guru">Portal Guru</a></li>
+                                    <li class="breadcrumb-item"><a href="/my/guru/absensi">Absensi</a></li>
+                                    <li class="breadcrumb-item"><a t-attf-href="/my/guru/absensi/kelas/#{jadwal.kelas_id.id}"><t t-out="jadwal.kelas_id.name"/></a></li>
+                                    <li class="breadcrumb-item active">Riwayat</li>
+                                </ol>
+                            </nav>
+                            <h1 class="absensi-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                                Riwayat Absensi
+                            </h1>
+                            <div class="absensi-meta">
+                                <span class="meta-item">
+                                    <t t-out="jadwal.kelas_id.name"/>
+                                </span>
+                                <span class="meta-item">
+                                    <t t-out="jadwal.mata_pelajaran_id.name"/>
+                                </span>
+                                <span class="meta-item text-capitalize">
+                                    <t t-out="jadwal.hari"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="absensi-content">
+                        <t t-if="riwayat_list">
+                            <div class="table-responsive">
+                                <table class="table table-hover riwayat-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th class="text-center">Hadir</th>
+                                            <th class="text-center">Izin</th>
+                                            <th class="text-center">Sakit</th>
+                                            <th class="text-center">Alfa</th>
+                                            <th class="text-center">Total</th>
+                                            <th class="text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="riwayat_list" t-as="r">
+                                            <tr>
+                                                <td>
+                                                    <strong><t t-out="r['tanggal'].strftime('%d %B %Y')"/></strong>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge badge-success"><t t-out="r['hadir']"/></span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge badge-info"><t t-out="r['izin']"/></span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge badge-warning"><t t-out="r['sakit']"/></span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge badge-danger"><t t-out="r['alfa']"/></span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <strong><t t-out="r['total']"/></strong>
+                                                </td>
+                                                <td class="text-center">
+                                                    <a t-attf-href="/my/guru/absensi/input/#{jadwal.id}?tanggal=#{r['tanggal'].strftime('%Y-%m-%d')}" class="btn btn-sm btn-outline-primary">
+                                                        Edit
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="empty-state">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                                <h3>Belum Ada Riwayat</h3>
+                                <p>Belum ada data absensi untuk jadwal ini.</p>
+                                <a t-attf-href="/my/guru/absensi/input/#{jadwal.id}" class="btn btn-success">Input Absensi Sekarang</a>
+                            </div>
+                        </t>
+
+                        <div class="mt-4">
+                            <a t-attf-href="/my/guru/absensi/kelas/#{jadwal.kelas_id.id}" class="btn btn-secondary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                </svg>
+                                Kembali
+                            </a>
+                        </div>
                     </div>
                 </div>
             </t>
