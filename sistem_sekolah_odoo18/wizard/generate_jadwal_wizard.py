@@ -13,6 +13,32 @@ class GenerateJadwalWizard(models.TransientModel):
 
     jam_mulai_default = fields.Float(string='Jam Mulai Default', default=7.0)
     durasi_per_sesi = fields.Float(string='Durasi per Sesi (jam)', default=1.5)
+    jam_selesai_default = fields.Float(string='Jam Selesai Harian', default=15.0)
+
+    istirahat_1 = fields.Boolean(string='Istirahat 1', default=True)
+    jam_istirahat_1 = fields.Float(string='Jam Istirahat 1', default=10.0)
+    durasi_istirahat_1 = fields.Float(string='Durasi Istirahat 1', default=0.25)
+
+    istirahat_2 = fields.Boolean(string='Istirahat 2 (Siang)', default=True)
+    jam_istirahat_2 = fields.Float(string='Jam Istirahat 2', default=12.0)
+    durasi_istirahat_2 = fields.Float(string='Durasi Istirahat 2', default=0.5)
+
+    include_sabtu = fields.Boolean(string='Termasuk Sabtu', default=False)
+
+    def _get_breaks(self):
+        breaks = []
+        if self.istirahat_1:
+            breaks.append((self.jam_istirahat_1, self.durasi_istirahat_1))
+        if self.istirahat_2:
+            breaks.append((self.jam_istirahat_2, self.durasi_istirahat_2))
+        return sorted(breaks, key=lambda b: b[0])
+
+    def _apply_break(self, jam_mulai, breaks_applied, breaks):
+        for idx, (break_start, break_duration) in enumerate(breaks):
+            if idx not in breaks_applied and jam_mulai >= break_start:
+                breaks_applied.add(idx)
+                jam_mulai += break_duration
+        return jam_mulai
 
     def action_generate(self):
         self.ensure_one()
@@ -22,11 +48,16 @@ class GenerateJadwalWizard(models.TransientModel):
 
         jadwal_obj = self.env['sekolah.jadwal']
         hari_list = ['senin', 'selasa', 'rabu', 'kamis', 'jumat']
+        if self.include_sabtu:
+            hari_list.append('sabtu')
+
+        breaks = self._get_breaks()
 
         created_count = 0
         jam_mulai = self.jam_mulai_default
         hari_idx = 0
         jam_ke = 1
+        breaks_applied = set()
 
         for mapel in self.mata_pelajaran_ids:
             if hari_idx >= len(hari_list):
@@ -34,6 +65,7 @@ class GenerateJadwalWizard(models.TransientModel):
 
             guru = mapel.guru_ids[0] if mapel.guru_ids else False
 
+            jam_mulai = self._apply_break(jam_mulai, breaks_applied, breaks)
             jam_selesai = jam_mulai + self.durasi_per_sesi
 
             jadwal_obj.create({
@@ -51,10 +83,11 @@ class GenerateJadwalWizard(models.TransientModel):
             jam_mulai = jam_selesai
             jam_ke += 1
 
-            if jam_mulai >= 15.0:
+            if jam_mulai >= self.jam_selesai_default:
                 hari_idx += 1
                 jam_mulai = self.jam_mulai_default
                 jam_ke = 1
+                breaks_applied = set()
 
         return {
             'type': 'ir.actions.client',

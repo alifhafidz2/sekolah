@@ -8,15 +8,30 @@
             <field name="arch" type="xml">
                 <form string="Generate Jadwal">
                     <group>
-                        <group>
+                        <group string="Pengaturan Umum">
                             <field name="kelas_id"/>
                             <field name="tahun_ajaran_id"/>
+                            <field name="include_sabtu"/>
                         </group>
-                        <group>
+                        <group string="Waktu">
                             <field name="jam_mulai_default" widget="float_time"/>
+                            <field name="jam_selesai_default" widget="float_time"/>
                             <field name="durasi_per_sesi" widget="float_time"/>
                         </group>
                     </group>
+                    <group>
+                        <group string="Istirahat 1">
+                            <field name="istirahat_1"/>
+                            <field name="jam_istirahat_1" widget="float_time" invisible="not istirahat_1"/>
+                            <field name="durasi_istirahat_1" widget="float_time" invisible="not istirahat_1"/>
+                        </group>
+                        <group string="Istirahat 2 (Siang)">
+                            <field name="istirahat_2"/>
+                            <field name="jam_istirahat_2" widget="float_time" invisible="not istirahat_2"/>
+                            <field name="durasi_istirahat_2" widget="float_time" invisible="not istirahat_2"/>
+                        </group>
+                    </group>
+                    <separator string="Mata Pelajaran"/>
                     <group>
                         <field name="mata_pelajaran_ids" widget="many2many_tags" nolabel="1"/>
                     </group>
