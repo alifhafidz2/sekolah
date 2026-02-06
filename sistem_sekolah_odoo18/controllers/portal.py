@@ -16,7 +16,12 @@ class SekolahPortal(CustomerPortal):
         for hari, jadwal_list in jadwal_by_hari.items():
             items = []
             for i, jadwal in enumerate(jadwal_list):
-                if i > 0:
+                if jadwal.break_before_start and jadwal.break_before_end:
+                    items.append({
+                        'type': 'istirahat',
+                        'display_time': f"{self._float_to_time_string(jadwal.break_before_start)} - {self._float_to_time_string(jadwal.break_before_end)}",
+                    })
+                elif i > 0:
                     prev = jadwal_list[i - 1]
                     gap = jadwal.jam_mulai - prev.jam_selesai
                     if gap >= 0.08:

@@ -29,6 +29,9 @@ class Jadwal(models.Model):
 
     jam_ke = fields.Integer(string='Jam Ke-')
 
+    break_before_start = fields.Float(string='Istirahat Mulai')
+    break_before_end = fields.Float(string='Istirahat Selesai')
+
     ruangan = fields.Char(string='Ruangan')
 
     tahun_ajaran_id = fields.Many2one('sekolah.tahun_ajaran', string='Tahun Ajaran')
