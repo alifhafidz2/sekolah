@@ -6,6 +6,31 @@ from werkzeug.utils import redirect
 
 class SekolahPortal(CustomerPortal):
 
+    def _float_to_time_string(self, float_time):
+        hours = int(float_time)
+        minutes = int((float_time - hours) * 60)
+        return f"{hours:02d}:{minutes:02d}"
+
+    def _build_jadwal_with_breaks(self, jadwal_by_hari):
+        result = {}
+        for hari, jadwal_list in jadwal_by_hari.items():
+            items = []
+            for i, jadwal in enumerate(jadwal_list):
+                if i > 0:
+                    prev = jadwal_list[i - 1]
+                    gap = jadwal.jam_mulai - prev.jam_selesai
+                    if gap >= 0.08:
+                        items.append({
+                            'type': 'istirahat',
+                            'display_time': f"{self._float_to_time_string(prev.jam_selesai)} - {self._float_to_time_string(jadwal.jam_mulai)}",
+                        })
+                items.append({
+                    'type': 'jadwal',
+                    'record': jadwal,
+                })
+            result[hari] = items
+        return result
+
     @http.route(['/my', '/my/home'], type='http', auth='user', website=True)
     def home(self, **kw):
         return redirect('/my/sekolah')
@@ -147,9 +172,12 @@ class SekolahPortal(CustomerPortal):
         for jadwal in jadwal_list:
             jadwal_by_hari[jadwal.hari].append(jadwal)
 
+        jadwal_with_breaks = self._build_jadwal_with_breaks(jadwal_by_hari)
+
         return request.render('sistem_sekolah_odoo18.portal_siswa_jadwal', {
             'siswa': siswa,
             'jadwal_by_hari': jadwal_by_hari,
+            'jadwal_with_breaks': jadwal_with_breaks,
             'hari_list': hari_list,
             'page_name': 'jadwal',
         })
@@ -191,9 +219,12 @@ class SekolahPortal(CustomerPortal):
         for jadwal in jadwal_list:
             jadwal_by_hari[jadwal.hari].append(jadwal)
 
+        jadwal_with_breaks = self._build_jadwal_with_breaks(jadwal_by_hari)
+
         return request.render('sistem_sekolah_odoo18.portal_guru_jadwal', {
             'guru': guru,
             'jadwal_by_hari': jadwal_by_hari,
+            'jadwal_with_breaks': jadwal_with_breaks,
             'hari_list': hari_list,
             'page_name': 'guru_jadwal',
         })

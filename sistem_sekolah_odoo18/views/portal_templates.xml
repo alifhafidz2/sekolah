@@ -1130,13 +1130,20 @@
                                     <tr>
                                         <td class="font-weight-bold text-capitalize"><t t-out="hari"/></td>
                                         <td>
-                                            <t t-if="jadwal_by_hari[hari]">
-                                                <t t-foreach="jadwal_by_hari[hari]" t-as="jadwal">
-                                                    <div class="mb-2">
-                                                        <strong>Jam ke-<t t-out="jadwal.jam_ke"/> (<t t-out="jadwal.get_display_time()"/>)</strong><br/>
-                                                        <t t-out="jadwal.mata_pelajaran_id.name"/> - <t t-out="jadwal.guru_id.name"/><br/>
-                                                        <small class="text-muted">Ruangan: <t t-out="jadwal.ruangan or '-'"/></small>
-                                                    </div>
+                                            <t t-if="jadwal_with_breaks[hari]">
+                                                <t t-foreach="jadwal_with_breaks[hari]" t-as="item">
+                                                    <t t-if="item.get('type') == 'istirahat'">
+                                                        <div class="mb-2 p-2 rounded" style="background-color: #fff3cd; border-left: 4px solid #ffc107;">
+                                                            <strong style="color: #856404;">Istirahat (<t t-out="item.get('display_time')"/>)</strong>
+                                                        </div>
+                                                    </t>
+                                                    <t t-if="item.get('type') == 'jadwal'">
+                                                        <div class="mb-2">
+                                                            <strong>Jam ke-<t t-out="item['record'].jam_ke"/> (<t t-out="item['record'].get_display_time()"/>)</strong><br/>
+                                                            <t t-out="item['record'].mata_pelajaran_id.name"/> - <t t-out="item['record'].guru_id.name"/><br/>
+                                                            <small class="text-muted">Ruangan: <t t-out="item['record'].ruangan or '-'"/></small>
+                                                        </div>
+                                                    </t>
                                                 </t>
                                             </t>
                                             <t t-else="">
@@ -1206,13 +1213,20 @@
                                     <tr>
                                         <td class="font-weight-bold text-capitalize"><t t-out="hari"/></td>
                                         <td>
-                                            <t t-if="jadwal_by_hari[hari]">
-                                                <t t-foreach="jadwal_by_hari[hari]" t-as="jadwal">
-                                                    <div class="mb-2">
-                                                        <strong>Jam ke-<t t-out="jadwal.jam_ke"/> (<t t-out="jadwal.get_display_time()"/>)</strong><br/>
-                                                        <t t-out="jadwal.mata_pelajaran_id.name"/> - <t t-out="jadwal.kelas_id.name"/><br/>
-                                                        <small class="text-muted">Ruangan: <t t-out="jadwal.ruangan or '-'"/></small>
-                                                    </div>
+                                            <t t-if="jadwal_with_breaks[hari]">
+                                                <t t-foreach="jadwal_with_breaks[hari]" t-as="item">
+                                                    <t t-if="item.get('type') == 'istirahat'">
+                                                        <div class="mb-2 p-2 rounded" style="background-color: #fff3cd; border-left: 4px solid #ffc107;">
+                                                            <strong style="color: #856404;">Istirahat (<t t-out="item.get('display_time')"/>)</strong>
+                                                        </div>
+                                                    </t>
+                                                    <t t-if="item.get('type') == 'jadwal'">
+                                                        <div class="mb-2">
+                                                            <strong>Jam ke-<t t-out="item['record'].jam_ke"/> (<t t-out="item['record'].get_display_time()"/>)</strong><br/>
+                                                            <t t-out="item['record'].mata_pelajaran_id.name"/> - <t t-out="item['record'].kelas_id.name"/><br/>
+                                                            <small class="text-muted">Ruangan: <t t-out="item['record'].ruangan or '-'"/></small>
+                                                        </div>
+                                                    </t>
                                                 </t>
                                             </t>
                                             <t t-else="">
