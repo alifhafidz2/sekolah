@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_whatsapp_config_admin,whatsapp.config.admin,model_whatsapp_config,sistem_sekolah_odoo18.group_sekolah_admin,1,1,1,1
+access_whatsapp_config_user,whatsapp.config.user,model_whatsapp_config,sistem_sekolah_odoo18.group_sekolah_user,1,0,0,0
+access_whatsapp_log_admin,whatsapp.log.admin,model_whatsapp_log,sistem_sekolah_odoo18.group_sekolah_admin,1,1,1,1
+access_whatsapp_log_user,whatsapp.log.user,model_whatsapp_log,sistem_sekolah_odoo18.group_sekolah_user,1,0,1,0

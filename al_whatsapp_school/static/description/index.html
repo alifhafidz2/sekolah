@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Notifikasi Sekolah - Odoo 18</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #1a1a2e;
+            background: #fff;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #128C7E 0%, #25D366 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .hero .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            margin-bottom: 25px;
+        }
+        .badge-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .price-tag {
+            background: #fff;
+            color: #128C7E;
+            display: inline-block;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        .price-tag small {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #666;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 50px 20px;
+        }
+        section:nth-child(even) {
+            background: #f8f9fa;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .section-title h2 {
+            font-size: 1.8rem;
+            color: #128C7E;
+            margin-bottom: 10px;
+        }
+        .section-title p {
+            color: #666;
+            font-size: 1.05rem;
+        }
+
+        /* Dependency Notice */
+        .dependency-notice {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+        .dependency-notice h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        .dependency-notice p {
+            color: #856404;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e8e8e8;
+        }
+        .feature-card h3 {
+            color: #128C7E;
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .feature-card h3 .icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #dcf8c6, #25D366);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .feature-card ul {
+            list-style: none;
+            color: #555;
+        }
+        .feature-card ul li {
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        .feature-card ul li::before {
+            content: "\2713";
+            position: absolute;
+            left: 0;
+            color: #25D366;
+            font-weight: bold;
+        }
+
+        /* Provider Grid */
+        .provider-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+        .provider-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 2px solid #e8e8e8;
+            transition: border-color 0.3s;
+        }
+        .provider-card:hover {
+            border-color: #25D366;
+        }
+        .provider-card h4 {
+            color: #128C7E;
+            margin-bottom: 8px;
+        }
+        .provider-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* How it Works */
+        .steps-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .step-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            align-items: flex-start;
+        }
+        .step-number {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #128C7E, #25D366);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .step-content h4 {
+            color: #1a1a2e;
+            margin-bottom: 5px;
+        }
+        .step-content p {
+            color: #666;
+        }
+
+        /* Template Variables */
+        .variable-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .variable-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #25D366;
+        }
+        .variable-item code {
+            background: #f5f5f5;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #128C7E;
+        }
+        .variable-item p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* Benefits */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .benefit-item {
+            text-align: center;
+            padding: 25px;
+        }
+        .benefit-item .icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #dcf8c6, #25D366);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 15px;
+        }
+        .benefit-item h4 {
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+        .benefit-item p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* CTA */
+        .cta-section {
+            background: linear-gradient(135deg, #128C7E 0%, #25D366 100%);
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .cta-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        .cta-section p {
+            opacity: 0.9;
+            margin-bottom: 25px;
+        }
+        .bundle-offer {
+            background: rgba(255,255,255,0.15);
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 8px;
+        }
+        .bundle-offer h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        .bundle-offer p {
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a2e;
+            color: #aaa;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .footer a {
+            color: #25D366;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <div class="hero">
+        <div class="container">
+            <h1>WhatsApp Notifikasi Sekolah</h1>
+            <p class="subtitle">Kirim notifikasi otomatis ke orang tua ketika siswa alfa</p>
+            <div class="badge-row">
+                <span class="badge">Odoo 18</span>
+                <span class="badge">Multi-Provider</span>
+                <span class="badge">Otomatis</span>
+            </div>
+            <div class="price-tag">
+                $49 <small>USD / One-time</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dependency Notice -->
+    <div class="container">
+        <div class="dependency-notice">
+            <h3>Addon Pendamping</h3>
+            <p>Modul ini membutuhkan <strong>Sistem Sekolah Indonesia</strong> untuk berfungsi. Pastikan modul utama sudah terinstall sebelum menginstall addon ini.</p>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <section>
+        <div class="container">
+            <div class="section-title">
+                <h2>Fitur Utama</h2>
+                <p>Komunikasi efektif dengan orang tua siswa</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3><span class="icon">1</span> Notifikasi Otomatis</h3>
+                    <ul>
+                        <li>Kirim ke telepon Ayah</li>
+                        <li>Kirim ke telepon Ibu</li>
+                        <li>Kirim ke telepon Wali</li>
+                        <li>Trigger saat status = Alfa</li>
+                        <li>Pengiriman real-time</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="icon">2</span> Template Dinamis</h3>
+                    <ul>
+                        <li>Variabel nama siswa</li>
+                        <li>Variabel kelas</li>
+                        <li>Variabel tanggal</li>
+                        <li>Variabel mata pelajaran</li>
+                        <li>Pesan dapat dikustomisasi</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="icon">3</span> Monitoring Lengkap</h3>
+                    <ul>
+                        <li>Log semua pengiriman</li>
+                        <li>Status berhasil/gagal</li>
+                        <li>Tombol kirim ulang</li>
+                        <li>Filter per tanggal</li>
+                        <li>Export laporan</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Providers -->
+    <section>
+        <div class="container">
+            <div class="section-title">
+                <h2>Provider WhatsApp API</h2>
+                <p>Pilih provider sesuai kebutuhan Anda</p>
+            </div>
+            <div class="provider-grid">
+                <div class="provider-card">
+                    <h4>Fonnte</h4>
+                    <p>Provider populer Indonesia dengan harga terjangkau</p>
+                </div>
+                <div class="provider-card">
+                    <h4>WaBlas</h4>
+                    <p>Alternatif terpercaya dengan fitur lengkap</p>
+                </div>
+                <div class="provider-card">
+                    <h4>Woowa</h4>
+                    <p>Pilihan ekonomis untuk volume kecil</p>
+                </div>
+                <div class="provider-card">
+                    <h4>WAHA</h4>
+                    <p>Self-hosted solution untuk kontrol penuh</p>
+                </div>
+                <div class="provider-card">
+                    <h4>Custom API</h4>
+                    <p>Integrasi dengan provider lain</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works -->
+    <section>
+        <div class="container">
+            <div class="section-title">
+                <h2>Cara Kerja</h2>
+                <p>Setup dalam 5 menit</p>
+            </div>
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Install Addon</h4>
+                        <p>Pastikan Sistem Sekolah sudah terinstall, lalu install addon WhatsApp ini</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Pilih Provider</h4>
+                        <p>Buka menu Sekolah > WhatsApp > Konfigurasi, pilih provider WhatsApp API</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Masukkan API Token</h4>
+                        <p>Dapatkan API Token dari provider yang dipilih dan masukkan ke konfigurasi</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Atur Template Pesan</h4>
+                        <p>Sesuaikan template pesan dengan variabel yang tersedia</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>Aktifkan</h4>
+                        <p>Aktifkan konfigurasi dan sistem siap digunakan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Template Variables -->
+    <section>
+        <div class="container">
+            <div class="section-title">
+                <h2>Variabel Template</h2>
+                <p>Gunakan variabel ini dalam template pesan Anda</p>
+            </div>
+            <div class="variable-grid">
+                <div class="variable-item">
+                    <code>{nama_siswa}</code>
+                    <p>Nama lengkap siswa</p>
+                </div>
+                <div class="variable-item">
+                    <code>{kelas}</code>
+                    <p>Nama kelas siswa</p>
+                </div>
+                <div class="variable-item">
+                    <code>{nis}</code>
+                    <p>Nomor Induk Siswa</p>
+                </div>
+                <div class="variable-item">
+                    <code>{tanggal}</code>
+                    <p>Tanggal absensi</p>
+                </div>
+                <div class="variable-item">
+                    <code>{mapel}</code>
+                    <p>Mata pelajaran</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section>
+        <div class="container">
+            <div class="section-title">
+                <h2>Manfaat</h2>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="icon">1</div>
+                    <h4>Komunikasi Cepat</h4>
+                    <p>Orang tua langsung tahu ketika anak tidak hadir</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon">2</div>
+                    <h4>Hemat Waktu</h4>
+                    <p>Tidak perlu telepon manual satu per satu</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon">3</div>
+                    <h4>Keterlibatan Orang Tua</h4>
+                    <p>Meningkatkan awareness orang tua terhadap kehadiran anak</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon">4</div>
+                    <h4>Dokumentasi Lengkap</h4>
+                    <p>Semua notifikasi tercatat untuk keperluan audit</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-section">
+        <div class="container">
+            <h2>Tingkatkan Komunikasi Sekolah Anda</h2>
+            <p>Dapatkan addon WhatsApp untuk melengkapi Sistem Sekolah Indonesia</p>
+            <div class="bundle-offer">
+                <h3>Bundle Hemat</h3>
+                <p>Sistem Sekolah + WhatsApp = $129 (Hemat $19)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <p>WhatsApp Notifikasi Sekolah v18.0.1.0.0</p>
+            <p>Developed by <a href="https://github.com/altechsolutions">Al Tech Solutions</a></p>
+            <p style="margin-top: 10px;">Untuk pertanyaan: support@altechsolutions.id</p>
+        </div>
+    </div>
+</body>
+</html>

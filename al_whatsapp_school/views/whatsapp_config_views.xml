@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_whatsapp_config_form" model="ir.ui.view">
+        <field name="name">whatsapp.config.form</field>
+        <field name="model">whatsapp.config</field>
+        <field name="arch" type="xml">
+            <form string="Konfigurasi WhatsApp">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(al_whatsapp_school.action_whatsapp_log)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-history">
+                            <span>Log Pengiriman</span>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Aktif" bg_color="text-bg-success" invisible="not is_active"/>
+                    <widget name="web_ribbon" title="Non-Aktif" bg_color="text-bg-secondary" invisible="is_active"/>
+                    <group>
+                        <group string="Provider API">
+                            <field name="provider"/>
+                            <field name="api_url" placeholder="http://localhost:3000/api/sendText"/>
+                            <field name="api_token" password="True" placeholder="Kosongkan jika WAHA tanpa auth"/>
+                            <field name="waha_session" invisible="provider != 'waha'" placeholder="default"/>
+                            <field name="sender_number" placeholder="6285221111097"/>
+                            <field name="is_active"/>
+                        </group>
+                        <group string="Kirim Notifikasi Ke">
+                            <field name="send_to_ayah"/>
+                            <field name="send_to_ibu"/>
+                            <field name="send_to_wali"/>
+                        </group>
+                    </group>
+                    <group string="Template Pesan">
+                        <field name="message_template" nolabel="1" placeholder="Tulis template pesan WhatsApp..."/>
+                    </group>
+                    <group>
+                        <div class="alert alert-info" role="alert">
+                            <strong>Variabel yang tersedia:</strong><br/>
+                            <code>{nama_siswa}</code> - Nama lengkap siswa<br/>
+                            <code>{kelas}</code> - Nama kelas siswa<br/>
+                            <code>{nis}</code> - Nomor Induk Siswa<br/>
+                            <code>{tanggal}</code> - Tanggal absensi<br/>
+                            <code>{mapel}</code> - Mata pelajaran
+                        </div>
+                    </group>
+                    <group invisible="provider != 'waha'">
+                        <div class="alert alert-warning" role="alert">
+                            <strong>Setup WAHA (Self-Hosted):</strong><br/>
+                            1. Install Docker di server Anda<br/>
+                            2. Jalankan: <code>docker run -it -p 3000:3000/tcp devlikeapro/waha</code><br/>
+                            3. Buka <code>http://localhost:3000</code> dan scan QR code dengan WhatsApp<br/>
+                            4. API URL: <code>http://IP_SERVER:3000/api/sendText</code><br/>
+                            5. Session: <code>default</code> (atau sesuaikan jika membuat session baru)
+                        </div>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_whatsapp_config_tree" model="ir.ui.view">
+        <field name="name">whatsapp.config.tree</field>
+        <field name="model">whatsapp.config</field>
+        <field name="arch" type="xml">
+            <list string="Konfigurasi WhatsApp">
+                <field name="provider"/>
+                <field name="api_url"/>
+                <field name="is_active" widget="boolean_toggle"/>
+                <field name="send_to_ayah"/>
+                <field name="send_to_ibu"/>
+                <field name="send_to_wali"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_whatsapp_config" model="ir.actions.act_window">
+        <field name="name">Konfigurasi WhatsApp</field>
+        <field name="res_model">whatsapp.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Konfigurasi WhatsApp API
+            </p>
+            <p>
+                Tambahkan konfigurasi untuk mengirim notifikasi WhatsApp
+                ketika siswa tercatat alfa.
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_whatsapp_root"
+              name="WhatsApp"
+              parent="sistem_sekolah_odoo18.menu_sekolah_root"
+              sequence="90"/>
+
+    <menuitem id="menu_whatsapp_config"
+              name="Konfigurasi"
+              parent="menu_whatsapp_root"
+              action="action_whatsapp_config"
+              sequence="10"/>
+
+    <menuitem id="menu_whatsapp_log"
+              name="Log Pengiriman"
+              parent="menu_whatsapp_root"
+              action="action_whatsapp_log"
+              sequence="20"/>
+</odoo>
