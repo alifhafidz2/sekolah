@@ -37,7 +37,7 @@
                             <div class="col-lg-8">
                                 <h1 class="spp-title">Tagihan SPP</h1>
                                 <p class="spp-subtitle">
-                                    <span t-field="siswa.name"/> - <span t-field="siswa.kelas_id.name"/>
+                                    <span t-field="siswa.name"/> - <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/>
                                 </p>
                             </div>
                             <div class="col-lg-4 text-lg-end">
@@ -180,7 +180,7 @@
                                 <div class="col-lg-8">
                                     <h2 t-field="tagihan.name"/>
                                     <p class="siswa-info">
-                                        <span t-field="siswa.name"/> - <span t-field="siswa.kelas_id.name"/>
+                                        <span t-field="siswa.name"/> - <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/>
                                     </p>
                                 </div>
                                 <div class="col-lg-4 text-lg-end">
@@ -211,7 +211,7 @@
                                             </tr>
                                             <tr>
                                                 <td>Tahun Ajaran</td>
-                                                <td><span t-field="tagihan.tahun_ajaran_id.name"/></td>
+                                                <td><t t-out="tagihan.tahun_ajaran_id.name if tagihan.tahun_ajaran_id else '-'"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Tanggal Tagihan</td>
@@ -273,9 +273,9 @@
                                             <tbody>
                                                 <t t-foreach="tagihan.pembayaran_ids" t-as="p">
                                                     <tr t-if="p.state == 'confirmed'">
-                                                        <td t-field="p.name"/>
-                                                        <td><span t-field="p.tanggal_bayar" t-options='{"format": "dd MMM yyyy"}'/></td>
-                                                        <td><span t-field="p.metode_bayar"/></td>
+                                                        <td><t t-out="p.name"/></td>
+                                                        <td><t t-out="p.tanggal_bayar" t-options='{"format": "dd MMM yyyy"}'/></td>
+                                                        <td><t t-out="dict(p._fields['metode_bayar'].selection).get(p.metode_bayar, '-')"/></td>
                                                         <td class="text-end">Rp <t t-out="'{:,.0f}'.format(p.nominal)"/></td>
                                                         <td><span class="badge bg-success">Dikonfirmasi</span></td>
                                                     </tr>
@@ -305,7 +305,7 @@
                             <div class="col-lg-8">
                                 <h1 class="spp-title">Riwayat Pembayaran</h1>
                                 <p class="spp-subtitle">
-                                    <span t-field="siswa.name"/> - <span t-field="siswa.kelas_id.name"/>
+                                    <span t-field="siswa.name"/> - <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/>
                                 </p>
                             </div>
                             <div class="col-lg-4 text-lg-end">
@@ -391,7 +391,7 @@
                             <div class="col-lg-12">
                                 <h1 class="spp-title">Ringkasan Keuangan</h1>
                                 <p class="spp-subtitle">
-                                    <span t-field="siswa.name"/> - <span t-field="siswa.kelas_id.name"/>
+                                    <span t-field="siswa.name"/> - <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/>
                                 </p>
                             </div>
                         </div>
@@ -482,5 +482,16 @@
                 </div>
             </div>
         </t>
+    </template>
+
+    <template id="portal_siswa_add_spp_button" name="Add SPP Button to Portal Siswa" inherit_id="sistem_sekolah_odoo18.portal_siswa_profile" priority="20">
+        <xpath expr="//div[@class='profile-actions']" position="inside">
+            <a href="/my/spp" class="btn-luxury btn-luxury-warning">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                Lihat SPP
+            </a>
+        </xpath>
     </template>
 </odoo>
