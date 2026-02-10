@@ -2126,3 +2126,781 @@ a.portal-card.siswa-card {
 .table-hover tbody tr:hover {
     background-color: var(--slate-50);
 }
+
+/* =============================================
+   TENTANG KAMI - ABOUT US PAGE
+   ============================================= */
+.about-content {
+    padding: 0;
+}
+
+.about-content .section-title-sm {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--navy-primary);
+    margin-bottom: 24px;
+    position: relative;
+    padding-bottom: 16px;
+}
+
+.about-content .section-title-sm::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold-primary), var(--gold-light));
+    border-radius: 2px;
+}
+
+.about-content p {
+    font-size: 1.05rem;
+    color: var(--slate-600);
+    line-height: 1.9;
+    margin-bottom: 20px;
+}
+
+.about-image {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-elegant);
+    position: relative;
+}
+
+.about-image::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: 20px;
+    bottom: 20px;
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
+    border-radius: var(--radius-xl);
+    z-index: -1;
+    opacity: 0.3;
+}
+
+.about-image img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    transition: var(--transition-smooth);
+}
+
+.about-image:hover img {
+    transform: scale(1.05);
+}
+
+.visi-misi-section {
+    margin-top: 80px;
+    padding-top: 60px;
+    border-top: 1px solid var(--slate-200);
+}
+
+.info-card {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: 40px;
+    height: 100%;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--slate-200);
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.info-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+}
+
+.visi-card::before {
+    background: linear-gradient(90deg, var(--navy-primary), var(--gold-primary));
+}
+
+.misi-card::before {
+    background: linear-gradient(90deg, var(--emerald-primary), var(--emerald-light));
+}
+
+.info-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-elegant);
+}
+
+.info-card-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.visi-card .info-card-icon {
+    background: linear-gradient(135deg, rgba(10, 22, 40, 0.08), rgba(201, 162, 39, 0.08));
+    color: var(--navy-primary);
+}
+
+.misi-card .info-card-icon {
+    background: linear-gradient(135deg, rgba(4, 120, 87, 0.08), rgba(16, 185, 129, 0.08));
+    color: var(--emerald-primary);
+}
+
+.info-card h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--slate-900);
+    margin-bottom: 16px;
+}
+
+.info-card p {
+    font-size: 1rem;
+    color: var(--slate-600);
+    line-height: 1.8;
+}
+
+.info-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-card ul li {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: var(--slate-600);
+    line-height: 1.7;
+}
+
+.info-card ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.misi-card ul li::before {
+    background: linear-gradient(135deg, var(--emerald-primary), var(--emerald-light));
+}
+
+.values-section {
+    margin-top: 80px;
+}
+
+.values-section .section-title-sm {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--navy-primary);
+    margin-bottom: 48px;
+}
+
+.value-item {
+    text-align: center;
+    padding: 40px 24px;
+    background: var(--slate-50);
+    border-radius: var(--radius-xl);
+    transition: var(--transition-smooth);
+    border: 1px solid transparent;
+    height: 100%;
+}
+
+.value-item:hover {
+    background: var(--white);
+    box-shadow: var(--shadow-soft);
+    border-color: var(--slate-200);
+    transform: translateY(-8px);
+}
+
+.value-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(10, 22, 40, 0.06), rgba(201, 162, 39, 0.06));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    color: var(--navy-primary);
+    transition: var(--transition-smooth);
+}
+
+.value-item:hover .value-icon {
+    background: linear-gradient(135deg, var(--navy-primary), var(--gold-primary));
+    color: var(--white);
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.value-item h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--slate-800);
+    margin-bottom: 12px;
+}
+
+.value-item p {
+    font-size: 0.95rem;
+    color: var(--slate-500);
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* =============================================
+   PROGRAM KURIKULUM PAGE
+   ============================================= */
+.program-intro {
+    max-width: 800px;
+    margin: 0 auto 60px;
+    padding: 0;
+}
+
+.program-intro h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--navy-primary);
+    margin-bottom: 20px;
+}
+
+.program-intro p {
+    font-size: 1.15rem;
+    color: var(--slate-500);
+    line-height: 1.8;
+}
+
+.program-cards {
+    margin-bottom: 80px;
+}
+
+.program-card {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--slate-200);
+    transition: var(--transition-smooth);
+    height: 100%;
+}
+
+.program-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-elegant);
+    border-color: transparent;
+}
+
+.program-card-header {
+    padding: 32px;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+}
+
+.program-card-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(50%, -50%);
+}
+
+.program-card-header.kurikulum-umum {
+    background: linear-gradient(135deg, var(--navy-primary), var(--navy-light));
+}
+
+.program-card-header.kurikulum-pesantren {
+    background: linear-gradient(135deg, var(--emerald-dark), var(--emerald-primary));
+}
+
+.program-card-header h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    position: relative;
+}
+
+.program-card-body {
+    padding: 32px;
+}
+
+.program-card-body p {
+    font-size: 1rem;
+    color: var(--slate-600);
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.program-card-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.program-card-body ul li {
+    position: relative;
+    padding: 12px 0 12px 36px;
+    font-size: 0.95rem;
+    color: var(--slate-700);
+    border-bottom: 1px solid var(--slate-100);
+    transition: var(--transition-smooth);
+}
+
+.program-card-body ul li:last-child {
+    border-bottom: none;
+}
+
+.program-card-body ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kurikulum-umum + .program-card-body ul li::before {
+    background: linear-gradient(135deg, rgba(10, 22, 40, 0.1), rgba(201, 162, 39, 0.1));
+}
+
+.kurikulum-pesantren + .program-card-body ul li::before {
+    background: linear-gradient(135deg, rgba(4, 120, 87, 0.1), rgba(16, 185, 129, 0.1));
+}
+
+.program-card-body ul li::after {
+    content: '\2713';
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.kurikulum-umum + .program-card-body ul li::after {
+    color: var(--navy-primary);
+}
+
+.kurikulum-pesantren + .program-card-body ul li::after {
+    color: var(--emerald-primary);
+}
+
+.program-card-body ul li:hover {
+    background: var(--slate-50);
+    padding-left: 40px;
+    margin-left: -8px;
+    margin-right: -8px;
+    padding-right: 8px;
+    border-radius: var(--radius-sm);
+}
+
+.extra-programs {
+    padding-top: 60px;
+    border-top: 1px solid var(--slate-200);
+}
+
+.extra-programs .section-title-sm {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--navy-primary);
+    margin-bottom: 48px;
+}
+
+.extra-program-item {
+    text-align: center;
+    padding: 48px 32px;
+    background: var(--slate-50);
+    border-radius: var(--radius-xl);
+    transition: var(--transition-smooth);
+    border: 1px solid transparent;
+    height: 100%;
+}
+
+.extra-program-item:hover {
+    background: var(--white);
+    box-shadow: var(--shadow-soft);
+    border-color: var(--slate-200);
+    transform: translateY(-8px);
+}
+
+.extra-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(201, 162, 39, 0.1), rgba(201, 162, 39, 0.05));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    color: var(--gold-primary);
+    transition: var(--transition-smooth);
+}
+
+.extra-program-item:hover .extra-icon {
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
+    color: var(--navy-primary);
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.extra-program-item h4 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--slate-800);
+    margin-bottom: 16px;
+}
+
+.extra-program-item p {
+    font-size: 0.95rem;
+    color: var(--slate-500);
+    line-height: 1.8;
+    margin: 0;
+}
+
+/* =============================================
+   KEHIDUPAN SANTRI PAGE
+   ============================================= */
+.daily-schedule {
+    margin-bottom: 80px;
+}
+
+.daily-schedule .section-title-sm {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--navy-primary);
+    margin-bottom: 48px;
+}
+
+.schedule-timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.schedule-timeline::before {
+    content: '';
+    position: absolute;
+    left: 80px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--emerald-primary), var(--gold-primary), var(--navy-primary));
+    border-radius: 2px;
+}
+
+.schedule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    margin-bottom: 8px;
+    position: relative;
+    padding: 16px 0;
+    transition: var(--transition-smooth);
+}
+
+.schedule-item:hover {
+    transform: translateX(8px);
+}
+
+.schedule-time {
+    min-width: 70px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--navy-primary);
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    text-align: right;
+    padding-top: 4px;
+}
+
+.schedule-item::after {
+    content: '';
+    position: absolute;
+    left: 73px;
+    top: 22px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 4px solid var(--emerald-primary);
+    z-index: 1;
+    transition: var(--transition-smooth);
+}
+
+.schedule-item:hover::after {
+    background: var(--emerald-primary);
+    transform: scale(1.3);
+}
+
+.schedule-content {
+    flex: 1;
+    background: var(--white);
+    padding: 20px 28px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--slate-200);
+    margin-left: 20px;
+    transition: var(--transition-smooth);
+}
+
+.schedule-item:hover .schedule-content {
+    box-shadow: var(--shadow-soft);
+    border-color: var(--emerald-light);
+}
+
+.schedule-content h5 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--slate-800);
+    margin: 0 0 6px 0;
+}
+
+.schedule-content p {
+    font-size: 0.9rem;
+    color: var(--slate-500);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.extracurricular {
+    padding-top: 60px;
+    border-top: 1px solid var(--slate-200);
+}
+
+.extracurricular .section-title-sm {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--navy-primary);
+    margin-bottom: 48px;
+}
+
+.extra-card {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: 36px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--slate-200);
+    height: 100%;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.extra-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--emerald-primary), var(--gold-primary));
+}
+
+.extra-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-elegant);
+    border-color: transparent;
+}
+
+.extra-card h4 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--navy-primary);
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--slate-100);
+}
+
+.extra-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.extra-card ul li {
+    position: relative;
+    padding: 12px 0 12px 32px;
+    font-size: 0.95rem;
+    color: var(--slate-600);
+    border-bottom: 1px dashed var(--slate-200);
+    transition: var(--transition-smooth);
+}
+
+.extra-card ul li:last-child {
+    border-bottom: none;
+}
+
+.extra-card ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(4, 120, 87, 0.1), rgba(16, 185, 129, 0.1));
+}
+
+.extra-card ul li::after {
+    content: '\2713';
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--emerald-primary);
+}
+
+.extra-card ul li:hover {
+    color: var(--slate-800);
+    padding-left: 36px;
+}
+
+/* =============================================
+   RESPONSIVE - ABOUT, PROGRAM, KEHIDUPAN
+   ============================================= */
+@media (max-width: 991px) {
+    .about-image {
+        margin-top: 40px;
+    }
+
+    .about-image::before {
+        display: none;
+    }
+
+    .about-image img {
+        height: 300px;
+    }
+
+    .visi-misi-section {
+        margin-top: 60px;
+        padding-top: 40px;
+    }
+
+    .info-card {
+        margin-bottom: 24px;
+    }
+
+    .values-section {
+        margin-top: 60px;
+    }
+
+    .value-item {
+        margin-bottom: 24px;
+    }
+
+    .schedule-timeline::before {
+        left: 20px;
+    }
+
+    .schedule-time {
+        min-width: 50px;
+        font-size: 0.9rem;
+    }
+
+    .schedule-item::after {
+        left: 13px;
+        width: 16px;
+        height: 16px;
+    }
+
+    .schedule-content {
+        margin-left: 16px;
+    }
+
+    .extra-card {
+        margin-bottom: 24px;
+    }
+}
+
+@media (max-width: 767px) {
+    .about-content .section-title-sm {
+        font-size: 1.5rem;
+    }
+
+    .program-intro h2,
+    .daily-schedule .section-title-sm,
+    .extracurricular .section-title-sm,
+    .values-section .section-title-sm,
+    .extra-programs .section-title-sm {
+        font-size: 1.5rem;
+        margin-bottom: 32px;
+    }
+
+    .program-card-header {
+        padding: 24px;
+    }
+
+    .program-card-header h3 {
+        font-size: 1.3rem;
+    }
+
+    .program-card-body {
+        padding: 24px;
+    }
+
+    .extra-program-item {
+        padding: 32px 24px;
+        margin-bottom: 24px;
+    }
+
+    .extra-icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    .schedule-timeline::before {
+        left: 12px;
+    }
+
+    .schedule-item {
+        flex-direction: column;
+        gap: 12px;
+        padding-left: 40px;
+    }
+
+    .schedule-time {
+        text-align: left;
+    }
+
+    .schedule-item::after {
+        left: 5px;
+        top: 4px;
+        width: 14px;
+        height: 14px;
+    }
+
+    .schedule-content {
+        margin-left: 0;
+        padding: 16px 20px;
+    }
+
+    .info-card {
+        padding: 28px;
+    }
+
+    .value-item {
+        padding: 28px 20px;
+    }
+
+    .value-icon {
+        width: 64px;
+        height: 64px;
+    }
+}

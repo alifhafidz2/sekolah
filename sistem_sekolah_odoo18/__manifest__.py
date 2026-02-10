@@ -1,25 +1,89 @@
 {
-    'name': 'Sistem Sekolah',
+    'name': 'Sistem Sekolah Indonesia',
     'version': '18.0.1.0.0',
     'category': 'Education',
-    'summary': 'Sistem Manajemen Sekolah Lengkap',
+    'summary': 'Sistem Manajemen Sekolah Lengkap untuk SD, SMP, SMA, SMK',
     'description': """
-        Sistem Manajemen Sekolah
-        =========================
-        Modul lengkap untuk manajemen sekolah yang mencakup:
-        * Manajemen Data Siswa
-        * Manajemen Data Guru
-        * Manajemen Kelas
-        * Mata Pelajaran
-        * Jadwal Pelajaran
-        * Absensi Siswa
-        * Nilai & Rapor
-        * Portal Siswa & Guru
-        * Dashboard & Laporan
+Sistem Manajemen Sekolah Indonesia - Odoo 18
+=============================================
+
+Solusi lengkap dan terintegrasi untuk manajemen sekolah modern di Indonesia.
+Dirancang khusus untuk kebutuhan pendidikan di Indonesia dengan fitur-fitur
+yang sesuai dengan kurikulum dan standar nasional.
+
+FITUR UTAMA
+-----------
+
+**Master Data**
+* Manajemen Data Siswa lengkap dengan biodata, foto, dan data orang tua
+* Database Guru dengan spesialisasi dan riwayat mengajar
+* Pengelolaan Kelas dengan wali kelas dan kapasitas
+* Mata Pelajaran dengan KKM (Kriteria Ketuntasan Minimal)
+* Tahun Ajaran dan Semester
+
+**Akademik**
+* Jadwal Pelajaran dengan deteksi konflik otomatis
+* Generate jadwal otomatis dengan wizard
+* Tampilan kalender untuk visualisasi jadwal
+* Absensi siswa individual dan massal
+* Statistik kehadiran real-time
+
+**Penilaian**
+* Komponen nilai: Tugas, UTS, UAS, Praktik
+* Bobot nilai yang dapat dikustomisasi
+* Perhitungan otomatis nilai akhir
+* Predikat dan status kelulusan berdasarkan KKM
+* Generate Rapor PDF otomatis
+
+**Portal Web**
+* Portal akses untuk siswa melihat nilai dan absensi
+* Portal akses untuk guru melihat jadwal mengajar
+* Tampilan responsif untuk mobile
+
+**Dashboard & Laporan**
+* Dashboard analytics real-time
+* Statistik kehadiran dan nilai
+* Laporan per kelas dan siswa
+* Export data ke PDF
+
+**Keamanan**
+* Multi-level user access (Admin, User, Portal)
+* Role-based permission
+* Audit trail
+
+KEUNGGULAN
+----------
+* Interface modern dan user-friendly
+* Validasi data otomatis
+* Deteksi konflik jadwal
+* Perhitungan statistik real-time
+* 100% kompatibel dengan Odoo 18
+* Support bahasa Indonesia
+* Dokumentasi lengkap
+
+COCOK UNTUK
+-----------
+* Sekolah Dasar (SD)
+* Sekolah Menengah Pertama (SMP)
+* Sekolah Menengah Atas (SMA)
+* Sekolah Menengah Kejuruan (SMK)
+* Madrasah (MI, MTs, MA)
+* Pondok Pesantren
+
+SUPPORT & GARANSI
+-----------------
+* Dokumentasi lengkap
+* Video tutorial
+* Support via WhatsApp/Email
+* Update gratis selama 1 tahun
+* Garansi 30 hari uang kembali
     """,
-    'author': 'Your Company',
-    'website': 'https://www.yourcompany.com',
+    'author': 'Al Tech Solutions',
+    'website': 'https://github.com/altechsolutions',
     'license': 'LGPL-3',
+    'price': 99.00,
+    'currency': 'USD',
+    'images': ['static/description/banner.png'],
     'depends': [
         'base',
         'web',
