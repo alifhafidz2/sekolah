@@ -37,7 +37,7 @@
                             <div class="col-lg-8">
                                 <h1 class="spp-title">Tagihan SPP</h1>
                                 <p class="spp-subtitle">
-                                    <span t-field="siswa.name"/> - <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/>
+                                    <t t-out="siswa.name"/> - <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/>
                                 </p>
                             </div>
                             <div class="col-lg-4 text-lg-end">
@@ -94,17 +94,36 @@
                                     <div class="row align-items-center">
                                         <div class="col-lg-5">
                                             <div class="spp-info">
-                                                <span class="spp-number" t-field="tagihan.name"/>
+                                                <span class="spp-number"><t t-out="tagihan.name"/></span>
                                                 <div class="spp-periode">
-                                                    <span class="jenis" t-field="tagihan.jenis_tagihan"/>
+                                                    <span class="jenis">
+                                                        <t t-if="tagihan.jenis_tagihan == 'spp'">SPP Bulanan</t>
+                                                        <t t-elif="tagihan.jenis_tagihan == 'daftar_ulang'">Daftar Ulang</t>
+                                                        <t t-elif="tagihan.jenis_tagihan == 'kegiatan'">Biaya Kegiatan</t>
+                                                        <t t-elif="tagihan.jenis_tagihan == 'seragam'">Biaya Seragam</t>
+                                                        <t t-elif="tagihan.jenis_tagihan == 'buku'">Biaya Buku</t>
+                                                        <t t-elif="tagihan.jenis_tagihan == 'lainnya'">Lainnya</t>
+                                                    </span>
                                                     <span class="bulan-tahun">
                                                         <t t-if="tagihan.jenis_tagihan == 'spp'">
-                                                            - <span t-field="tagihan.bulan"/> <span t-field="tagihan.tahun"/>
+                                                            - <t t-if="tagihan.bulan == '1'">Januari</t>
+                                                            <t t-elif="tagihan.bulan == '2'">Februari</t>
+                                                            <t t-elif="tagihan.bulan == '3'">Maret</t>
+                                                            <t t-elif="tagihan.bulan == '4'">April</t>
+                                                            <t t-elif="tagihan.bulan == '5'">Mei</t>
+                                                            <t t-elif="tagihan.bulan == '6'">Juni</t>
+                                                            <t t-elif="tagihan.bulan == '7'">Juli</t>
+                                                            <t t-elif="tagihan.bulan == '8'">Agustus</t>
+                                                            <t t-elif="tagihan.bulan == '9'">September</t>
+                                                            <t t-elif="tagihan.bulan == '10'">Oktober</t>
+                                                            <t t-elif="tagihan.bulan == '11'">November</t>
+                                                            <t t-elif="tagihan.bulan == '12'">Desember</t>
+                                                            <t t-out="' ' + tagihan.tahun if tagihan.tahun else ''"/>
                                                         </t>
                                                     </span>
                                                 </div>
                                                 <div class="spp-jatuh-tempo">
-                                                    Jatuh tempo: <span t-field="tagihan.tanggal_jatuh_tempo" t-options='{"format": "dd MMM yyyy"}'/>
+                                                    Jatuh tempo: <t t-out="tagihan.tanggal_jatuh_tempo.strftime('%d %b %Y') if tagihan.tanggal_jatuh_tempo else '-'"/>
                                                     <span t-if="tagihan.is_overdue" class="badge bg-danger ms-2">Terlambat</span>
                                                 </div>
                                             </div>
@@ -171,16 +190,16 @@
                     <div class="spp-breadcrumb">
                         <a href="/my/spp">Tagihan SPP</a>
                         <span class="separator">/</span>
-                        <span t-field="tagihan.name"/>
+                        <span><t t-out="tagihan.name"/></span>
                     </div>
 
                     <div class="spp-detail-card">
                         <div class="spp-detail-header">
                             <div class="row">
                                 <div class="col-lg-8">
-                                    <h2 t-field="tagihan.name"/>
+                                    <h2><t t-out="tagihan.name"/></h2>
                                     <p class="siswa-info">
-                                        <span t-field="siswa.name"/> - <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/>
+                                        <t t-out="siswa.name"/> - <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/>
                                     </p>
                                 </div>
                                 <div class="col-lg-4 text-lg-end">
@@ -203,11 +222,32 @@
                                         <table class="detail-table">
                                             <tr>
                                                 <td>Jenis Tagihan</td>
-                                                <td><span t-field="tagihan.jenis_tagihan"/></td>
+                                                <td>
+                                                    <t t-if="tagihan.jenis_tagihan == 'spp'">SPP Bulanan</t>
+                                                    <t t-elif="tagihan.jenis_tagihan == 'daftar_ulang'">Daftar Ulang</t>
+                                                    <t t-elif="tagihan.jenis_tagihan == 'kegiatan'">Biaya Kegiatan</t>
+                                                    <t t-elif="tagihan.jenis_tagihan == 'seragam'">Biaya Seragam</t>
+                                                    <t t-elif="tagihan.jenis_tagihan == 'buku'">Biaya Buku</t>
+                                                    <t t-elif="tagihan.jenis_tagihan == 'lainnya'">Lainnya</t>
+                                                </td>
                                             </tr>
                                             <tr t-if="tagihan.jenis_tagihan == 'spp'">
                                                 <td>Periode</td>
-                                                <td><span t-field="tagihan.bulan"/> <span t-field="tagihan.tahun"/></td>
+                                                <td>
+                                                    <t t-if="tagihan.bulan == '1'">Januari</t>
+                                                    <t t-elif="tagihan.bulan == '2'">Februari</t>
+                                                    <t t-elif="tagihan.bulan == '3'">Maret</t>
+                                                    <t t-elif="tagihan.bulan == '4'">April</t>
+                                                    <t t-elif="tagihan.bulan == '5'">Mei</t>
+                                                    <t t-elif="tagihan.bulan == '6'">Juni</t>
+                                                    <t t-elif="tagihan.bulan == '7'">Juli</t>
+                                                    <t t-elif="tagihan.bulan == '8'">Agustus</t>
+                                                    <t t-elif="tagihan.bulan == '9'">September</t>
+                                                    <t t-elif="tagihan.bulan == '10'">Oktober</t>
+                                                    <t t-elif="tagihan.bulan == '11'">November</t>
+                                                    <t t-elif="tagihan.bulan == '12'">Desember</t>
+                                                    <t t-out="' ' + tagihan.tahun if tagihan.tahun else ''"/>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Tahun Ajaran</td>
@@ -215,12 +255,12 @@
                                             </tr>
                                             <tr>
                                                 <td>Tanggal Tagihan</td>
-                                                <td><span t-field="tagihan.tanggal_tagihan" t-options='{"format": "dd MMMM yyyy"}'/></td>
+                                                <td><t t-out="tagihan.tanggal_tagihan.strftime('%d %B %Y') if tagihan.tanggal_tagihan else '-'"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Jatuh Tempo</td>
                                                 <td>
-                                                    <span t-field="tagihan.tanggal_jatuh_tempo" t-options='{"format": "dd MMMM yyyy"}'/>
+                                                    <t t-out="tagihan.tanggal_jatuh_tempo.strftime('%d %B %Y') if tagihan.tanggal_jatuh_tempo else '-'"/>
                                                     <span t-if="tagihan.is_overdue" class="badge bg-danger ms-2">Terlambat</span>
                                                 </td>
                                             </tr>
@@ -274,8 +314,14 @@
                                                 <t t-foreach="tagihan.pembayaran_ids" t-as="p">
                                                     <tr t-if="p.state == 'confirmed'">
                                                         <td><t t-out="p.name"/></td>
-                                                        <td><t t-out="p.tanggal_bayar" t-options='{"format": "dd MMM yyyy"}'/></td>
-                                                        <td><t t-out="dict(p._fields['metode_bayar'].selection).get(p.metode_bayar, '-')"/></td>
+                                                        <td><t t-out="p.tanggal_bayar.strftime('%d %b %Y') if p.tanggal_bayar else '-'"/></td>
+                                                        <td>
+                                                            <t t-if="p.metode_bayar == 'tunai'">Tunai</t>
+                                                            <t t-elif="p.metode_bayar == 'transfer'">Transfer Bank</t>
+                                                            <t t-elif="p.metode_bayar == 'qris'">QRIS</t>
+                                                            <t t-elif="p.metode_bayar == 'va'">Virtual Account</t>
+                                                            <t t-else="">-</t>
+                                                        </td>
                                                         <td class="text-end">Rp <t t-out="'{:,.0f}'.format(p.nominal)"/></td>
                                                         <td><span class="badge bg-success">Dikonfirmasi</span></td>
                                                     </tr>
@@ -305,7 +351,7 @@
                             <div class="col-lg-8">
                                 <h1 class="spp-title">Riwayat Pembayaran</h1>
                                 <p class="spp-subtitle">
-                                    <span t-field="siswa.name"/> - <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/>
+                                    <t t-out="siswa.name"/> - <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/>
                                 </p>
                             </div>
                             <div class="col-lg-4 text-lg-end">
@@ -342,16 +388,42 @@
                                     <tbody>
                                         <t t-foreach="pembayaran_list" t-as="p">
                                             <tr>
-                                                <td><strong t-field="p.name"/></td>
-                                                <td><span t-field="p.tanggal_bayar" t-options='{"format": "dd MMM yyyy"}'/></td>
-                                                <td><span t-field="p.jenis_tagihan"/></td>
+                                                <td><strong><t t-out="p.name"/></strong></td>
+                                                <td><t t-out="p.tanggal_bayar.strftime('%d %b %Y') if p.tanggal_bayar else '-'"/></td>
                                                 <td>
-                                                    <t t-if="p.jenis_tagihan == 'spp'">
-                                                        <span t-field="p.bulan_tagihan"/> <span t-field="p.tahun_tagihan"/>
+                                                    <t t-if="p.jenis_tagihan == 'spp'">SPP Bulanan</t>
+                                                    <t t-elif="p.jenis_tagihan == 'daftar_ulang'">Daftar Ulang</t>
+                                                    <t t-elif="p.jenis_tagihan == 'kegiatan'">Biaya Kegiatan</t>
+                                                    <t t-elif="p.jenis_tagihan == 'seragam'">Biaya Seragam</t>
+                                                    <t t-elif="p.jenis_tagihan == 'buku'">Biaya Buku</t>
+                                                    <t t-elif="p.jenis_tagihan == 'lainnya'">Lainnya</t>
+                                                    <t t-else="">-</t>
+                                                </td>
+                                                <td>
+                                                    <t t-if="p.jenis_tagihan == 'spp' and p.bulan_tagihan">
+                                                        <t t-if="p.bulan_tagihan == '1'">Januari</t>
+                                                        <t t-elif="p.bulan_tagihan == '2'">Februari</t>
+                                                        <t t-elif="p.bulan_tagihan == '3'">Maret</t>
+                                                        <t t-elif="p.bulan_tagihan == '4'">April</t>
+                                                        <t t-elif="p.bulan_tagihan == '5'">Mei</t>
+                                                        <t t-elif="p.bulan_tagihan == '6'">Juni</t>
+                                                        <t t-elif="p.bulan_tagihan == '7'">Juli</t>
+                                                        <t t-elif="p.bulan_tagihan == '8'">Agustus</t>
+                                                        <t t-elif="p.bulan_tagihan == '9'">September</t>
+                                                        <t t-elif="p.bulan_tagihan == '10'">Oktober</t>
+                                                        <t t-elif="p.bulan_tagihan == '11'">November</t>
+                                                        <t t-elif="p.bulan_tagihan == '12'">Desember</t>
+                                                        <t t-out="' ' + p.tahun_tagihan if p.tahun_tagihan else ''"/>
                                                     </t>
                                                     <t t-else="">-</t>
                                                 </td>
-                                                <td><span t-field="p.metode_bayar"/></td>
+                                                <td>
+                                                    <t t-if="p.metode_bayar == 'tunai'">Tunai</t>
+                                                    <t t-elif="p.metode_bayar == 'transfer'">Transfer Bank</t>
+                                                    <t t-elif="p.metode_bayar == 'qris'">QRIS</t>
+                                                    <t t-elif="p.metode_bayar == 'va'">Virtual Account</t>
+                                                    <t t-else="">-</t>
+                                                </td>
                                                 <td class="text-end"><strong>Rp <t t-out="'{:,.0f}'.format(p.nominal)"/></strong></td>
                                             </tr>
                                         </t>
@@ -391,7 +463,7 @@
                             <div class="col-lg-12">
                                 <h1 class="spp-title">Ringkasan Keuangan</h1>
                                 <p class="spp-subtitle">
-                                    <span t-field="siswa.name"/> - <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/>
+                                    <t t-out="siswa.name"/> - <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/>
                                 </p>
                             </div>
                         </div>
