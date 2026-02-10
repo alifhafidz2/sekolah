@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_spp" model="ir.module.category">
+        <field name="name">SPP</field>
+        <field name="description">Manajemen Pembayaran SPP Sekolah</field>
+        <field name="sequence">25</field>
+    </record>
+
+    <record id="group_spp_user" model="res.groups">
+        <field name="name">Petugas SPP</field>
+        <field name="category_id" ref="module_category_spp"/>
+        <field name="comment">Dapat melihat dan mengelola tagihan dan pembayaran SPP</field>
+    </record>
+
+    <record id="group_spp_manager" model="res.groups">
+        <field name="name">Manager SPP</field>
+        <field name="category_id" ref="module_category_spp"/>
+        <field name="implied_ids" eval="[(4, ref('group_spp_user'))]"/>
+        <field name="comment">Dapat mengelola konfigurasi SPP dan melihat semua laporan</field>
+    </record>
+</odoo>

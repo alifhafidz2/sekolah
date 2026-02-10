@@ -71,9 +71,15 @@ class Siswa(models.Model):
 
     rata_rata_nilai = fields.Float(string='Rata-rata Nilai', compute='_compute_rata_nilai', digits=(5, 2))
 
-    user_id = fields.Many2one('res.users', string='Portal User', domain=[('share', '=', True)])
+    user_id = fields.Many2one('res.users', string='Portal User Siswa', domain=[('share', '=', True)])
+    wali_user_id = fields.Many2one('res.users', string='Portal User Wali', domain=[('share', '=', True)],
+                                    help='User portal untuk orang tua/wali melihat informasi siswa')
 
     active = fields.Boolean(string='Active', default=True)
+    state = fields.Selection([
+        ('active', 'Aktif'),
+        ('inactive', 'Tidak Aktif'),
+    ], string='State', compute='_compute_state', store=True)
 
     _sql_constraints = [
         ('nis_unique', 'unique(nis)', 'NIS harus unik!'),
@@ -113,6 +119,14 @@ class Siswa(models.Model):
                 record.rata_rata_nilai = sum(nilai_list.mapped('nilai_akhir')) / len(nilai_list)
             else:
                 record.rata_rata_nilai = 0.0
+
+    @api.depends('status')
+    def _compute_state(self):
+        for record in self:
+            if record.status == 'aktif':
+                record.state = 'active'
+            else:
+                record.state = 'inactive'
 
     @api.onchange('status')
     def _onchange_status(self):

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_spp_config_list" model="ir.ui.view">
+        <field name="name">al.spp.config.list</field>
+        <field name="model">al.spp.config</field>
+        <field name="arch" type="xml">
+            <list string="Konfigurasi SPP">
+                <field name="tahun_ajaran_id"/>
+                <field name="kelas_id"/>
+                <field name="nominal_spp" widget="monetary"/>
+                <field name="nominal_daftar_ulang" widget="monetary" optional="hide"/>
+                <field name="nominal_kegiatan" widget="monetary" optional="hide"/>
+                <field name="total_biaya_tahunan" widget="monetary" sum="Total"/>
+                <field name="active" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_spp_config_form" model="ir.ui.view">
+        <field name="name">al.spp.config.form</field>
+        <field name="model">al.spp.config</field>
+        <field name="arch" type="xml">
+            <form string="Konfigurasi SPP">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_generate_tagihan" type="object"
+                                class="oe_stat_button" icon="fa-file-text-o">
+                            <span>Generate Tagihan</span>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Informasi Umum">
+                            <field name="tahun_ajaran_id"/>
+                            <field name="kelas_id"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                        <group string="Biaya SPP">
+                            <field name="nominal_spp" widget="monetary"/>
+                            <label for="nominal_spp"/>
+                            <span class="text-muted">per bulan</span>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Biaya Tambahan">
+                            <field name="nominal_daftar_ulang" widget="monetary"/>
+                            <field name="nominal_kegiatan" widget="monetary"/>
+                            <field name="nominal_seragam" widget="monetary"/>
+                            <field name="nominal_buku" widget="monetary"/>
+                        </group>
+                        <group string="Total">
+                            <field name="total_biaya_tahunan" widget="monetary"/>
+                        </group>
+                    </group>
+                    <group string="Catatan">
+                        <field name="notes" nolabel="1" placeholder="Catatan tambahan..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_spp_config_search" model="ir.ui.view">
+        <field name="name">al.spp.config.search</field>
+        <field name="model">al.spp.config</field>
+        <field name="arch" type="xml">
+            <search string="Cari Konfigurasi SPP">
+                <field name="tahun_ajaran_id"/>
+                <field name="kelas_id"/>
+                <filter string="Aktif" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Arsip" name="archived" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Tahun Ajaran" name="group_tahun" context="{'group_by': 'tahun_ajaran_id'}"/>
+                    <filter string="Kelas" name="group_kelas" context="{'group_by': 'kelas_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_spp_config" model="ir.actions.act_window">
+        <field name="name">Konfigurasi SPP</field>
+        <field name="res_model">al.spp.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat konfigurasi SPP baru
+            </p>
+            <p>
+                Tentukan nominal SPP untuk setiap kelas dan tahun ajaran.
+            </p>
+        </field>
+    </record>
+</odoo>

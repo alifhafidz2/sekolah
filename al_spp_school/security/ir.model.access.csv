@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_spp_config_user,al.spp.config.user,model_al_spp_config,group_spp_user,1,0,0,0
+access_spp_config_manager,al.spp.config.manager,model_al_spp_config,group_spp_manager,1,1,1,1
+access_spp_tagihan_user,al.spp.tagihan.user,model_al_spp_tagihan,group_spp_user,1,1,1,0
+access_spp_tagihan_manager,al.spp.tagihan.manager,model_al_spp_tagihan,group_spp_manager,1,1,1,1
+access_spp_pembayaran_user,al.spp.pembayaran.user,model_al_spp_pembayaran,group_spp_user,1,1,1,0
+access_spp_pembayaran_manager,al.spp.pembayaran.manager,model_al_spp_pembayaran,group_spp_manager,1,1,1,1
+access_spp_generate_wizard_user,al.spp.generate.tagihan.wizard.user,model_al_spp_generate_tagihan_wizard,group_spp_user,1,1,1,1
+access_spp_generate_wizard_manager,al.spp.generate.tagihan.wizard.manager,model_al_spp_generate_tagihan_wizard,group_spp_manager,1,1,1,1
+access_sekolah_tahun_ajaran_spp_user,sekolah.tahun_ajaran.spp.user,sistem_sekolah_odoo18.model_sekolah_tahun_ajaran,group_spp_user,1,0,0,0
+access_sekolah_tahun_ajaran_spp_manager,sekolah.tahun_ajaran.spp.manager,sistem_sekolah_odoo18.model_sekolah_tahun_ajaran,group_spp_manager,1,0,0,0
+access_sekolah_kelas_spp_user,sekolah.kelas.spp.user,sistem_sekolah_odoo18.model_sekolah_kelas,group_spp_user,1,0,0,0
+access_sekolah_kelas_spp_manager,sekolah.kelas.spp.manager,sistem_sekolah_odoo18.model_sekolah_kelas,group_spp_manager,1,0,0,0
+access_sekolah_siswa_spp_user,sekolah.siswa.spp.user,sistem_sekolah_odoo18.model_sekolah_siswa,group_spp_user,1,0,0,0
+access_sekolah_siswa_spp_manager,sekolah.siswa.spp.manager,sistem_sekolah_odoo18.model_sekolah_siswa,group_spp_manager,1,0,0,0
+access_spp_tagihan_portal,al.spp.tagihan.portal,model_al_spp_tagihan,base.group_portal,1,0,0,0
+access_spp_pembayaran_portal,al.spp.pembayaran.portal,model_al_spp_pembayaran,base.group_portal,1,0,0,0

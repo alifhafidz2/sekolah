@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_generate_tagihan_wizard_form" model="ir.ui.view">
+        <field name="name">al.spp.generate.tagihan.wizard.form</field>
+        <field name="model">al.spp.generate.tagihan.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Tagihan SPP">
+                <group>
+                    <group string="Konfigurasi">
+                        <field name="spp_config_id" readonly="1"/>
+                        <field name="tahun_ajaran_id" readonly="1"/>
+                        <field name="kelas_id" readonly="1"/>
+                    </group>
+                    <group string="Jenis Tagihan">
+                        <field name="jenis_tagihan"/>
+                    </group>
+                </group>
+                <group invisible="jenis_tagihan != 'spp'">
+                    <group string="Periode SPP">
+                        <field name="bulan_mulai"/>
+                        <field name="bulan_akhir"/>
+                        <field name="tahun"/>
+                        <field name="hari_jatuh_tempo"/>
+                    </group>
+                </group>
+                <group string="Siswa">
+                    <field name="select_all_siswa"/>
+                    <field name="siswa_ids" widget="many2many_tags"
+                           invisible="select_all_siswa"
+                           options="{'no_create': True}"/>
+                </group>
+                <footer>
+                    <button name="action_generate" string="Generate Tagihan" type="object" class="btn-primary"/>
+                    <button string="Batal" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_generate_tagihan_wizard" model="ir.actions.act_window">
+        <field name="name">Generate Tagihan SPP</field>
+        <field name="res_model">al.spp.generate.tagihan.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

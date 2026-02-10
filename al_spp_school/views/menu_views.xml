@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_spp_root"
+              name="SPP"
+              sequence="25"
+              groups="base.group_user"
+              web_icon="al_spp_school,static/description/icon.png"/>
+
+    <menuitem id="menu_spp_tagihan"
+              name="Tagihan"
+              parent="menu_spp_root"
+              sequence="10"/>
+
+    <menuitem id="menu_spp_tagihan_all"
+              name="Semua Tagihan"
+              parent="menu_spp_tagihan"
+              action="action_spp_tagihan"
+              sequence="10"/>
+
+    <menuitem id="menu_spp_tunggakan"
+              name="Tunggakan"
+              parent="menu_spp_tagihan"
+              action="action_spp_tagihan_tunggakan"
+              sequence="20"/>
+
+    <menuitem id="menu_spp_pembayaran"
+              name="Pembayaran"
+              parent="menu_spp_root"
+              sequence="20"/>
+
+    <menuitem id="menu_spp_pembayaran_all"
+              name="Semua Pembayaran"
+              parent="menu_spp_pembayaran"
+              action="action_spp_pembayaran"
+              sequence="10"/>
+
+    <menuitem id="menu_spp_pembayaran_hari_ini"
+              name="Pembayaran Hari Ini"
+              parent="menu_spp_pembayaran"
+              action="action_spp_pembayaran_hari_ini"
+              sequence="20"/>
+
+    <menuitem id="menu_spp_konfigurasi"
+              name="Konfigurasi"
+              parent="menu_spp_root"
+              sequence="90"/>
+
+    <menuitem id="menu_spp_config"
+              name="Konfigurasi SPP"
+              parent="menu_spp_konfigurasi"
+              action="action_spp_config"
+              sequence="10"/>
+</odoo>

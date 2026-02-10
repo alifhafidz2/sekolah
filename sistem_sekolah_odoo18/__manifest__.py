@@ -97,6 +97,7 @@ SUPPORT & GARANSI
         'data/sequence_data.xml',
 
         'views/menu_views.xml',
+        'views/tahun_ajaran_views.xml',
         'views/siswa_views.xml',
         'views/guru_views.xml',
         'views/kelas_views.xml',

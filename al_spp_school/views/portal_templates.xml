@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_home_spp" name="Portal SPP" inherit_id="portal.portal_my_home" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/al_spp_school/static/description/icon.png'"/>
+                <t t-set="title">SPP</t>
+                <t t-set="url" t-value="'/my/spp'"/>
+                <t t-set="text">Lihat tagihan dan riwayat pembayaran SPP</t>
+                <t t-set="placeholder_count" t-value="'tagihan_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_spp_no_access" name="Portal SPP No Access">
+        <t t-call="portal.portal_layout">
+            <div class="spp-portal-wrapper">
+                <div class="container py-5">
+                    <div class="text-center">
+                        <div class="alert alert-warning">
+                            <h4>Akses Ditolak</h4>
+                            <p>Anda tidak memiliki akses ke halaman SPP. Pastikan akun Anda terhubung dengan data siswa.</p>
+                            <a href="/my" class="btn btn-primary mt-3">Kembali ke Portal</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_spp_list" name="Portal SPP List">
+        <t t-call="portal.portal_layout">
+            <div class="spp-portal-wrapper">
+                <div class="container py-4">
+                    <div class="spp-header">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8">
+                                <h1 class="spp-title">Tagihan SPP</h1>
+                                <p class="spp-subtitle">
+                                    <span t-field="siswa.name"/> - <span t-field="siswa.kelas_id.name"/>
+                                </p>
+                            </div>
+                            <div class="col-lg-4 text-lg-end">
+                                <div class="spp-tunggakan-box" t-if="total_tunggakan > 0">
+                                    <span class="label">Total Tunggakan</span>
+                                    <span class="amount text-danger">
+                                        Rp <t t-out="'{:,.0f}'.format(total_tunggakan)"/>
+                                    </span>
+                                </div>
+                                <div class="spp-tunggakan-box" t-else="">
+                                    <span class="label text-success">Tidak Ada Tunggakan</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="spp-nav-tabs">
+                        <a href="/my/spp" class="spp-nav-item active">Tagihan</a>
+                        <a href="/my/spp/pembayaran" class="spp-nav-item">Riwayat Pembayaran</a>
+                        <a href="/my/spp/ringkasan" class="spp-nav-item">Ringkasan</a>
+                    </div>
+
+                    <div class="spp-filters">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="filter-group">
+                                    <span class="filter-label">Filter:</span>
+                                    <t t-foreach="filters.items()" t-as="f">
+                                        <a t-attf-href="/my/spp?filterby=#{f[0]}&amp;sortby=#{sortby}"
+                                           t-attf-class="filter-btn #{filterby == f[0] and 'active' or ''}">
+                                            <t t-out="f[1]['label']"/>
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <div class="filter-group">
+                                    <span class="filter-label">Urutkan:</span>
+                                    <t t-foreach="sortings.items()" t-as="s">
+                                        <a t-attf-href="/my/spp?filterby=#{filterby}&amp;sortby=#{s[0]}"
+                                           t-attf-class="filter-btn #{sortby == s[0] and 'active' or ''}">
+                                            <t t-out="s[1]['label']"/>
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="spp-list">
+                        <t t-if="tagihan_list">
+                            <t t-foreach="tagihan_list" t-as="tagihan">
+                                <div t-attf-class="spp-card #{tagihan.is_overdue and 'overdue' or ''} #{tagihan.state}">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-5">
+                                            <div class="spp-info">
+                                                <span class="spp-number" t-field="tagihan.name"/>
+                                                <div class="spp-periode">
+                                                    <span class="jenis" t-field="tagihan.jenis_tagihan"/>
+                                                    <span class="bulan-tahun">
+                                                        <t t-if="tagihan.jenis_tagihan == 'spp'">
+                                                            - <span t-field="tagihan.bulan"/> <span t-field="tagihan.tahun"/>
+                                                        </t>
+                                                    </span>
+                                                </div>
+                                                <div class="spp-jatuh-tempo">
+                                                    Jatuh tempo: <span t-field="tagihan.tanggal_jatuh_tempo" t-options='{"format": "dd MMM yyyy"}'/>
+                                                    <span t-if="tagihan.is_overdue" class="badge bg-danger ms-2">Terlambat</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="spp-nominal">
+                                                <div class="nominal-row">
+                                                    <span class="label">Tagihan:</span>
+                                                    <span class="value">Rp <t t-out="'{:,.0f}'.format(tagihan.nominal)"/></span>
+                                                </div>
+                                                <div class="nominal-row" t-if="tagihan.nominal_denda > 0">
+                                                    <span class="label text-danger">Denda:</span>
+                                                    <span class="value text-danger">Rp <t t-out="'{:,.0f}'.format(tagihan.nominal_denda)"/></span>
+                                                </div>
+                                                <div class="nominal-row total">
+                                                    <span class="label">Sisa:</span>
+                                                    <span class="value">Rp <t t-out="'{:,.0f}'.format(tagihan.sisa_tagihan)"/></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 text-lg-end">
+                                            <span t-attf-class="spp-status #{tagihan.state}">
+                                                <t t-if="tagihan.state == 'draft'">Draft</t>
+                                                <t t-if="tagihan.state == 'open'">Belum Lunas</t>
+                                                <t t-if="tagihan.state == 'partial'">Sebagian</t>
+                                                <t t-if="tagihan.state == 'paid'">Lunas</t>
+                                                <t t-if="tagihan.state == 'cancel'">Dibatalkan</t>
+                                            </span>
+                                            <a t-attf-href="/my/spp/tagihan/#{tagihan.id}" class="btn-detail">
+                                                Lihat Detail
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <div class="spp-empty">
+                                <div class="empty-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                    </svg>
+                                </div>
+                                <h4>Tidak ada tagihan</h4>
+                                <p>Tidak ada tagihan yang sesuai dengan filter yang dipilih.</p>
+                            </div>
+                        </t>
+                    </div>
+
+                    <t t-if="pager">
+                        <div class="spp-pager">
+                            <t t-call="portal.pager"/>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_spp_detail" name="Portal SPP Detail">
+        <t t-call="portal.portal_layout">
+            <div class="spp-portal-wrapper">
+                <div class="container py-4">
+                    <div class="spp-breadcrumb">
+                        <a href="/my/spp">Tagihan SPP</a>
+                        <span class="separator">/</span>
+                        <span t-field="tagihan.name"/>
+                    </div>
+
+                    <div class="spp-detail-card">
+                        <div class="spp-detail-header">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h2 t-field="tagihan.name"/>
+                                    <p class="siswa-info">
+                                        <span t-field="siswa.name"/> - <span t-field="siswa.kelas_id.name"/>
+                                    </p>
+                                </div>
+                                <div class="col-lg-4 text-lg-end">
+                                    <span t-attf-class="spp-status large #{tagihan.state}">
+                                        <t t-if="tagihan.state == 'draft'">Draft</t>
+                                        <t t-if="tagihan.state == 'open'">Belum Lunas</t>
+                                        <t t-if="tagihan.state == 'partial'">Sebagian</t>
+                                        <t t-if="tagihan.state == 'paid'">Lunas</t>
+                                        <t t-if="tagihan.state == 'cancel'">Dibatalkan</t>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="spp-detail-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="detail-section">
+                                        <h4>Informasi Tagihan</h4>
+                                        <table class="detail-table">
+                                            <tr>
+                                                <td>Jenis Tagihan</td>
+                                                <td><span t-field="tagihan.jenis_tagihan"/></td>
+                                            </tr>
+                                            <tr t-if="tagihan.jenis_tagihan == 'spp'">
+                                                <td>Periode</td>
+                                                <td><span t-field="tagihan.bulan"/> <span t-field="tagihan.tahun"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tahun Ajaran</td>
+                                                <td><span t-field="tagihan.tahun_ajaran_id.name"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tanggal Tagihan</td>
+                                                <td><span t-field="tagihan.tanggal_tagihan" t-options='{"format": "dd MMMM yyyy"}'/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Jatuh Tempo</td>
+                                                <td>
+                                                    <span t-field="tagihan.tanggal_jatuh_tempo" t-options='{"format": "dd MMMM yyyy"}'/>
+                                                    <span t-if="tagihan.is_overdue" class="badge bg-danger ms-2">Terlambat</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="detail-section">
+                                        <h4>Rincian Biaya</h4>
+                                        <table class="detail-table amount">
+                                            <tr>
+                                                <td>Nominal Tagihan</td>
+                                                <td class="text-end">Rp <t t-out="'{:,.0f}'.format(tagihan.nominal)"/></td>
+                                            </tr>
+                                            <tr t-if="tagihan.nominal_denda > 0" class="text-danger">
+                                                <td>Denda Keterlambatan</td>
+                                                <td class="text-end">Rp <t t-out="'{:,.0f}'.format(tagihan.nominal_denda)"/></td>
+                                            </tr>
+                                            <tr class="total-row">
+                                                <td>Total Tagihan</td>
+                                                <td class="text-end">Rp <t t-out="'{:,.0f}'.format(tagihan.total_tagihan)"/></td>
+                                            </tr>
+                                            <tr class="text-success">
+                                                <td>Terbayar</td>
+                                                <td class="text-end">Rp <t t-out="'{:,.0f}'.format(tagihan.nominal_terbayar)"/></td>
+                                            </tr>
+                                            <tr class="sisa-row">
+                                                <td><strong>Sisa Tagihan</strong></td>
+                                                <td class="text-end"><strong>Rp <t t-out="'{:,.0f}'.format(tagihan.sisa_tagihan)"/></strong></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <t t-if="tagihan.pembayaran_ids">
+                                <div class="detail-section mt-4">
+                                    <h4>Riwayat Pembayaran</h4>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover pembayaran-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>No. Bukti</th>
+                                                    <th>Tanggal</th>
+                                                    <th>Metode</th>
+                                                    <th class="text-end">Nominal</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="tagihan.pembayaran_ids" t-as="p">
+                                                    <tr t-if="p.state == 'confirmed'">
+                                                        <td t-field="p.name"/>
+                                                        <td><span t-field="p.tanggal_bayar" t-options='{"format": "dd MMM yyyy"}'/></td>
+                                                        <td><span t-field="p.metode_bayar"/></td>
+                                                        <td class="text-end">Rp <t t-out="'{:,.0f}'.format(p.nominal)"/></td>
+                                                        <td><span class="badge bg-success">Dikonfirmasi</span></td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+
+                        <div class="spp-detail-footer">
+                            <a href="/my/spp" class="btn btn-secondary">Kembali</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_spp_pembayaran" name="Portal SPP Pembayaran">
+        <t t-call="portal.portal_layout">
+            <div class="spp-portal-wrapper">
+                <div class="container py-4">
+                    <div class="spp-header">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8">
+                                <h1 class="spp-title">Riwayat Pembayaran</h1>
+                                <p class="spp-subtitle">
+                                    <span t-field="siswa.name"/> - <span t-field="siswa.kelas_id.name"/>
+                                </p>
+                            </div>
+                            <div class="col-lg-4 text-lg-end">
+                                <div class="spp-tunggakan-box paid">
+                                    <span class="label">Total Dibayar</span>
+                                    <span class="amount text-success">
+                                        Rp <t t-out="'{:,.0f}'.format(total_dibayar)"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="spp-nav-tabs">
+                        <a href="/my/spp" class="spp-nav-item">Tagihan</a>
+                        <a href="/my/spp/pembayaran" class="spp-nav-item active">Riwayat Pembayaran</a>
+                        <a href="/my/spp/ringkasan" class="spp-nav-item">Ringkasan</a>
+                    </div>
+
+                    <div class="spp-pembayaran-list">
+                        <t t-if="pembayaran_list">
+                            <div class="table-responsive">
+                                <table class="table spp-table">
+                                    <thead>
+                                        <tr>
+                                            <th>No. Bukti</th>
+                                            <th>Tanggal</th>
+                                            <th>Jenis</th>
+                                            <th>Periode</th>
+                                            <th>Metode</th>
+                                            <th class="text-end">Nominal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="pembayaran_list" t-as="p">
+                                            <tr>
+                                                <td><strong t-field="p.name"/></td>
+                                                <td><span t-field="p.tanggal_bayar" t-options='{"format": "dd MMM yyyy"}'/></td>
+                                                <td><span t-field="p.jenis_tagihan"/></td>
+                                                <td>
+                                                    <t t-if="p.jenis_tagihan == 'spp'">
+                                                        <span t-field="p.bulan_tagihan"/> <span t-field="p.tahun_tagihan"/>
+                                                    </t>
+                                                    <t t-else="">-</t>
+                                                </td>
+                                                <td><span t-field="p.metode_bayar"/></td>
+                                                <td class="text-end"><strong>Rp <t t-out="'{:,.0f}'.format(p.nominal)"/></strong></td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="total-row">
+                                            <td colspan="5"><strong>Total</strong></td>
+                                            <td class="text-end"><strong>Rp <t t-out="'{:,.0f}'.format(total_dibayar)"/></strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="spp-empty">
+                                <div class="empty-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                    </svg>
+                                </div>
+                                <h4>Belum ada pembayaran</h4>
+                                <p>Riwayat pembayaran akan muncul di sini setelah melakukan pembayaran.</p>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_spp_ringkasan" name="Portal SPP Ringkasan">
+        <t t-call="portal.portal_layout">
+            <div class="spp-portal-wrapper">
+                <div class="container py-4">
+                    <div class="spp-header">
+                        <div class="row align-items-center">
+                            <div class="col-lg-12">
+                                <h1 class="spp-title">Ringkasan Keuangan</h1>
+                                <p class="spp-subtitle">
+                                    <span t-field="siswa.name"/> - <span t-field="siswa.kelas_id.name"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="spp-nav-tabs">
+                        <a href="/my/spp" class="spp-nav-item">Tagihan</a>
+                        <a href="/my/spp/pembayaran" class="spp-nav-item">Riwayat Pembayaran</a>
+                        <a href="/my/spp/ringkasan" class="spp-nav-item active">Ringkasan</a>
+                    </div>
+
+                    <div class="spp-ringkasan">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="ringkasan-card total">
+                                    <div class="ringkasan-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ringkasan-content">
+                                        <span class="label">Total Tagihan</span>
+                                        <span class="amount">Rp <t t-out="'{:,.0f}'.format(total_tagihan)"/></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="ringkasan-card paid">
+                                    <div class="ringkasan-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ringkasan-content">
+                                        <span class="label">Total Terbayar</span>
+                                        <span class="amount text-success">Rp <t t-out="'{:,.0f}'.format(total_terbayar)"/></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="ringkasan-card unpaid">
+                                    <div class="ringkasan-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ringkasan-content">
+                                        <span class="label">Sisa Tunggakan</span>
+                                        <span t-attf-class="amount #{total_tunggakan > 0 and 'text-danger' or 'text-success'}">
+                                            Rp <t t-out="'{:,.0f}'.format(total_tunggakan)"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ringkasan-detail mt-4">
+                            <h4>Rincian per Jenis Tagihan</h4>
+                            <div class="table-responsive">
+                                <table class="table spp-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Jenis Tagihan</th>
+                                            <th class="text-end">Total Tagihan</th>
+                                            <th class="text-end">Terbayar</th>
+                                            <th class="text-end">Sisa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="tagihan_by_jenis.items()" t-as="item">
+                                            <tr>
+                                                <td><strong><t t-out="item[0]"/></strong></td>
+                                                <td class="text-end">Rp <t t-out="'{:,.0f}'.format(item[1]['tagihan'])"/></td>
+                                                <td class="text-end text-success">Rp <t t-out="'{:,.0f}'.format(item[1]['terbayar'])"/></td>
+                                                <td class="text-end">
+                                                    <t t-set="sisa" t-value="item[1]['tagihan'] - item[1]['terbayar']"/>
+                                                    <span t-attf-class="#{sisa > 0 and 'text-danger' or 'text-success'}">
+                                                        Rp <t t-out="'{:,.0f}'.format(sisa)"/>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

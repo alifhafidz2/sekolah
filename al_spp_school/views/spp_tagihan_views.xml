@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_spp_tagihan_list" model="ir.ui.view">
+        <field name="name">al.spp.tagihan.list</field>
+        <field name="model">al.spp.tagihan</field>
+        <field name="arch" type="xml">
+            <list string="Tagihan SPP" decoration-danger="is_overdue and state in ['open', 'partial']"
+                  decoration-success="state == 'paid'" decoration-muted="state == 'cancel'">
+                <field name="name"/>
+                <field name="siswa_id"/>
+                <field name="kelas_id"/>
+                <field name="jenis_tagihan"/>
+                <field name="bulan"/>
+                <field name="tahun"/>
+                <field name="nominal" widget="monetary"/>
+                <field name="nominal_denda" widget="monetary" optional="show"/>
+                <field name="total_tagihan" widget="monetary"/>
+                <field name="nominal_terbayar" widget="monetary"/>
+                <field name="sisa_tagihan" widget="monetary"/>
+                <field name="tanggal_jatuh_tempo"/>
+                <field name="is_overdue" column_invisible="1"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state == 'open'"
+                       decoration-primary="state == 'partial'"
+                       decoration-success="state == 'paid'"
+                       decoration-danger="state == 'cancel'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_spp_tagihan_form" model="ir.ui.view">
+        <field name="name">al.spp.tagihan.form</field>
+        <field name="model">al.spp.tagihan</field>
+        <field name="arch" type="xml">
+            <form string="Tagihan SPP">
+                <header>
+                    <button name="action_confirm" string="Konfirmasi" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_bayar" string="Bayar" type="object"
+                            class="btn-primary" invisible="state not in ['open', 'partial']"/>
+                    <button name="action_cancel" string="Batalkan" type="object"
+                            invisible="state not in ['draft', 'open']"/>
+                    <button name="action_set_to_draft" string="Set ke Draft" type="object"
+                            invisible="state != 'cancel'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,open,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Informasi Siswa">
+                            <field name="siswa_id"/>
+                            <field name="kelas_id"/>
+                            <field name="tahun_ajaran_id"/>
+                        </group>
+                        <group string="Periode">
+                            <field name="jenis_tagihan"/>
+                            <field name="bulan"/>
+                            <field name="tahun"/>
+                            <field name="spp_config_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Tagihan">
+                            <field name="tanggal_tagihan"/>
+                            <field name="tanggal_jatuh_tempo"/>
+                            <field name="is_overdue" widget="boolean_toggle" readonly="1"/>
+                        </group>
+                        <group string="Nominal">
+                            <field name="nominal" widget="monetary"/>
+                            <field name="nominal_denda" widget="monetary"/>
+                            <field name="total_tagihan" widget="monetary"/>
+                            <field name="nominal_terbayar" widget="monetary"/>
+                            <field name="sisa_tagihan" widget="monetary"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Pembayaran" name="pembayaran">
+                            <field name="pembayaran_ids">
+                                <list string="Pembayaran" editable="bottom"
+                                      decoration-success="state == 'confirmed'"
+                                      decoration-muted="state == 'cancel'">
+                                    <field name="name"/>
+                                    <field name="tanggal_bayar"/>
+                                    <field name="nominal" widget="monetary"/>
+                                    <field name="metode_bayar"/>
+                                    <field name="no_referensi"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Catatan" name="notes">
+                            <field name="notes" nolabel="1" placeholder="Catatan tambahan..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_spp_tagihan_search" model="ir.ui.view">
+        <field name="name">al.spp.tagihan.search</field>
+        <field name="model">al.spp.tagihan</field>
+        <field name="arch" type="xml">
+            <search string="Cari Tagihan">
+                <field name="name"/>
+                <field name="siswa_id"/>
+                <field name="kelas_id"/>
+                <separator/>
+                <filter string="SPP Bulanan" name="spp" domain="[('jenis_tagihan', '=', 'spp')]"/>
+                <filter string="Daftar Ulang" name="daftar_ulang" domain="[('jenis_tagihan', '=', 'daftar_ulang')]"/>
+                <separator/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Belum Lunas" name="open" domain="[('state', '=', 'open')]"/>
+                <filter string="Sebagian" name="partial" domain="[('state', '=', 'partial')]"/>
+                <filter string="Lunas" name="paid" domain="[('state', '=', 'paid')]"/>
+                <separator/>
+                <filter string="Jatuh Tempo Lewat" name="overdue" domain="[('is_overdue', '=', True)]"/>
+                <separator/>
+                <filter string="Bulan Ini" name="this_month"
+                        domain="[('bulan', '=', str(context_today().month)), ('tahun', '=', str(context_today().year))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Siswa" name="group_siswa" context="{'group_by': 'siswa_id'}"/>
+                    <filter string="Kelas" name="group_kelas" context="{'group_by': 'kelas_id'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Bulan" name="group_bulan" context="{'group_by': 'bulan'}"/>
+                    <filter string="Jenis" name="group_jenis" context="{'group_by': 'jenis_tagihan'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_spp_tagihan_kanban" model="ir.ui.view">
+        <field name="name">al.spp.tagihan.kanban</field>
+        <field name="model">al.spp.tagihan</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" default_group_by="state">
+                <field name="name"/>
+                <field name="siswa_id"/>
+                <field name="bulan"/>
+                <field name="tahun"/>
+                <field name="total_tagihan"/>
+                <field name="sisa_tagihan"/>
+                <field name="state"/>
+                <field name="is_overdue"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="row">
+                            <div class="col-8">
+                                <strong><field name="name"/></strong>
+                            </div>
+                            <div class="col-4 text-end">
+                                <field name="state" widget="badge"/>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <field name="siswa_id"/>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-6 text-muted">
+                                <span t-out="record.bulan.value"/> <span t-out="record.tahun.value"/>
+                            </div>
+                            <div class="col-6 text-end">
+                                <strong>Rp <field name="sisa_tagihan" widget="monetary"/></strong>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_spp_tagihan" model="ir.actions.act_window">
+        <field name="name">Tagihan SPP</field>
+        <field name="res_model">al.spp.tagihan</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="context">{'search_default_open': 1, 'search_default_partial': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tidak ada tagihan SPP
+            </p>
+            <p>
+                Generate tagihan dari menu Konfigurasi SPP.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_spp_tagihan_tunggakan" model="ir.actions.act_window">
+        <field name="name">Tunggakan SPP</field>
+        <field name="res_model">al.spp.tagihan</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('state', 'in', ['open', 'partial']), ('is_overdue', '=', True)]</field>
+        <field name="context">{}</field>
+    </record>
+</odoo>

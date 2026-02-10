@@ -48,6 +48,7 @@
                                 <field name="tingkat"/>
                                 <field name="tanggal_masuk"/>
                                 <field name="user_id"/>
+                                <field name="wali_user_id"/>
                             </group>
                         </group>
                         <notebook>
