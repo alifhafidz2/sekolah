@@ -955,7 +955,12 @@
                                             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
                                             <polyline points="22 4 12 14.01 9 11.01" fill="none" stroke="currentColor" stroke-width="2"/>
                                         </svg>
-                                        <t t-out="dict(siswa._fields['status'].selection).get(siswa.status)"/>
+                                        <t t-if="siswa.status == 'aktif'">Aktif</t>
+                                        <t t-elif="siswa.status == 'lulus'">Lulus</t>
+                                        <t t-elif="siswa.status == 'pindah'">Pindah</t>
+                                        <t t-elif="siswa.status == 'keluar'">Keluar</t>
+                                        <t t-elif="siswa.status == 'cuti'">Cuti</t>
+                                        <t t-else="">-</t>
                                     </span>
                                 </div>
 
@@ -965,7 +970,11 @@
                                         <div class="info-grid">
                                             <div class="info-item">
                                                 <div class="info-label">Jenis Kelamin</div>
-                                                <div class="info-value"><t t-out="dict(siswa._fields['jenis_kelamin'].selection).get(siswa.jenis_kelamin)"/></div>
+                                                <div class="info-value">
+                                                    <t t-if="siswa.jenis_kelamin == 'laki'">Laki-laki</t>
+                                                    <t t-elif="siswa.jenis_kelamin == 'perempuan'">Perempuan</t>
+                                                    <t t-else="">-</t>
+                                                </div>
                                             </div>
                                             <div class="info-item">
                                                 <div class="info-label">Tempat, Tanggal Lahir</div>
@@ -1109,18 +1118,34 @@
                             <tbody>
                                 <t t-foreach="nilai_list" t-as="nilai">
                                     <tr>
-                                        <td><strong><t t-out="nilai.mata_pelajaran_id.name"/></strong></td>
+                                        <td><strong><t t-out="nilai.mata_pelajaran_id.name if nilai.mata_pelajaran_id else '-'"/></strong></td>
                                         <td><t t-out="nilai.tahun_ajaran_id.name if nilai.tahun_ajaran_id else '-'"/></td>
-                                        <td><t t-out="dict(nilai._fields['semester'].selection).get(nilai.semester) if nilai.semester else '-'"/></td>
+                                        <td>
+                                            <t t-if="nilai.semester == '1'">Ganjil</t>
+                                            <t t-elif="nilai.semester == '2'">Genap</t>
+                                            <t t-else="">-</t>
+                                        </td>
                                         <td><t t-out="'%.2f' % nilai.nilai_tugas"/></td>
                                         <td><t t-out="'%.2f' % nilai.nilai_uts"/></td>
                                         <td><t t-out="'%.2f' % nilai.nilai_uas"/></td>
                                         <td><t t-out="'%.2f' % nilai.nilai_praktik"/></td>
                                         <td><strong style="font-size: 1.1rem; color: #0a1628;"><t t-out="'%.2f' % nilai.nilai_akhir"/></strong></td>
-                                        <td><span style="background: #f1f5f9; padding: 6px 12px; border-radius: 50px; font-weight: 600; font-size: 0.85rem;"><t t-out="dict(nilai._fields['predikat'].selection).get(nilai.predikat)"/></span></td>
+                                        <td>
+                                            <span style="background: #f1f5f9; padding: 6px 12px; border-radius: 50px; font-weight: 600; font-size: 0.85rem;">
+                                                <t t-if="nilai.predikat == 'a'">A (90-100)</t>
+                                                <t t-elif="nilai.predikat == 'b'">B (80-89)</t>
+                                                <t t-elif="nilai.predikat == 'c'">C (70-79)</t>
+                                                <t t-elif="nilai.predikat == 'd'">D (60-69)</t>
+                                                <t t-elif="nilai.predikat == 'e'">E (0-59)</t>
+                                                <t t-else="">-</t>
+                                            </span>
+                                        </td>
                                         <td>
                                             <span t-att-style="'padding: 6px 14px; border-radius: 50px; font-weight: 600; font-size: 0.8rem; color: white; background: ' + ('#047857' if nilai.status_kelulusan == 'lulus' else ('#f59e0b' if nilai.status_kelulusan == 'remedial' else '#ef4444'))">
-                                                <t t-out="dict(nilai._fields['status_kelulusan'].selection).get(nilai.status_kelulusan)"/>
+                                                <t t-if="nilai.status_kelulusan == 'lulus'">Lulus</t>
+                                                <t t-elif="nilai.status_kelulusan == 'remedial'">Remedial</t>
+                                                <t t-elif="nilai.status_kelulusan == 'tidak_lulus'">Tidak Lulus</t>
+                                                <t t-else="">-</t>
                                             </span>
                                         </td>
                                     </tr>
@@ -1242,12 +1267,16 @@
                                 <tbody>
                                     <t t-foreach="absensi_list" t-as="absensi">
                                         <tr>
-                                            <td><strong><t t-out="absensi.tanggal"/></strong></td>
+                                            <td><strong><t t-out="absensi.tanggal.strftime('%d %b %Y') if absensi.tanggal else '-'"/></strong></td>
                                             <td><t t-out="absensi.mata_pelajaran_id.name if absensi.mata_pelajaran_id else '-'"/></td>
                                             <td><t t-out="absensi.guru_id.name if absensi.guru_id else '-'"/></td>
                                             <td>
                                                 <span t-att-style="'padding: 6px 14px; border-radius: 50px; font-weight: 600; font-size: 0.8rem; color: white; background: ' + ('#047857' if absensi.status == 'hadir' else ('#0ea5e9' if absensi.status == 'izin' else ('#f59e0b' if absensi.status == 'sakit' else '#ef4444')))">
-                                                    <t t-out="dict(absensi._fields['status'].selection).get(absensi.status)"/>
+                                                    <t t-if="absensi.status == 'hadir'">Hadir</t>
+                                                    <t t-elif="absensi.status == 'izin'">Izin</t>
+                                                    <t t-elif="absensi.status == 'sakit'">Sakit</t>
+                                                    <t t-elif="absensi.status == 'alfa'">Alfa</t>
+                                                    <t t-else="">-</t>
                                                 </span>
                                             </td>
                                             <td><t t-out="absensi.keterangan or '-'"/></td>
@@ -1375,7 +1404,11 @@
                                             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
                                             <polyline points="22 4 12 14.01 9 11.01" fill="none" stroke="currentColor" stroke-width="2"/>
                                         </svg>
-                                        <t t-out="dict(guru._fields['status'].selection).get(guru.status)"/>
+                                        <t t-if="guru.status == 'aktif'">Aktif</t>
+                                        <t t-elif="guru.status == 'cuti'">Cuti</t>
+                                        <t t-elif="guru.status == 'pensiun'">Pensiun</t>
+                                        <t t-elif="guru.status == 'resign'">Resign</t>
+                                        <t t-else="">-</t>
                                     </span>
                                 </div>
 
@@ -1389,15 +1422,32 @@
                                             </div>
                                             <div class="info-item">
                                                 <div class="info-label">Pendidikan Terakhir</div>
-                                                <div class="info-value"><t t-out="dict(guru._fields['pendidikan_terakhir'].selection).get(guru.pendidikan_terakhir) if guru.pendidikan_terakhir else '-'"/></div>
+                                                <div class="info-value">
+                                                    <t t-if="guru.pendidikan_terakhir == 'd3'">D3</t>
+                                                    <t t-elif="guru.pendidikan_terakhir == 's1'">S1</t>
+                                                    <t t-elif="guru.pendidikan_terakhir == 's2'">S2</t>
+                                                    <t t-elif="guru.pendidikan_terakhir == 's3'">S3</t>
+                                                    <t t-else="">-</t>
+                                                </div>
                                             </div>
                                             <div class="info-item">
                                                 <div class="info-label">Status Kepegawaian</div>
-                                                <div class="info-value"><t t-out="dict(guru._fields['status_kepegawaian'].selection).get(guru.status_kepegawaian)"/></div>
+                                                <div class="info-value">
+                                                    <t t-if="guru.status_kepegawaian == 'pns'">PNS</t>
+                                                    <t t-elif="guru.status_kepegawaian == 'honorer'">Honorer</t>
+                                                    <t t-elif="guru.status_kepegawaian == 'kontrak'">Kontrak</t>
+                                                    <t t-else="">-</t>
+                                                </div>
                                             </div>
                                             <div class="info-item">
                                                 <div class="info-label">Status</div>
-                                                <div class="info-value" t-att-style="'color: #047857;' if guru.status == 'aktif' else 'color: #64748b;'"><t t-out="dict(guru._fields['status'].selection).get(guru.status)"/></div>
+                                                <div class="info-value" t-att-style="'color: #047857;' if guru.status == 'aktif' else 'color: #64748b;'">
+                                                    <t t-if="guru.status == 'aktif'">Aktif</t>
+                                                    <t t-elif="guru.status == 'cuti'">Cuti</t>
+                                                    <t t-elif="guru.status == 'pensiun'">Pensiun</t>
+                                                    <t t-elif="guru.status == 'resign'">Resign</t>
+                                                    <t t-else="">-</t>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
