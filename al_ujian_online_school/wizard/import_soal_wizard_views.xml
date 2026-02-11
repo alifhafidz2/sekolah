@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_import_soal_wizard_form" model="ir.ui.view">
+        <field name="name">ujian.import_soal_wizard.form</field>
+        <field name="model">ujian.import_soal_wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="kategori_id"/>
+                    <field name="file" filename="filename"/>
+                    <field name="filename" invisible="1"/>
+                    <field name="delimiter"/>
+                </group>
+                <group string="Preview" invisible="not preview">
+                    <field name="preview" nolabel="1"/>
+                </group>
+                <group string="Format CSV">
+                    <div class="alert alert-info">
+                        <p><strong>Kolom yang diperlukan:</strong></p>
+                        <ul>
+                            <li>pertanyaan - Teks pertanyaan</li>
+                            <li>tipe_soal - pg/isian/essay/benar_salah</li>
+                            <li>tingkat_kesulitan - mudah/sedang/sulit</li>
+                            <li>bobot - Nilai bobot soal</li>
+                            <li>pilihan_a, pilihan_b, pilihan_c, pilihan_d, pilihan_e - Pilihan jawaban (untuk PG)</li>
+                            <li>jawaban_benar - A/B/C/D/E (untuk PG) atau teks jawaban (untuk isian)</li>
+                            <li>jawaban_alternatif - Jawaban alternatif (untuk isian, pisahkan dengan koma)</li>
+                            <li>pembahasan - Teks pembahasan (opsional)</li>
+                        </ul>
+                    </div>
+                </group>
+                <footer>
+                    <button name="action_import" type="object" string="Import" class="btn-primary"/>
+                    <button string="Batal" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_import_soal_wizard" model="ir.actions.act_window">
+        <field name="name">Import Soal</field>
+        <field name="res_model">ujian.import_soal_wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

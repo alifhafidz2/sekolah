@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Module Category -->
+        <record id="module_category_ujian" model="ir.module.category">
+            <field name="name">Ujian Online</field>
+            <field name="sequence">25</field>
+        </record>
+
+        <!-- User Groups -->
+        <record id="group_ujian_siswa" model="res.groups">
+            <field name="name">Siswa</field>
+            <field name="category_id" ref="module_category_ujian"/>
+            <field name="comment">Dapat mengerjakan ujian dan melihat hasil sendiri</field>
+        </record>
+
+        <record id="group_ujian_guru" model="res.groups">
+            <field name="name">Guru</field>
+            <field name="category_id" ref="module_category_ujian"/>
+            <field name="implied_ids" eval="[(4, ref('group_ujian_siswa'))]"/>
+            <field name="comment">Dapat membuat soal, paket ujian, dan melihat hasil siswa</field>
+        </record>
+
+        <record id="group_ujian_admin" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="category_id" ref="module_category_ujian"/>
+            <field name="implied_ids" eval="[(4, ref('group_ujian_guru'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+            <field name="comment">Akses penuh ke semua fitur ujian online</field>
+        </record>
+    </data>
+</odoo>

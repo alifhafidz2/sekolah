@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Analisis Butir Soal - using bank_soal with statistics -->
+    <record id="view_analisis_soal_list" model="ir.ui.view">
+        <field name="name">ujian.bank_soal.analisis.list</field>
+        <field name="model">ujian.bank_soal</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="kategori_id"/>
+                <field name="tipe_soal"/>
+                <field name="tingkat_kesulitan"/>
+                <field name="used_count"/>
+                <field name="correct_rate" widget="progressbar"/>
+                <field name="discrimination_index"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_analisis_soal_pivot" model="ir.ui.view">
+        <field name="name">ujian.bank_soal.analisis.pivot</field>
+        <field name="model">ujian.bank_soal</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="kategori_id" type="row"/>
+                <field name="tingkat_kesulitan" type="col"/>
+                <field name="correct_rate" type="measure"/>
+                <field name="discrimination_index" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_analisis_soal_graph" model="ir.ui.view">
+        <field name="name">ujian.bank_soal.analisis.graph</field>
+        <field name="model">ujian.bank_soal</field>
+        <field name="arch" type="xml">
+            <graph type="bar">
+                <field name="tingkat_kesulitan"/>
+                <field name="correct_rate" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_analisis_soal" model="ir.actions.act_window">
+        <field name="name">Analisis Butir Soal</field>
+        <field name="res_model">ujian.bank_soal</field>
+        <field name="view_mode">list,pivot,graph,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_analisis_soal_list')}),
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_analisis_soal_pivot')}),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('view_analisis_soal_graph')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_bank_soal_form')})]"/>
+        <field name="domain">[('used_count', '&gt;', 0)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Belum ada data analisis
+            </p>
+            <p>
+                Data analisis akan muncul setelah soal digunakan dalam ujian.
+            </p>
+        </field>
+    </record>
+
+    <!-- Analisis Hasil Ujian per Kelas -->
+    <record id="view_analisis_hasil_pivot" model="ir.ui.view">
+        <field name="name">ujian.peserta.analisis.pivot</field>
+        <field name="model">ujian.peserta</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="paket_id" type="row"/>
+                <field name="kelas_id" type="col"/>
+                <field name="nilai" type="measure"/>
+                <field name="jumlah_benar" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_analisis_hasil_graph" model="ir.ui.view">
+        <field name="name">ujian.peserta.analisis.graph</field>
+        <field name="model">ujian.peserta</field>
+        <field name="arch" type="xml">
+            <graph type="line">
+                <field name="paket_id"/>
+                <field name="nilai" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_analisis_hasil" model="ir.actions.act_window">
+        <field name="name">Analisis Hasil Ujian</field>
+        <field name="res_model">ujian.peserta</field>
+        <field name="view_mode">pivot,graph,list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_analisis_hasil_pivot')}),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('view_analisis_hasil_graph')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_peserta_ujian_list')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_peserta_ujian_form')})]"/>
+        <field name="domain">[('state', '=', 'selesai')]</field>
+    </record>
+</odoo>

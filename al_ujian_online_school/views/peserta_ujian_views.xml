@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_peserta_ujian_list" model="ir.ui.view">
+        <field name="name">ujian.peserta.list</field>
+        <field name="model">ujian.peserta</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'belum'" decoration-warning="state == 'mengerjakan'" decoration-success="is_lulus == True" decoration-danger="state == 'selesai' and is_lulus == False">
+                <field name="paket_id"/>
+                <field name="siswa_id"/>
+                <field name="kelas_id"/>
+                <field name="state" widget="badge" decoration-info="state == 'belum'" decoration-warning="state == 'mengerjakan'" decoration-success="state == 'selesai'"/>
+                <field name="waktu_mulai"/>
+                <field name="waktu_selesai"/>
+                <field name="durasi_aktual"/>
+                <field name="jumlah_terjawab"/>
+                <field name="jumlah_benar"/>
+                <field name="nilai" decoration-success="is_lulus == True" decoration-danger="is_lulus == False"/>
+                <field name="is_lulus" widget="boolean"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_peserta_ujian_form" model="ir.ui.view">
+        <field name="name">ujian.peserta.form</field>
+        <field name="model">ujian.peserta</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_reset_ujian" type="object" string="Reset Ujian" class="btn-secondary" invisible="state == 'belum'" confirm="Yakin ingin mereset ujian? Semua jawaban akan dihapus."/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_jawaban" type="object" class="oe_stat_button" icon="fa-list-alt">
+                            <field name="jumlah_terjawab" widget="statinfo" string="Terjawab"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group string="Informasi Peserta">
+                            <field name="paket_id" readonly="1"/>
+                            <field name="siswa_id" readonly="1"/>
+                            <field name="kelas_id"/>
+                            <field name="attempt"/>
+                        </group>
+                        <group string="Waktu">
+                            <field name="waktu_mulai"/>
+                            <field name="waktu_selesai"/>
+                            <field name="waktu_deadline"/>
+                            <field name="durasi_aktual"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Hasil">
+                            <field name="jumlah_terjawab"/>
+                            <field name="jumlah_benar"/>
+                            <field name="jumlah_salah"/>
+                            <field name="nilai_mentah"/>
+                            <field name="nilai"/>
+                            <field name="is_lulus" widget="boolean"/>
+                        </group>
+                        <group string="Info Teknis">
+                            <field name="ip_address"/>
+                            <field name="browser_info"/>
+                            <field name="token" groups="base.group_no_one"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Jawaban">
+                            <field name="jawaban_ids">
+                                <list>
+                                    <field name="soal_id"/>
+                                    <field name="tipe_soal"/>
+                                    <field name="pilihan_id"/>
+                                    <field name="jawaban"/>
+                                    <field name="is_correct" widget="boolean"/>
+                                    <field name="poin_diperoleh"/>
+                                    <field name="koreksi_manual"/>
+                                    <field name="is_ragu" widget="boolean"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_peserta_ujian_pivot" model="ir.ui.view">
+        <field name="name">ujian.peserta.pivot</field>
+        <field name="model">ujian.peserta</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="kelas_id" type="row"/>
+                <field name="nilai" type="measure"/>
+                <field name="jumlah_benar" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_peserta_ujian_graph" model="ir.ui.view">
+        <field name="name">ujian.peserta.graph</field>
+        <field name="model">ujian.peserta</field>
+        <field name="arch" type="xml">
+            <graph type="bar">
+                <field name="kelas_id"/>
+                <field name="nilai" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_peserta_ujian_search" model="ir.ui.view">
+        <field name="name">ujian.peserta.search</field>
+        <field name="model">ujian.peserta</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="paket_id"/>
+                <field name="siswa_id"/>
+                <field name="kelas_id"/>
+                <separator/>
+                <filter name="belum" string="Belum Mulai" domain="[('state', '=', 'belum')]"/>
+                <filter name="mengerjakan" string="Sedang Mengerjakan" domain="[('state', '=', 'mengerjakan')]"/>
+                <filter name="selesai" string="Selesai" domain="[('state', '=', 'selesai')]"/>
+                <separator/>
+                <filter name="lulus" string="Lulus KKM" domain="[('is_lulus', '=', True)]"/>
+                <filter name="tidak_lulus" string="Tidak Lulus KKM" domain="[('is_lulus', '=', False), ('state', '=', 'selesai')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_paket" string="Paket Ujian" context="{'group_by': 'paket_id'}"/>
+                    <filter name="group_by_kelas" string="Kelas" context="{'group_by': 'kelas_id'}"/>
+                    <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_by_lulus" string="Kelulusan" context="{'group_by': 'is_lulus'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_peserta_ujian" model="ir.actions.act_window">
+        <field name="name">Peserta Ujian</field>
+        <field name="res_model">ujian.peserta</field>
+        <field name="view_mode">list,form,pivot,graph</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Belum ada peserta ujian
+            </p>
+            <p>
+                Peserta akan muncul setelah Anda melakukan generate peserta dari paket ujian.
+            </p>
+        </field>
+    </record>
+
+    <!-- Jawaban Views -->
+    <record id="view_jawaban_ujian_list" model="ir.ui.view">
+        <field name="name">ujian.jawaban.list</field>
+        <field name="model">ujian.jawaban</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="peserta_id"/>
+                <field name="soal_id"/>
+                <field name="tipe_soal"/>
+                <field name="pilihan_id"/>
+                <field name="jawaban"/>
+                <field name="is_correct" widget="boolean"/>
+                <field name="poin_diperoleh"/>
+                <field name="koreksi_manual"/>
+                <field name="poin_manual" readonly="not koreksi_manual"/>
+                <field name="komentar_guru"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_jawaban_ujian_form" model="ir.ui.view">
+        <field name="name">ujian.jawaban.form</field>
+        <field name="model">ujian.jawaban</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="peserta_id" readonly="1"/>
+                            <field name="soal_id" readonly="1"/>
+                            <field name="tipe_soal"/>
+                        </group>
+                        <group>
+                            <field name="is_correct" readonly="1"/>
+                            <field name="poin_diperoleh" readonly="1"/>
+                            <field name="koreksi_manual" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Jawaban Siswa">
+                        <field name="pilihan_id" readonly="1" invisible="tipe_soal in ['isian', 'essay', 'pg_kompleks']"/>
+                        <field name="pilihan_ids" readonly="1" widget="many2many_tags" invisible="tipe_soal != 'pg_kompleks'"/>
+                        <field name="jawaban" readonly="1" invisible="tipe_soal not in ['isian', 'essay']"/>
+                    </group>
+                    <group string="Koreksi Manual" invisible="not koreksi_manual">
+                        <field name="poin_manual"/>
+                        <field name="komentar_guru"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_jawaban_ujian_search" model="ir.ui.view">
+        <field name="name">ujian.jawaban.search</field>
+        <field name="model">ujian.jawaban</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="peserta_id"/>
+                <field name="soal_id"/>
+                <separator/>
+                <filter name="benar" string="Benar" domain="[('is_correct', '=', True)]"/>
+                <filter name="salah" string="Salah" domain="[('is_correct', '=', False)]"/>
+                <filter name="perlu_koreksi" string="Perlu Koreksi Manual" domain="[('koreksi_manual', '=', True), ('poin_manual', '=', 0)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_peserta" string="Peserta" context="{'group_by': 'peserta_id'}"/>
+                    <filter name="group_by_soal" string="Soal" context="{'group_by': 'soal_id'}"/>
+                    <filter name="group_by_benar" string="Benar/Salah" context="{'group_by': 'is_correct'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_jawaban_ujian" model="ir.actions.act_window">
+        <field name="name">Jawaban Ujian</field>
+        <field name="res_model">ujian.jawaban</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_perlu_koreksi': 1}</field>
+    </record>
+</odoo>

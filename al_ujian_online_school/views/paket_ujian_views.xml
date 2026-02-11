@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_paket_ujian_list" model="ir.ui.view">
+        <field name="name">ujian.paket.list</field>
+        <field name="model">ujian.paket</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'draft'" decoration-success="state == 'active'" decoration-muted="state in ['done', 'cancel']">
+                <field name="name"/>
+                <field name="judul"/>
+                <field name="jenis_ujian"/>
+                <field name="mata_pelajaran_id"/>
+                <field name="tanggal_mulai"/>
+                <field name="durasi"/>
+                <field name="jumlah_soal"/>
+                <field name="peserta_count"/>
+                <field name="peserta_selesai"/>
+                <field name="rata_rata"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'ready'" decoration-success="state == 'active'" decoration-muted="state in ['done', 'cancel']"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_paket_ujian_form" model="ir.ui.view">
+        <field name="name">ujian.paket.form</field>
+        <field name="model">ujian.paket</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_set_ready" type="object" string="Siapkan" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_generate_peserta" type="object" string="Generate Peserta" invisible="state != 'ready'"/>
+                    <button name="action_activate" type="object" string="Aktifkan" class="oe_highlight" invisible="state != 'ready'"/>
+                    <button name="action_done" type="object" string="Selesai" invisible="state != 'active'"/>
+                    <button name="action_cancel" type="object" string="Batalkan" invisible="state not in ['draft', 'ready']"/>
+                    <button name="action_draft" type="object" string="Reset ke Draft" invisible="state != 'cancel'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,ready,active,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_peserta" type="object" class="oe_stat_button" icon="fa-users">
+                            <field name="peserta_count" widget="statinfo" string="Peserta"/>
+                        </button>
+                        <button name="action_view_hasil" type="object" class="oe_stat_button" icon="fa-check-circle">
+                            <field name="peserta_selesai" widget="statinfo" string="Selesai"/>
+                        </button>
+                        <button class="oe_stat_button" icon="fa-trophy" disabled="1">
+                            <field name="lulus_count" widget="statinfo" string="Lulus KKM"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                        <label for="judul"/>
+                        <h2>
+                            <field name="judul" placeholder="Judul Ujian"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="jenis_ujian"/>
+                            <field name="mata_pelajaran_id"/>
+                            <field name="tahun_ajaran_id"/>
+                            <field name="guru_id"/>
+                        </group>
+                        <group>
+                            <field name="tanggal_mulai"/>
+                            <field name="tanggal_selesai"/>
+                            <field name="durasi"/>
+                            <field name="passing_grade"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="kelas_ids" widget="many2many_tags"/>
+                    </group>
+                    <notebook>
+                        <page string="Daftar Soal">
+                            <field name="soal_line_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="soal_id" options="{'no_create': True}" domain="[('mata_pelajaran_id', '=', parent.mata_pelajaran_id), ('is_active', '=', True)]"/>
+                                    <field name="tipe_soal"/>
+                                    <field name="bobot"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer">
+                                <field name="jumlah_soal"/>
+                                <field name="total_bobot" class="oe_subtotal_footer_separator"/>
+                            </group>
+                        </page>
+                        <page string="Pengaturan">
+                            <group>
+                                <group string="Pengacakan">
+                                    <field name="acak_soal"/>
+                                    <field name="acak_jawaban"/>
+                                </group>
+                                <group string="Navigasi">
+                                    <field name="satu_halaman"/>
+                                    <field name="allow_back"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Hasil">
+                                    <field name="tampilkan_hasil"/>
+                                    <field name="tampilkan_pembahasan"/>
+                                </group>
+                                <group string="Percobaan">
+                                    <field name="max_attempt"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Petunjuk">
+                            <field name="petunjuk" placeholder="Tulis petunjuk ujian di sini..."/>
+                        </page>
+                        <page string="Statistik" invisible="peserta_selesai == 0">
+                            <group>
+                                <group string="Ringkasan">
+                                    <field name="peserta_count"/>
+                                    <field name="peserta_selesai"/>
+                                    <field name="lulus_count"/>
+                                </group>
+                                <group string="Nilai">
+                                    <field name="rata_rata"/>
+                                    <field name="nilai_tertinggi"/>
+                                    <field name="nilai_terendah"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_paket_ujian_kanban" model="ir.ui.view">
+        <field name="name">ujian.paket.kanban</field>
+        <field name="model">ujian.paket</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="name"/>
+                <field name="judul"/>
+                <field name="mata_pelajaran_id"/>
+                <field name="tanggal_mulai"/>
+                <field name="durasi"/>
+                <field name="jumlah_soal"/>
+                <field name="peserta_count"/>
+                <field name="peserta_selesai"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_content">
+                            <div class="o_kanban_record_title">
+                                <strong><field name="name"/></strong>
+                            </div>
+                            <div class="o_kanban_record_subtitle">
+                                <field name="judul"/>
+                            </div>
+                            <div class="mt-1">
+                                <span class="badge bg-primary"><field name="mata_pelajaran_id"/></span>
+                            </div>
+                            <div class="mt-2">
+                                <i class="fa fa-calendar me-1"/> <field name="tanggal_mulai"/>
+                            </div>
+                            <div>
+                                <i class="fa fa-clock-o me-1"/> <field name="durasi"/> menit
+                            </div>
+                            <div>
+                                <i class="fa fa-file-text-o me-1"/> <field name="jumlah_soal"/> soal
+                            </div>
+                            <div class="mt-2">
+                                <span class="text-muted">Peserta:</span>
+                                <strong><field name="peserta_selesai"/>/<field name="peserta_count"/></strong>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_paket_ujian_calendar" model="ir.ui.view">
+        <field name="name">ujian.paket.calendar</field>
+        <field name="model">ujian.paket</field>
+        <field name="arch" type="xml">
+            <calendar string="Jadwal Ujian" date_start="tanggal_mulai" date_stop="tanggal_selesai" color="mata_pelajaran_id" mode="month">
+                <field name="judul"/>
+                <field name="mata_pelajaran_id"/>
+                <field name="kelas_ids"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_paket_ujian_search" model="ir.ui.view">
+        <field name="name">ujian.paket.search</field>
+        <field name="model">ujian.paket</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="judul"/>
+                <field name="mata_pelajaran_id"/>
+                <field name="guru_id"/>
+                <field name="tahun_ajaran_id"/>
+                <separator/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="ready" string="Siap" domain="[('state', '=', 'ready')]"/>
+                <filter name="active" string="Aktif" domain="[('state', '=', 'active')]"/>
+                <filter name="done" string="Selesai" domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <filter name="today" string="Hari Ini" domain="[('tanggal_mulai', '&gt;=', datetime.datetime.combine(context_today(), datetime.time(0, 0, 0))), ('tanggal_mulai', '&lt;', datetime.datetime.combine(context_today() + relativedelta(days=1), datetime.time(0, 0, 0)))]"/>
+                <filter name="this_week" string="Minggu Ini" domain="[('tanggal_mulai', '&gt;=', (context_today() + relativedelta(weekday=0, days=-6))), ('tanggal_mulai', '&lt;', (context_today() + relativedelta(weekday=0, weeks=1)))]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_mapel" string="Mata Pelajaran" context="{'group_by': 'mata_pelajaran_id'}"/>
+                    <filter name="group_jenis" string="Jenis Ujian" context="{'group_by': 'jenis_ujian'}"/>
+                    <filter name="group_guru" string="Guru" context="{'group_by': 'guru_id'}"/>
+                    <filter name="group_tahun" string="Tahun Ajaran" context="{'group_by': 'tahun_ajaran_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_paket_ujian" model="ir.actions.act_window">
+        <field name="name">Paket Ujian</field>
+        <field name="res_model">ujian.paket</field>
+        <field name="view_mode">list,kanban,calendar,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat paket ujian pertama
+            </p>
+            <p>
+                Buat ujian dengan menambahkan soal dari bank soal.
+            </p>
+        </field>
+    </record>
+</odoo>

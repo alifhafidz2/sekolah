@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="menu_ujian_root"
+        name="Ujian Online"
+        sequence="25"
+        web_icon="al_ujian_online_school,static/description/icon.png"/>
+
+    <!-- Main Menus -->
+    <menuitem id="menu_ujian_main"
+        name="Ujian"
+        parent="menu_ujian_root"
+        sequence="10"/>
+
+    <menuitem id="menu_bank_soal_main"
+        name="Bank Soal"
+        parent="menu_ujian_root"
+        sequence="20"/>
+
+    <menuitem id="menu_analisis_main"
+        name="Analisis"
+        parent="menu_ujian_root"
+        sequence="30"/>
+
+    <menuitem id="menu_konfigurasi_main"
+        name="Konfigurasi"
+        parent="menu_ujian_root"
+        sequence="90"
+        groups="al_ujian_online_school.group_ujian_admin"/>
+
+    <!-- Ujian Submenus -->
+    <menuitem id="menu_paket_ujian"
+        name="Paket Ujian"
+        parent="menu_ujian_main"
+        action="action_paket_ujian"
+        sequence="10"/>
+
+    <menuitem id="menu_peserta_ujian"
+        name="Peserta Ujian"
+        parent="menu_ujian_main"
+        action="action_peserta_ujian"
+        sequence="20"/>
+
+    <menuitem id="menu_jawaban_ujian"
+        name="Koreksi Jawaban"
+        parent="menu_ujian_main"
+        action="action_jawaban_ujian"
+        sequence="30"/>
+
+    <!-- Bank Soal Submenus -->
+    <menuitem id="menu_bank_soal"
+        name="Semua Soal"
+        parent="menu_bank_soal_main"
+        action="action_bank_soal"
+        sequence="10"/>
+
+    <menuitem id="menu_kategori_soal"
+        name="Kategori Soal"
+        parent="menu_bank_soal_main"
+        action="action_kategori_soal"
+        sequence="20"/>
+
+    <!-- Analisis Submenus -->
+    <menuitem id="menu_analisis_soal"
+        name="Analisis Butir Soal"
+        parent="menu_analisis_main"
+        action="action_analisis_soal"
+        sequence="10"/>
+
+    <menuitem id="menu_analisis_hasil"
+        name="Analisis Hasil Ujian"
+        parent="menu_analisis_main"
+        action="action_analisis_hasil"
+        sequence="20"/>
+</odoo>

@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Report Action: Hasil Ujian Per Siswa -->
+    <record id="action_report_hasil_ujian" model="ir.actions.report">
+        <field name="name">Hasil Ujian</field>
+        <field name="model">ujian.peserta</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">al_ujian_online_school.report_hasil_ujian</field>
+        <field name="report_file">al_ujian_online_school.report_hasil_ujian</field>
+        <field name="print_report_name">'Hasil Ujian - %s - %s' % (object.siswa_id.name, object.paket_id.judul)</field>
+        <field name="binding_model_id" ref="model_ujian_peserta"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Report Template: Hasil Ujian -->
+    <template id="report_hasil_ujian">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="company" t-value="doc.env.company"/>
+                <div class="page">
+                    <style>
+                        @page { margin: 15mm; }
+                        * { font-family: 'Segoe UI', Arial, sans-serif; box-sizing: border-box; }
+                        .report-container { width: 100%; max-width: 800px; margin: 0 auto; background: #fff; }
+                        .header-section { border-bottom: 3px solid #2563eb; padding-bottom: 20px; margin-bottom: 25px; }
+                        .header-table { width: 100%; }
+                        .logo-cell { width: 80px; vertical-align: top; }
+                        .logo-placeholder { width: 70px; height: 70px; border: 2px solid #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; font-weight: bold; font-size: 24px; }
+                        .school-info { padding-left: 15px; vertical-align: middle; }
+                        .school-name { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; }
+                        .school-tagline { font-size: 11px; color: #2563eb; margin: 2px 0 8px 0; font-weight: 500; }
+                        .school-address { font-size: 10px; color: #64748b; margin: 0; line-height: 1.5; }
+                        .report-title-cell { text-align: right; vertical-align: top; }
+                        .report-title-box { display: inline-block; text-align: center; }
+                        .report-title { font-size: 18px; font-weight: 700; color: #1e293b; margin: 0; letter-spacing: 2px; }
+                        .report-subtitle { font-size: 10px; color: #64748b; margin: 3px 0 0 0; }
+                        .exam-code-box { background: #2563eb; color: white; padding: 8px 15px; border-radius: 5px; margin-top: 10px; font-weight: 600; font-size: 11px; }
+                        .info-section { margin-bottom: 20px; }
+                        .info-table { width: 100%; }
+                        .info-left { width: 50%; vertical-align: top; padding-right: 20px; }
+                        .info-right { width: 50%; vertical-align: top; padding-left: 20px; border-left: 1px solid #e2e8f0; }
+                        .info-title { font-size: 11px; color: #2563eb; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 2px solid #2563eb; display: inline-block; }
+                        .info-name { font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 5px; }
+                        .info-detail { font-size: 11px; color: #475569; margin-bottom: 3px; }
+                        .info-detail span { color: #94a3b8; display: inline-block; width: 100px; }
+                        .stats-section { margin-bottom: 20px; }
+                        .stats-table { width: 100%; border-collapse: separate; border-spacing: 10px 0; }
+                        .stat-box { text-align: center; padding: 15px; border-radius: 8px; }
+                        .stat-box.blue { background: #eff6ff; border: 1px solid #bfdbfe; }
+                        .stat-box.green { background: #f0fdf4; border: 1px solid #bbf7d0; }
+                        .stat-box.red { background: #fef2f2; border: 1px solid #fecaca; }
+                        .stat-label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+                        .stat-value { font-size: 28px; font-weight: 700; }
+                        .stat-value.blue { color: #2563eb; }
+                        .stat-value.green { color: #16a34a; }
+                        .stat-value.red { color: #dc2626; }
+                        .score-section { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; text-align: center; margin-bottom: 20px; }
+                        .score-label { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+                        .score-value { font-size: 56px; font-weight: 700; line-height: 1; }
+                        .score-value.pass { color: #16a34a; }
+                        .score-value.fail { color: #dc2626; }
+                        .status-badge { display: inline-block; padding: 8px 25px; border-radius: 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-top: 12px; }
+                        .status-badge.pass { background: #dcfce7; color: #166534; }
+                        .status-badge.fail { background: #fee2e2; color: #991b1b; }
+                        .kkm-info { font-size: 12px; color: #64748b; margin-top: 12px; }
+                        .detail-section { margin-bottom: 20px; }
+                        .section-title { font-size: 12px; color: #1e293b; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0; }
+                        .detail-table { width: 100%; border-collapse: collapse; }
+                        .detail-table thead th { background: #f1f5f9; padding: 10px 12px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #475569; font-weight: 600; text-align: left; border-bottom: 2px solid #2563eb; }
+                        .detail-table thead th:last-child { text-align: center; }
+                        .detail-table tbody td { padding: 10px 12px; font-size: 11px; color: #334155; border-bottom: 1px solid #e2e8f0; }
+                        .detail-table tbody td:last-child { text-align: center; }
+                        .detail-table tbody tr:nth-child(even) { background: #f8fafc; }
+                        .badge-benar { background: #dcfce7; color: #166534; padding: 3px 10px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+                        .badge-salah { background: #fee2e2; color: #991b1b; padding: 3px 10px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+                        .footer-section { margin-top: 30px; }
+                        .footer-table { width: 100%; }
+                        .footer-notes { width: 55%; vertical-align: top; }
+                        .footer-signature { width: 45%; vertical-align: top; text-align: center; }
+                        .notes-title { font-size: 10px; color: #2563eb; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 8px; }
+                        .notes-list { font-size: 9px; color: #64748b; line-height: 1.8; }
+                        .signature-date { font-size: 11px; color: #334155; margin-bottom: 5px; }
+                        .signature-title { font-size: 11px; color: #64748b; margin-bottom: 50px; }
+                        .signature-line { border-bottom: 1px solid #334155; width: 160px; margin: 0 auto 5px auto; }
+                        .signature-name { font-size: 12px; font-weight: 600; color: #1e293b; }
+                        .signature-role { font-size: 9px; color: #94a3b8; }
+                        .footer-bottom { margin-top: 25px; padding-top: 12px; border-top: 1px solid #e2e8f0; text-align: center; }
+                        .footer-text { font-size: 9px; color: #94a3b8; }
+                    </style>
+
+                    <div class="report-container">
+                        <div class="header-section">
+                            <table class="header-table">
+                                <tr>
+                                    <td class="logo-cell">
+                                        <t t-if="company.logo">
+                                            <img t-att-src="image_data_uri(company.logo)" style="max-width: 70px; max-height: 70px;"/>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="logo-placeholder">
+                                                <t t-esc="company.name[:2].upper()"/>
+                                            </div>
+                                        </t>
+                                    </td>
+                                    <td class="school-info">
+                                        <p class="school-name"><t t-esc="company.name"/></p>
+                                        <p class="school-tagline">Lembaga Pendidikan Terakreditasi</p>
+                                        <p class="school-address">
+                                            <t t-if="company.street"><t t-esc="company.street"/></t>
+                                            <t t-if="company.city">, <t t-esc="company.city"/></t>
+                                            <t t-if="company.zip"> <t t-esc="company.zip"/></t>
+                                            <t t-if="company.phone"><br/>Telp: <t t-esc="company.phone"/></t>
+                                            <t t-if="company.email"> | Email: <t t-esc="company.email"/></t>
+                                        </p>
+                                    </td>
+                                    <td class="report-title-cell">
+                                        <div class="report-title-box">
+                                            <p class="report-title">HASIL UJIAN</p>
+                                            <p class="report-subtitle">Laporan Nilai Peserta Didik</p>
+                                            <div class="exam-code-box">
+                                                <span t-field="doc.paket_id.name"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="info-section">
+                            <table class="info-table">
+                                <tr>
+                                    <td class="info-left">
+                                        <div class="info-title">Data Peserta</div>
+                                        <div class="info-name"><span t-field="doc.siswa_id.name"/></div>
+                                        <div class="info-detail"><span>NIS</span>: <span t-field="doc.siswa_id.nis"/></div>
+                                        <div class="info-detail"><span>Kelas</span>: <span t-field="doc.kelas_id.name"/></div>
+                                    </td>
+                                    <td class="info-right">
+                                        <div class="info-title">Informasi Ujian</div>
+                                        <div class="info-name"><span t-field="doc.paket_id.judul"/></div>
+                                        <div class="info-detail"><span>Mata Pelajaran</span>: <span t-field="doc.paket_id.mata_pelajaran_id.name"/></div>
+                                        <div class="info-detail"><span>Jenis Ujian</span>: <span t-field="doc.paket_id.jenis_ujian"/></div>
+                                        <div class="info-detail"><span>Waktu Ujian</span>: <span t-field="doc.waktu_mulai" t-options="{'widget': 'datetime', 'format': 'dd/MM/yyyy HH:mm'}"/></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="stats-section">
+                            <table class="stats-table">
+                                <tr>
+                                    <td width="33%"><div class="stat-box blue"><div class="stat-label">Jumlah Soal</div><div class="stat-value blue"><t t-esc="doc.paket_id.jumlah_soal"/></div></div></td>
+                                    <td width="33%"><div class="stat-box green"><div class="stat-label">Jawaban Benar</div><div class="stat-value green"><t t-esc="doc.jumlah_benar"/></div></div></td>
+                                    <td width="33%"><div class="stat-box red"><div class="stat-label">Jawaban Salah</div><div class="stat-value red"><t t-esc="doc.jumlah_salah"/></div></div></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="score-section">
+                            <div class="score-label">Nilai Akhir</div>
+                            <t t-if="doc.is_lulus">
+                                <div class="score-value pass"><t t-esc="'%.1f' % doc.nilai"/></div>
+                                <div class="status-badge pass">LULUS</div>
+                            </t>
+                            <t t-else="">
+                                <div class="score-value fail"><t t-esc="'%.1f' % doc.nilai"/></div>
+                                <div class="status-badge fail">BELUM LULUS</div>
+                            </t>
+                            <div class="kkm-info">KKM: <strong><t t-esc="doc.paket_id.passing_grade"/></strong></div>
+                        </div>
+
+                        <t t-if="doc.paket_id.tampilkan_pembahasan">
+                            <div class="detail-section">
+                                <div class="section-title">Detail Jawaban</div>
+                                <table class="detail-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 8%;">No</th>
+                                            <th style="width: 20%;">Tipe Soal</th>
+                                            <th style="width: 52%;">Jawaban</th>
+                                            <th style="width: 20%;">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="doc.jawaban_ids" t-as="jw">
+                                            <tr>
+                                                <td t-esc="jw_index + 1"/>
+                                                <td t-esc="jw.tipe_soal"/>
+                                                <td>
+                                                    <t t-if="jw.pilihan_id"><t t-esc="jw.pilihan_id.label"/></t>
+                                                    <t t-elif="jw.jawaban"><t t-esc="jw.jawaban[:80]"/></t>
+                                                    <t t-else=""><em style="color: #94a3b8;">-</em></t>
+                                                </td>
+                                                <td>
+                                                    <t t-if="jw.is_correct"><span class="badge-benar">Benar</span></t>
+                                                    <t t-else=""><span class="badge-salah">Salah</span></t>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+
+                        <div class="footer-section">
+                            <table class="footer-table">
+                                <tr>
+                                    <td class="footer-notes">
+                                        <div class="notes-title">Catatan</div>
+                                        <div class="notes-list">
+                                            1. Dokumen ini adalah hasil ujian resmi yang dikeluarkan oleh sistem<br/>
+                                            2. Nilai telah dihitung secara otomatis oleh sistem<br/>
+                                            3. Hubungi guru pengampu jika ada pertanyaan
+                                        </div>
+                                    </td>
+                                    <td class="footer-signature">
+                                        <div class="signature-date">
+                                            <t t-esc="company.city or ''"/>, <span t-esc="datetime.datetime.now().strftime('%d %B %Y')"/>
+                                        </div>
+                                        <div class="signature-title">Guru Pengampu,</div>
+                                        <div class="signature-line"></div>
+                                        <div class="signature-name"><span t-field="doc.paket_id.guru_id.name"/></div>
+                                        <div class="signature-role">NIP. -</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="footer-bottom">
+                            <p class="footer-text">
+                                Dokumen ini dicetak secara otomatis oleh sistem<br/>
+                                <strong style="color: #2563eb;"><t t-esc="company.name"/></strong> - Sistem Ujian Online
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Report Action: Rekap Hasil Ujian Per Paket -->
+    <record id="action_report_rekap_ujian" model="ir.actions.report">
+        <field name="name">Rekap Hasil Ujian</field>
+        <field name="model">ujian.paket</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">al_ujian_online_school.report_rekap_ujian</field>
+        <field name="report_file">al_ujian_online_school.report_rekap_ujian</field>
+        <field name="print_report_name">'Rekap Ujian - %s' % object.judul</field>
+        <field name="binding_model_id" ref="model_ujian_paket"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Report Template: Rekap Hasil Ujian -->
+    <template id="report_rekap_ujian">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="company" t-value="doc.env.company"/>
+                <div class="page">
+                    <style>
+                        @page { margin: 15mm; }
+                        * { font-family: 'Segoe UI', Arial, sans-serif; box-sizing: border-box; }
+                        .report-container { width: 100%; max-width: 800px; margin: 0 auto; background: #fff; }
+                        .header-section { border-bottom: 3px solid #2563eb; padding-bottom: 20px; margin-bottom: 25px; }
+                        .header-table { width: 100%; }
+                        .logo-cell { width: 80px; vertical-align: top; }
+                        .logo-placeholder { width: 70px; height: 70px; border: 2px solid #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; font-weight: bold; font-size: 24px; }
+                        .school-info { padding-left: 15px; vertical-align: middle; }
+                        .school-name { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; }
+                        .school-tagline { font-size: 11px; color: #2563eb; margin: 2px 0 8px 0; font-weight: 500; }
+                        .school-address { font-size: 10px; color: #64748b; margin: 0; line-height: 1.5; }
+                        .report-title-cell { text-align: right; vertical-align: top; }
+                        .report-title-box { display: inline-block; text-align: center; }
+                        .report-title { font-size: 16px; font-weight: 700; color: #1e293b; margin: 0; letter-spacing: 2px; }
+                        .report-subtitle { font-size: 10px; color: #64748b; margin: 3px 0 0 0; }
+                        .exam-code-box { background: #2563eb; color: white; padding: 8px 15px; border-radius: 5px; margin-top: 10px; font-weight: 600; font-size: 11px; }
+                        .info-section { margin-bottom: 20px; }
+                        .info-table { width: 100%; }
+                        .info-left { width: 50%; vertical-align: top; padding-right: 20px; }
+                        .info-right { width: 50%; vertical-align: top; padding-left: 20px; border-left: 1px solid #e2e8f0; }
+                        .info-title { font-size: 11px; color: #2563eb; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 2px solid #2563eb; display: inline-block; }
+                        .info-name { font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 5px; }
+                        .info-detail { font-size: 11px; color: #475569; margin-bottom: 3px; }
+                        .info-detail span { color: #94a3b8; display: inline-block; width: 100px; }
+                        .stats-section { margin-bottom: 20px; }
+                        .stats-table { width: 100%; border-collapse: separate; border-spacing: 8px 0; }
+                        .stat-box { text-align: center; padding: 12px 8px; border-radius: 8px; }
+                        .stat-box.blue { background: #eff6ff; border: 1px solid #bfdbfe; }
+                        .stat-box.cyan { background: #ecfeff; border: 1px solid #a5f3fc; }
+                        .stat-box.green { background: #f0fdf4; border: 1px solid #bbf7d0; }
+                        .stat-box.red { background: #fef2f2; border: 1px solid #fecaca; }
+                        .stat-label { font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+                        .stat-value { font-size: 24px; font-weight: 700; }
+                        .stat-value.blue { color: #2563eb; }
+                        .stat-value.cyan { color: #0891b2; }
+                        .stat-value.green { color: #16a34a; }
+                        .stat-value.red { color: #dc2626; }
+                        .detail-section { margin-bottom: 20px; }
+                        .section-title { font-size: 12px; color: #1e293b; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0; }
+                        .detail-table { width: 100%; border-collapse: collapse; }
+                        .detail-table thead th { background: #f1f5f9; padding: 10px 8px; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: #475569; font-weight: 600; text-align: left; border-bottom: 2px solid #2563eb; }
+                        .detail-table thead th.center { text-align: center; }
+                        .detail-table tbody td { padding: 8px; font-size: 11px; color: #334155; border-bottom: 1px solid #e2e8f0; }
+                        .detail-table tbody td.center { text-align: center; }
+                        .detail-table tbody tr:nth-child(even) { background: #f8fafc; }
+                        .badge-lulus { background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 10px; font-size: 9px; font-weight: 600; }
+                        .badge-tidak-lulus { background: #fee2e2; color: #991b1b; padding: 3px 8px; border-radius: 10px; font-size: 9px; font-weight: 600; }
+                        .nilai-lulus { color: #16a34a; font-weight: 700; }
+                        .nilai-tidak-lulus { color: #dc2626; font-weight: 700; }
+                        .legend-section { background: #f8fafc; border-radius: 6px; padding: 10px 15px; margin-bottom: 20px; }
+                        .legend-text { font-size: 10px; color: #64748b; }
+                        .footer-section { margin-top: 30px; }
+                        .footer-table { width: 100%; }
+                        .footer-notes { width: 55%; vertical-align: top; }
+                        .footer-signature { width: 45%; vertical-align: top; text-align: center; }
+                        .notes-title { font-size: 10px; color: #2563eb; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 8px; }
+                        .notes-list { font-size: 9px; color: #64748b; line-height: 1.8; }
+                        .signature-date { font-size: 11px; color: #334155; margin-bottom: 5px; }
+                        .signature-title { font-size: 11px; color: #64748b; margin-bottom: 50px; }
+                        .signature-line { border-bottom: 1px solid #334155; width: 160px; margin: 0 auto 5px auto; }
+                        .signature-name { font-size: 12px; font-weight: 600; color: #1e293b; }
+                        .signature-role { font-size: 9px; color: #94a3b8; }
+                        .footer-bottom { margin-top: 25px; padding-top: 12px; border-top: 1px solid #e2e8f0; text-align: center; }
+                        .footer-text { font-size: 9px; color: #94a3b8; }
+                    </style>
+
+                    <div class="report-container">
+                        <div class="header-section">
+                            <table class="header-table">
+                                <tr>
+                                    <td class="logo-cell">
+                                        <t t-if="company.logo">
+                                            <img t-att-src="image_data_uri(company.logo)" style="max-width: 70px; max-height: 70px;"/>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="logo-placeholder">
+                                                <t t-esc="company.name[:2].upper()"/>
+                                            </div>
+                                        </t>
+                                    </td>
+                                    <td class="school-info">
+                                        <p class="school-name"><t t-esc="company.name"/></p>
+                                        <p class="school-tagline">Lembaga Pendidikan Terakreditasi</p>
+                                        <p class="school-address">
+                                            <t t-if="company.street"><t t-esc="company.street"/></t>
+                                            <t t-if="company.city">, <t t-esc="company.city"/></t>
+                                            <t t-if="company.zip"> <t t-esc="company.zip"/></t>
+                                            <t t-if="company.phone"><br/>Telp: <t t-esc="company.phone"/></t>
+                                            <t t-if="company.email"> | Email: <t t-esc="company.email"/></t>
+                                        </p>
+                                    </td>
+                                    <td class="report-title-cell">
+                                        <div class="report-title-box">
+                                            <p class="report-title">REKAP HASIL UJIAN</p>
+                                            <p class="report-subtitle">Rekapitulasi Nilai Peserta</p>
+                                            <div class="exam-code-box">
+                                                <span t-field="doc.name"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="info-section">
+                            <table class="info-table">
+                                <tr>
+                                    <td class="info-left">
+                                        <div class="info-title">Informasi Ujian</div>
+                                        <div class="info-name"><span t-field="doc.judul"/></div>
+                                        <div class="info-detail"><span>Mata Pelajaran</span>: <span t-field="doc.mata_pelajaran_id.name"/></div>
+                                        <div class="info-detail"><span>Jenis Ujian</span>: <span t-field="doc.jenis_ujian"/></div>
+                                        <div class="info-detail"><span>Tahun Ajaran</span>: <span t-field="doc.tahun_ajaran_id.name"/></div>
+                                    </td>
+                                    <td class="info-right">
+                                        <div class="info-title">Pengaturan Ujian</div>
+                                        <div class="info-detail"><span>Guru Pengampu</span>: <span t-field="doc.guru_id.name"/></div>
+                                        <div class="info-detail"><span>Periode</span>: <span t-field="doc.tanggal_mulai" t-options="{'widget': 'date', 'format': 'dd/MM/yyyy'}"/> - <span t-field="doc.tanggal_selesai" t-options="{'widget': 'date', 'format': 'dd/MM/yyyy'}"/></div>
+                                        <div class="info-detail"><span>KKM</span>: <strong><span t-field="doc.passing_grade"/></strong></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="stats-section">
+                            <table class="stats-table">
+                                <tr>
+                                    <td width="25%"><div class="stat-box blue"><div class="stat-label">Total Peserta</div><div class="stat-value blue"><t t-esc="doc.peserta_count"/></div></div></td>
+                                    <td width="25%"><div class="stat-box cyan"><div class="stat-label">Rata-rata</div><div class="stat-value cyan"><t t-esc="'%.1f' % doc.rata_rata"/></div></div></td>
+                                    <td width="25%"><div class="stat-box green"><div class="stat-label">Lulus</div><div class="stat-value green"><t t-esc="doc.lulus_count"/></div></div></td>
+                                    <td width="25%"><div class="stat-box red"><div class="stat-label">Tidak Lulus</div><div class="stat-value red"><t t-esc="doc.peserta_selesai - doc.lulus_count"/></div></div></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="detail-section">
+                            <div class="section-title">Daftar Nilai Peserta</div>
+                            <table class="detail-table">
+                                <thead>
+                                    <tr>
+                                        <th class="center" style="width: 5%;">No</th>
+                                        <th class="center" style="width: 12%;">NIS</th>
+                                        <th style="width: 30%;">Nama Siswa</th>
+                                        <th class="center" style="width: 13%;">Kelas</th>
+                                        <th class="center" style="width: 10%;">Benar</th>
+                                        <th class="center" style="width: 10%;">Salah</th>
+                                        <th class="center" style="width: 10%;">Nilai</th>
+                                        <th class="center" style="width: 10%;">Ket</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="doc.peserta_ids.filtered(lambda p: p.state == 'selesai').sorted(lambda p: (-p.nilai, p.siswa_id.name))" t-as="p">
+                                        <tr>
+                                            <td class="center" t-esc="p_index + 1"/>
+                                            <td class="center"><t t-esc="p.siswa_id.nis"/></td>
+                                            <td><t t-esc="p.siswa_id.name"/></td>
+                                            <td class="center"><t t-esc="p.kelas_id.name"/></td>
+                                            <td class="center" style="color: #16a34a;"><t t-esc="p.jumlah_benar"/></td>
+                                            <td class="center" style="color: #dc2626;"><t t-esc="p.jumlah_salah"/></td>
+                                            <td class="center" t-attf-class="#{p.is_lulus and 'nilai-lulus' or 'nilai-tidak-lulus'}">
+                                                <t t-esc="'%.1f' % p.nilai"/>
+                                            </td>
+                                            <td class="center">
+                                                <t t-if="p.is_lulus"><span class="badge-lulus">LULUS</span></t>
+                                                <t t-else=""><span class="badge-tidak-lulus">TL</span></t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="legend-section">
+                            <span class="legend-text">Keterangan: </span>
+                            <span class="badge-lulus" style="margin-left: 10px;">LULUS</span>
+                            <span class="legend-text"> = Lulus (Nilai &gt;= KKM) | </span>
+                            <span class="badge-tidak-lulus">TL</span>
+                            <span class="legend-text"> = Tidak Lulus (Nilai &lt; KKM)</span>
+                        </div>
+
+                        <div class="footer-section">
+                            <table class="footer-table">
+                                <tr>
+                                    <td class="footer-notes">
+                                        <div class="notes-title">Catatan</div>
+                                        <div class="notes-list">
+                                            1. Dokumen ini adalah rekap hasil ujian resmi<br/>
+                                            2. Nilai telah dihitung secara otomatis oleh sistem<br/>
+                                            3. Daftar diurutkan berdasarkan nilai tertinggi
+                                        </div>
+                                    </td>
+                                    <td class="footer-signature">
+                                        <div class="signature-date">
+                                            <t t-esc="company.city or ''"/>, <span t-esc="datetime.datetime.now().strftime('%d %B %Y')"/>
+                                        </div>
+                                        <div class="signature-title">Guru Pengampu,</div>
+                                        <div class="signature-line"></div>
+                                        <div class="signature-name"><span t-field="doc.guru_id.name"/></div>
+                                        <div class="signature-role">NIP. -</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="footer-bottom">
+                            <p class="footer-text">
+                                Dokumen ini dicetak secara otomatis oleh sistem<br/>
+                                <strong style="color: #2563eb;"><t t-esc="company.name"/></strong> - Sistem Ujian Online
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

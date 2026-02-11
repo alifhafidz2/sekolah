@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add Lihat Ujian button to Portal Siswa -->
+    <template id="portal_siswa_ujian_button" name="Portal Siswa - Ujian Button" inherit_id="sistem_sekolah_odoo18.portal_siswa_profile" priority="20">
+        <xpath expr="//div[hasclass('profile-actions')]/a[contains(@href, '/my/siswa/absensi')]" position="after">
+            <a href="/my/ujian" class="btn-luxury btn-luxury-warning">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 11l3 3L22 4"/>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                </svg>
+                Lihat Ujian
+            </a>
+        </xpath>
+    </template>
+
+    <!-- Portal Home Counter -->
+    <template id="portal_my_home_ujian" name="Portal My Home - Ujian" inherit_id="portal.portal_my_home" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_client_category_enable" t-value="True"/>
+        </xpath>
+        <div id="portal_client_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/al_ujian_online_school/static/description/icon.png'"/>
+                <t t-set="title">Ujian Online</t>
+                <t t-set="url" t-value="'/my/ujian'"/>
+                <t t-set="text">Lihat dan kerjakan ujian</t>
+                <t t-set="placeholder_count" t-value="'ujian_count'"/>
+            </t>
+        </div>
+    </template>
+
+    <!-- No Siswa Template -->
+    <template id="portal_no_siswa" name="Portal - No Siswa">
+        <t t-call="portal.portal_layout">
+            <div class="container py-5">
+                <div class="alert alert-warning text-center">
+                    <h4>Akun Anda Belum Terhubung</h4>
+                    <p>Akun Anda belum terhubung dengan data siswa. Silakan hubungi administrator.</p>
+                    <a href="/my" class="btn btn-primary">Kembali</a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Error Template -->
+    <template id="portal_ujian_error" name="Portal - Ujian Error">
+        <t t-call="portal.portal_layout">
+            <div class="container py-5">
+                <div class="alert alert-danger text-center">
+                    <h4>Terjadi Kesalahan</h4>
+                    <p t-esc="error"/>
+                    <a href="/my/ujian" class="btn btn-primary">Kembali</a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Ujian List -->
+    <template id="portal_ujian_list" name="Portal - Daftar Ujian">
+        <t t-call="portal.portal_layout">
+            <div class="ujian-portal-wrapper">
+                <div class="container py-4">
+                    <div class="ujian-header">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8">
+                                <h1 class="ujian-title">Ujian Online</h1>
+                                <p class="ujian-subtitle">
+                                    <t t-out="siswa.name"/> - <t t-out="siswa.kelas_id.name if siswa.kelas_id else '-'"/>
+                                </p>
+                            </div>
+                            <div class="col-lg-4 text-lg-end">
+                                <div class="ujian-stats-box">
+                                    <span class="label">Total Ujian</span>
+                                    <span class="count"><t t-out="len(peserta_list)"/></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ujian-list">
+                        <t t-if="peserta_list">
+                            <t t-foreach="peserta_list" t-as="peserta">
+                                <div t-attf-class="ujian-card #{peserta.state}">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-6">
+                                            <div class="ujian-info">
+                                                <div class="ujian-jenis" t-out="peserta.paket_id.jenis_ujian"/>
+                                                <div class="ujian-judul" t-out="peserta.paket_id.judul"/>
+                                                <div class="ujian-meta">
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                                        <t t-out="peserta.paket_id.mata_pelajaran_id.name"/>
+                                                    </span>
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                                        <t t-out="peserta.paket_id.durasi"/> menit
+                                                    </span>
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                                        <t t-out="peserta.paket_id.jumlah_soal"/> soal
+                                                    </span>
+                                                </div>
+                                                <div class="ujian-waktu">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                                    <t t-out="format_datetime_tz(peserta.paket_id.tanggal_mulai, None, '%d %b %Y %H:%M')"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <t t-if="peserta.state == 'selesai' and peserta.paket_id.tampilkan_hasil">
+                                                <div class="ujian-nilai-box">
+                                                    <span class="nilai-label">Nilai</span>
+                                                    <span t-attf-class="nilai-value #{peserta.is_lulus and 'lulus' or 'tidak-lulus'}">
+                                                        <t t-out="'%.1f' % peserta.nilai"/>
+                                                    </span>
+                                                </div>
+                                            </t>
+                                        </div>
+                                        <div class="col-lg-3 text-lg-end">
+                                            <span t-attf-class="ujian-status #{peserta.state}">
+                                                <t t-if="peserta.state == 'belum'">Belum Dikerjakan</t>
+                                                <t t-if="peserta.state == 'mengerjakan'">Sedang Mengerjakan</t>
+                                                <t t-if="peserta.state == 'selesai'">Selesai</t>
+                                            </span>
+                                            <a t-attf-href="/my/ujian/#{peserta.id}" t-attf-class="btn-ujian #{peserta.state == 'mengerjakan' and 'continue' or ''}">
+                                                <t t-if="peserta.state == 'selesai'">Lihat Hasil</t>
+                                                <t t-elif="peserta.state == 'mengerjakan'">Lanjutkan</t>
+                                                <t t-else="">Detail</t>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <div class="ujian-empty">
+                                <div class="empty-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M9 11l3 3L22 4"/>
+                                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                                    </svg>
+                                </div>
+                                <h4>Belum ada ujian</h4>
+                                <p>Ujian yang tersedia akan muncul di sini.</p>
+                            </div>
+                        </t>
+                    </div>
+
+                    <t t-if="pager">
+                        <div class="ujian-pager">
+                            <t t-call="portal.pager"/>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Ujian Detail -->
+    <template id="portal_ujian_detail" name="Portal - Detail Ujian">
+        <t t-call="portal.portal_layout">
+            <div class="ujian-portal-wrapper">
+                <div class="container py-4">
+                    <div class="ujian-breadcrumb">
+                        <a href="/my/ujian">Ujian Online</a>
+                        <span class="separator">/</span>
+                        <span><t t-out="paket.judul"/></span>
+                    </div>
+
+                    <div class="ujian-detail-card">
+                        <div class="ujian-detail-header">
+                            <div class="row align-items-center">
+                                <div class="col-lg-8">
+                                    <h2><t t-out="paket.judul"/></h2>
+                                    <p class="mapel-info"><t t-out="paket.mata_pelajaran_id.name"/> - <t t-out="paket.jenis_ujian"/></p>
+                                </div>
+                                <div class="col-lg-4 text-lg-end">
+                                    <span t-attf-class="ujian-status large #{peserta.state}">
+                                        <t t-if="peserta.state == 'belum'">Belum Dikerjakan</t>
+                                        <t t-if="peserta.state == 'mengerjakan'">Sedang Mengerjakan</t>
+                                        <t t-if="peserta.state == 'selesai'">Selesai</t>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ujian-detail-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="detail-section">
+                                        <h4>Informasi Ujian</h4>
+                                        <table class="detail-table">
+                                            <tr>
+                                                <td>Guru Pengampu</td>
+                                                <td><t t-out="paket.guru_id.name if paket.guru_id else '-'"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Durasi</td>
+                                                <td><t t-out="paket.durasi"/> menit</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Jumlah Soal</td>
+                                                <td><t t-out="paket.jumlah_soal"/> soal</td>
+                                            </tr>
+                                            <tr>
+                                                <td>KKM</td>
+                                                <td><t t-out="paket.passing_grade"/></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="detail-section">
+                                        <h4>Jadwal Ujian</h4>
+                                        <table class="detail-table">
+                                            <tr>
+                                                <td>Waktu Mulai</td>
+                                                <td><t t-out="format_datetime_tz(paket.tanggal_mulai)"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Waktu Selesai</td>
+                                                <td><t t-out="format_datetime_tz(paket.tanggal_selesai)"/></td>
+                                            </tr>
+                                            <t t-if="paket.max_attempt > 0">
+                                                <tr>
+                                                    <td>Percobaan</td>
+                                                    <td><t t-out="peserta.attempt"/> / <t t-out="paket.max_attempt"/></td>
+                                                </tr>
+                                            </t>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <t t-if="paket.petunjuk">
+                                <div class="ujian-petunjuk">
+                                    <h5>Petunjuk Ujian</h5>
+                                    <div t-raw="paket.petunjuk"/>
+                                </div>
+                            </t>
+                        </div>
+
+                        <div class="ujian-detail-footer">
+                            <a href="/my/ujian" class="btn btn-secondary">Kembali</a>
+                            <div>
+                                <t t-if="peserta.state == 'selesai'">
+                                    <a t-attf-href="/my/ujian/#{peserta.id}/result" class="btn-ujian">Lihat Hasil</a>
+                                </t>
+                                <t t-elif="peserta.state == 'mengerjakan'">
+                                    <a t-attf-href="/my/ujian/#{peserta.id}/exam" class="btn-ujian continue">Lanjutkan Ujian</a>
+                                </t>
+                                <t t-elif="can_start">
+                                    <a t-attf-href="/my/ujian/#{peserta.id}/start" class="btn-ujian start" onclick="return confirm('Yakin ingin memulai ujian? Timer akan langsung berjalan.')">Mulai Ujian</a>
+                                </t>
+                                <t t-elif="now &lt; paket.tanggal_mulai">
+                                    <span class="text-muted">Ujian belum dimulai</span>
+                                </t>
+                                <t t-elif="now > paket.tanggal_selesai">
+                                    <span class="text-danger">Waktu ujian sudah berakhir</span>
+                                </t>
+                                <t t-else="">
+                                    <span class="text-warning">Tidak dapat mengerjakan ujian</span>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Ujian Exam Page -->
+    <template id="portal_ujian_exam" name="Portal - Halaman Ujian">
+        <t t-call="portal.portal_layout">
+            <t t-set="no_footer" t-value="True"/>
+            <div class="ujian-exam-container">
+                <!-- Header dengan Timer -->
+                <div class="ujian-exam-header text-white p-3 sticky-top">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <h5 class="mb-0" t-esc="paket.judul"/>
+                            </div>
+                            <div class="col text-center">
+                                <span class="badge bg-light text-dark">
+                                    Soal <t t-esc="soal_idx + 1"/> dari <t t-esc="total_soal"/>
+                                </span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="timer-display" id="timer">
+                                    <i class="fa fa-clock-o me-2"/>
+                                    <span id="timer-text">--:--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-fluid py-4">
+                    <div class="row">
+                        <!-- Navigasi Soal (Sidebar) -->
+                        <div class="col-md-3 col-lg-2 mb-4">
+                            <div class="card shadow-sm">
+                                <div class="card-header">
+                                    <strong>Navigasi Soal</strong>
+                                </div>
+                                <div class="card-body p-2">
+                                    <div class="soal-nav-grid">
+                                        <t t-foreach="jawaban_list" t-as="jw">
+                                            <a t-attf-href="/my/ujian/#{peserta.id}/exam?soal_idx=#{jw_index}"
+                                               t-attf-class="soal-nav-item #{jw_index == soal_idx and 'active' or ''} #{(jw.pilihan_id or jw.jawaban) and 'answered' or ''} #{jw.is_ragu and 'ragu' or ''}">
+                                                <t t-esc="jw_index + 1"/>
+                                            </a>
+                                        </t>
+                                    </div>
+                                    <div class="mt-3 small">
+                                        <div><span class="soal-nav-legend answered"></span> Terjawab</div>
+                                        <div><span class="soal-nav-legend ragu"></span> Ragu-ragu</div>
+                                        <div><span class="soal-nav-legend"></span> Belum dijawab</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <form t-attf-action="/my/ujian/#{peserta.id}/submit" method="POST" class="mt-3" onsubmit="return confirm('Yakin ingin mengakhiri ujian? Jawaban yang belum tersimpan akan hilang.')">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <button type="submit" class="btn btn-danger w-100">
+                                    <i class="fa fa-stop me-2"/>Akhiri Ujian
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Konten Soal -->
+                        <div class="col-md-9 col-lg-10">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <t t-if="current_soal">
+                                        <div class="soal-header mb-3">
+                                            <span class="badge bg-primary me-2" t-esc="current_soal.tipe_soal"/>
+                                            <span t-attf-class="badge #{current_soal.tingkat_kesulitan == 'mudah' and 'bg-success' or current_soal.tingkat_kesulitan == 'sedang' and 'bg-warning' or 'bg-danger'}">
+                                                <t t-esc="current_soal.tingkat_kesulitan"/>
+                                            </span>
+                                            <span class="float-end text-muted">Bobot: <t t-esc="current_soal.bobot"/></span>
+                                        </div>
+                                        <div class="soal-pertanyaan mb-4">
+                                            <h5>Soal <t t-esc="soal_idx + 1"/></h5>
+                                            <div t-raw="current_soal.pertanyaan"/>
+                                            <t t-if="current_soal.gambar">
+                                                <img t-att-src="'/web/image/ujian.bank_soal/%s/gambar' % current_soal.id" class="img-fluid mt-2" style="max-height: 300px;"/>
+                                            </t>
+                                        </div>
+
+                                        <div class="soal-jawaban mb-4">
+                                            <!-- Pilihan Ganda -->
+                                            <t t-if="current_soal.tipe_soal in ['pg', 'benar_salah']">
+                                                <div class="pilihan-list">
+                                                    <t t-foreach="pilihan_list" t-as="pil">
+                                                        <div class="pilihan-item" t-att-data-pilihan-id="pil.id">
+                                                            <label class="pilihan-label">
+                                                                <input type="radio" name="pilihan" t-att-value="pil.id" t-att-checked="current_jawaban.pilihan_id.id == pil.id and 'checked'"/>
+                                                                <span class="pilihan-letter" t-esc="pil.label"/>
+                                                                <span class="pilihan-text" t-raw="pil.teks"/>
+                                                            </label>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </t>
+
+                                            <!-- Pilihan Ganda Kompleks -->
+                                            <t t-if="current_soal.tipe_soal == 'pg_kompleks'">
+                                                <p class="text-muted mb-2"><em>Pilih semua jawaban yang benar</em></p>
+                                                <div class="pilihan-list">
+                                                    <t t-foreach="pilihan_list" t-as="pil">
+                                                        <div class="pilihan-item" t-att-data-pilihan-id="pil.id">
+                                                            <label class="pilihan-label">
+                                                                <input type="checkbox" name="pilihan_kompleks" t-att-value="pil.id" t-att-checked="pil.id in current_jawaban.pilihan_ids.ids and 'checked'"/>
+                                                                <span class="pilihan-letter" t-esc="pil.label"/>
+                                                                <span class="pilihan-text" t-raw="pil.teks"/>
+                                                            </label>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </t>
+
+                                            <!-- Isian Singkat -->
+                                            <t t-if="current_soal.tipe_soal == 'isian'">
+                                                <input type="text" class="form-control" id="jawaban_isian" placeholder="Ketik jawaban Anda..." t-att-value="current_jawaban.jawaban or ''"/>
+                                            </t>
+
+                                            <!-- Essay -->
+                                            <t t-if="current_soal.tipe_soal == 'essay'">
+                                                <textarea class="form-control" id="jawaban_essay" rows="8" placeholder="Tulis jawaban Anda..."><t t-esc="current_jawaban.jawaban or ''"/></textarea>
+                                            </t>
+                                        </div>
+
+                                        <div class="soal-actions">
+                                            <div class="form-check mb-3">
+                                                <input type="checkbox" class="form-check-input" id="ragu_checkbox" t-att-checked="current_jawaban.is_ragu and 'checked'"/>
+                                                <label class="form-check-label" for="ragu_checkbox">Tandai ragu-ragu</label>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <t t-if="soal_idx > 0 and paket.allow_back">
+                                                <button type="button" class="btn btn-secondary btn-nav-prev" t-att-data-target-idx="soal_idx - 1">
+                                                    <i class="fa fa-arrow-left me-2"/>Sebelumnya
+                                                </button>
+                                            </t>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <t t-if="soal_idx &lt; total_soal - 1">
+                                                <button type="button" class="btn btn-primary btn-nav-next" t-att-data-target-idx="soal_idx + 1">
+                                                    Selanjutnya<i class="fa fa-arrow-right ms-2"/>
+                                                </button>
+                                            </t>
+                                            <t t-else="">
+                                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#submitModal">
+                                                    <i class="fa fa-check me-2"/>Selesai
+                                                </button>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Modal -->
+                <div class="modal fade" id="submitModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Konfirmasi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"/>
+                            </div>
+                            <div class="modal-body">
+                                <p>Apakah Anda yakin ingin mengakhiri ujian?</p>
+                                <p id="unanswered-warning" class="text-warning"></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <form t-attf-action="/my/ujian/#{peserta.id}/submit" method="POST" style="display: inline;">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <button type="submit" class="btn btn-success">Ya, Selesai</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pass data to JavaScript -->
+            <script type="text/javascript">
+                window.ujianData = {
+                    pesertaId: <t t-esc="peserta.id"/>,
+                    jawabanId: <t t-esc="current_jawaban.id if current_jawaban else 0"/>,
+                    remainingTime: <t t-esc="remaining_time"/>,
+                    tipeSoal: '<t t-esc="current_soal.tipe_soal if current_soal else ''"/>',
+                    csrfToken: '<t t-esc="request.csrf_token()"/>'
+                };
+
+                (function() {
+                    function navigateToSoal(targetIdx) {
+                        window.location.href = '/my/ujian/' + window.ujianData.pesertaId + '/exam?soal_idx=' + targetIdx;
+                    }
+
+                    function setupNavButtons() {
+                        var prevBtn = document.querySelector('.btn-nav-prev');
+                        var nextBtn = document.querySelector('.btn-nav-next');
+
+                        if (prevBtn) {
+                            prevBtn.onclick = function() {
+                                navigateToSoal(this.getAttribute('data-target-idx'));
+                                return false;
+                            };
+                        }
+
+                        if (nextBtn) {
+                            nextBtn.onclick = function() {
+                                navigateToSoal(this.getAttribute('data-target-idx'));
+                                return false;
+                            };
+                        }
+                    }
+
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', setupNavButtons);
+                    } else {
+                        setupNavButtons();
+                    }
+                })();
+
+                document.dispatchEvent(new CustomEvent('ujianDataReady'));
+            </script>
+        </t>
+    </template>
+
+    <!-- Ujian Result -->
+    <template id="portal_ujian_result" name="Portal - Hasil Ujian">
+        <t t-call="portal.portal_layout">
+            <div class="ujian-portal-wrapper">
+                <div class="container py-4">
+                    <div class="ujian-breadcrumb">
+                        <a href="/my/ujian">Ujian Online</a>
+                        <span class="separator">/</span>
+                        <span>Hasil Ujian</span>
+                    </div>
+
+                    <div class="ujian-result-card">
+                        <div class="ujian-result-header">
+                            <h2><t t-out="paket.judul"/></h2>
+                            <p><t t-out="paket.mata_pelajaran_id.name"/> - <t t-out="paket.jenis_ujian"/></p>
+                        </div>
+
+                        <div class="ujian-result-body">
+                            <t t-if="show_result">
+                                <div class="result-nilai-box">
+                                    <div t-attf-class="nilai-besar #{peserta.is_lulus and 'lulus' or 'tidak-lulus'}">
+                                        <t t-out="'%.1f' % peserta.nilai"/>
+                                    </div>
+                                    <div class="result-stats">
+                                        <div class="stat-item">
+                                            <div class="stat-value benar"><t t-out="peserta.jumlah_benar"/></div>
+                                            <div class="stat-label">Benar</div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <div class="stat-value salah"><t t-out="peserta.jumlah_salah"/></div>
+                                            <div class="stat-label">Salah</div>
+                                        </div>
+                                    </div>
+
+                                    <div t-attf-class="result-status #{peserta.is_lulus and 'lulus' or 'tidak-lulus'}">
+                                        <t t-if="peserta.is_lulus">
+                                            Selamat! Anda LULUS dengan nilai di atas KKM (<t t-out="paket.passing_grade"/>)
+                                        </t>
+                                        <t t-else="">
+                                            Belum Lulus. Nilai Anda di bawah KKM (<t t-out="paket.passing_grade"/>)
+                                        </t>
+                                    </div>
+                                </div>
+
+                                <table class="result-detail-table">
+                                    <tr>
+                                        <td>Waktu Mulai</td>
+                                        <td><t t-out="format_datetime_tz(peserta.waktu_mulai, None, '%d %B %Y %H:%M:%S')"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Waktu Selesai</td>
+                                        <td><t t-out="format_datetime_tz(peserta.waktu_selesai, None, '%d %B %Y %H:%M:%S')"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Durasi Pengerjaan</td>
+                                        <td><t t-out="peserta.durasi_aktual"/> menit</td>
+                                    </tr>
+                                </table>
+                            </t>
+                            <t t-else="">
+                                <div class="ujian-empty" style="padding: 40px;">
+                                    <div class="empty-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <line x1="12" y1="16" x2="12" y2="12"/>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                        </svg>
+                                    </div>
+                                    <h4>Hasil tidak ditampilkan</h4>
+                                    <p>Hasil ujian tidak ditampilkan untuk ujian ini.</p>
+                                </div>
+                            </t>
+
+                            <t t-if="show_pembahasan and jawaban_list">
+                                <div class="pembahasan-section">
+                                    <h4>Pembahasan Jawaban</h4>
+                                    <t t-foreach="jawaban_list" t-as="jw">
+                                        <div class="pembahasan-item">
+                                            <div class="item-header">
+                                                <span class="soal-num">Soal <t t-out="jw_index + 1"/></span>
+                                                <span t-attf-class="ujian-status #{jw.is_correct and 'selesai' or 'belum'}" style="margin-bottom: 0;">
+                                                    <t t-if="jw.is_correct">Benar</t>
+                                                    <t t-else="">Salah</t>
+                                                </span>
+                                            </div>
+                                            <div class="item-body">
+                                                <div t-raw="jw.soal_id.pertanyaan"/>
+                                                <div class="jawaban-user">
+                                                    <strong>Jawaban Anda:</strong>
+                                                    <t t-if="jw.pilihan_id">
+                                                        <span t-out="jw.pilihan_id.label"/>. <span t-raw="jw.pilihan_id.teks"/>
+                                                    </t>
+                                                    <t t-elif="jw.jawaban">
+                                                        <span t-out="jw.jawaban"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <em class="text-muted">Tidak dijawab</em>
+                                                    </t>
+                                                </div>
+                                                <t t-if="jw.soal_id.pembahasan">
+                                                    <div class="pembahasan-text">
+                                                        <strong>Pembahasan:</strong>
+                                                        <div t-raw="jw.soal_id.pembahasan"/>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                        </div>
+
+                        <div class="ujian-result-footer">
+                            <a href="/my/ujian" class="btn btn-secondary">Kembali ke Daftar Ujian</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_generate_peserta_wizard_form" model="ir.ui.view">
+        <field name="name">ujian.generate_peserta_wizard.form</field>
+        <field name="model">ujian.generate_peserta_wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="paket_id" readonly="1"/>
+                    <field name="kelas_ids" widget="many2many_tags"/>
+                    <field name="jumlah_siswa"/>
+                    <field name="replace_existing"/>
+                </group>
+                <group string="Siswa yang Akan Ditambahkan">
+                    <field name="siswa_ids" nolabel="1" widget="many2many_tags"/>
+                </group>
+                <footer>
+                    <button name="action_generate" type="object" string="Generate Peserta" class="btn-primary"/>
+                    <button string="Batal" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
