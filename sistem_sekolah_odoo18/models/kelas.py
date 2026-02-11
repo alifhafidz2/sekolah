@@ -71,7 +71,7 @@ class Kelas(models.Model):
             'name': f'Siswa - {self.name}',
             'type': 'ir.actions.act_window',
             'res_model': 'sekolah.siswa',
-            'view_mode': 'kanban,tree,form',
+            'view_mode': 'kanban,list,form',
             'domain': [('kelas_id', '=', self.id)],
             'context': {'default_kelas_id': self.id}
         }
@@ -82,7 +82,7 @@ class Kelas(models.Model):
             'name': f'Jadwal - {self.name}',
             'type': 'ir.actions.act_window',
             'res_model': 'sekolah.jadwal',
-            'view_mode': 'calendar,tree,form',
+            'view_mode': 'calendar,list,form',
             'domain': [('kelas_id', '=', self.id)],
             'context': {'default_kelas_id': self.id}
         }

@@ -192,7 +192,7 @@ class AbsensiWhatsApp(models.Model):
             'name': 'Log WhatsApp',
             'type': 'ir.actions.act_window',
             'res_model': 'whatsapp.log',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('absensi_id', '=', self.id)],
             'context': {'default_absensi_id': self.id},
         }

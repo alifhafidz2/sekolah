@@ -84,7 +84,7 @@ class Guru(models.Model):
             'name': f'Jadwal Mengajar - {self.name}',
             'type': 'ir.actions.act_window',
             'res_model': 'sekolah.jadwal',
-            'view_mode': 'calendar,tree,form',
+            'view_mode': 'calendar,list,form',
             'domain': [('guru_id', '=', self.id)],
             'context': {'default_guru_id': self.id}
         }
@@ -95,6 +95,6 @@ class Guru(models.Model):
             'name': f'Kelas yang Diwalikan - {self.name}',
             'type': 'ir.actions.act_window',
             'res_model': 'sekolah.kelas',
-            'view_mode': 'kanban,tree,form',
+            'view_mode': 'kanban,list,form',
             'domain': [('wali_kelas_id', '=', self.id)],
         }

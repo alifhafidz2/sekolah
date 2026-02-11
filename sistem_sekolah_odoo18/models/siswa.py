@@ -139,7 +139,7 @@ class Siswa(models.Model):
             'name': f'Absensi - {self.name}',
             'type': 'ir.actions.act_window',
             'res_model': 'sekolah.absensi',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('siswa_id', '=', self.id)],
             'context': {'default_siswa_id': self.id}
         }
@@ -150,7 +150,7 @@ class Siswa(models.Model):
             'name': f'Nilai - {self.name}',
             'type': 'ir.actions.act_window',
             'res_model': 'sekolah.nilai',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('siswa_id', '=', self.id)],
             'context': {'default_siswa_id': self.id}
         }
