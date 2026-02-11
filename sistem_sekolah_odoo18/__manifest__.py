@@ -87,6 +87,7 @@ SUPPORT & GARANSI
     'depends': [
         'base',
         'web',
+        'website',
         'portal',
         'mail',
     ],

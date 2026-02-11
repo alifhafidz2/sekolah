@@ -5,6 +5,23 @@ from werkzeug.utils import redirect
 from datetime import datetime, date
 
 
+class SekolahPublic(http.Controller):
+
+    @http.route(['/'], type='http', auth='public', website=True, csrf=False)
+    def landing_page(self, **kw):
+        total_siswa = request.env['sekolah.siswa'].sudo().search_count([('status', '=', 'aktif')])
+        total_guru = request.env['sekolah.guru'].sudo().search_count([('status', '=', 'aktif')])
+        total_kelas = request.env['sekolah.kelas'].sudo().search_count([])
+        total_mapel = request.env['sekolah.mata_pelajaran'].sudo().search_count([])
+
+        return request.render('sistem_sekolah_odoo18.public_landing_page', {
+            'total_siswa': total_siswa,
+            'total_guru': total_guru,
+            'total_kelas': total_kelas,
+            'total_mapel': total_mapel,
+        })
+
+
 class SekolahPortal(CustomerPortal):
 
     def _float_to_time_string(self, float_time):

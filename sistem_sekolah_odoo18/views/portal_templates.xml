@@ -2188,5 +2188,852 @@
             </t>
         </template>
 
+        <template id="public_landing_page" name="Public Landing Page">
+            <t t-call="web.frontend_layout">
+                <t t-set="no_header" t-value="True"/>
+                <t t-set="no_footer" t-value="True"/>
+
+                <div class="landing-page-wrapper">
+                    <nav class="landing-navbar">
+                        <div class="container">
+                            <div class="navbar-brand">
+                                <span class="brand-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                                    </svg>
+                                </span>
+                                <span class="brand-text">SMA Pondok Pesantren</span>
+                            </div>
+                            <ul class="navbar-menu">
+                                <li><a href="#beranda" class="active">Beranda</a></li>
+                                <li><a href="#tentang">Tentang Kami</a></li>
+                                <li><a href="#program">Program</a></li>
+                                <li><a href="#fasilitas">Fasilitas</a></li>
+                                <li><a href="#kontak">Kontak</a></li>
+                            </ul>
+                            <div class="navbar-actions">
+                                <a href="/web/login" class="btn-login">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                                        <polyline points="10 17 15 12 10 7"/>
+                                        <line x1="15" y1="12" x2="3" y2="12"/>
+                                    </svg>
+                                    Login
+                                </a>
+                            </div>
+                            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="3" y1="12" x2="21" y2="12"/>
+                                    <line x1="3" y1="6" x2="21" y2="6"/>
+                                    <line x1="3" y1="18" x2="21" y2="18"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </nav>
+
+                    <section id="beranda" class="landing-hero">
+                        <div class="hero-overlay"></div>
+                        <div class="container hero-content">
+                            <div class="row align-items-center">
+                                <div class="col-lg-8 mx-auto text-center">
+                                    <h1 class="hero-title">SMA Pondok Pesantren</h1>
+                                    <p class="hero-subtitle">Memadukan pendidikan formal berkualitas dengan nilai-nilai keislaman untuk mencetak generasi berilmu, berakhlak, dan berprestasi</p>
+
+                                    <div class="hero-stats">
+                                        <div class="stat-item">
+                                            <div class="stat-number"><t t-out="total_siswa"/></div>
+                                            <div class="stat-label">Siswa Aktif</div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <div class="stat-number"><t t-out="total_guru"/></div>
+                                            <div class="stat-label">Guru</div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <div class="stat-number"><t t-out="total_kelas"/></div>
+                                            <div class="stat-label">Kelas</div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <div class="stat-number"><t t-out="total_mapel"/></div>
+                                            <div class="stat-label">Mata Pelajaran</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hero-cta">
+                                        <a href="/web/login" class="btn-primary-cta">
+                                            Masuk Portal
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                                            </svg>
+                                        </a>
+                                        <a href="#tentang" class="btn-secondary-cta">
+                                            Pelajari Lebih Lanjut
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="tentang" class="landing-about">
+                        <div class="container">
+                            <div class="section-header text-center">
+                                <h2 class="section-title">Tentang Kami</h2>
+                                <p class="section-desc">Sekolah yang mengintegrasikan ilmu pengetahuan umum dan nilai-nilai keislaman</p>
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="col-lg-6">
+                                    <div class="about-image">
+                                        <img src="https://images.pexels.com/photos/8617841/pexels-photo-8617841.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=800" alt="Suasana Belajar"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="about-content">
+                                        <h3>Visi Kami</h3>
+                                        <p>Menjadi lembaga pendidikan Islam terkemuka yang menghasilkan generasi unggul dalam ilmu pengetahuan, berlandaskan iman dan takwa, serta berakhlakul karimah.</p>
+                                        <h3>Misi Kami</h3>
+                                        <ul class="mission-list">
+                                            <li>Menyelenggarakan pendidikan berkualitas berbasis Al-Quran dan Sunnah</li>
+                                            <li>Mengembangkan potensi akademik dan non-akademik siswa</li>
+                                            <li>Membentuk karakter Islami yang kuat pada setiap siswa</li>
+                                            <li>Mempersiapkan siswa untuk melanjutkan ke perguruan tinggi terbaik</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="program" class="landing-programs">
+                        <div class="container">
+                            <div class="section-header text-center">
+                                <h2 class="section-title">Program Unggulan</h2>
+                                <p class="section-desc">Kurikulum terintegrasi untuk mengembangkan potensi siswa secara optimal</p>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="program-card">
+                                        <div class="program-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                            </svg>
+                                        </div>
+                                        <h4>Tahfidz Al-Quran</h4>
+                                        <p>Program hafalan Al-Quran dengan metode mutqin dan target minimal 5 juz selama 3 tahun</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="program-card">
+                                        <div class="program-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                                                <polyline points="2 17 12 22 22 17"/>
+                                                <polyline points="2 12 12 17 22 12"/>
+                                            </svg>
+                                        </div>
+                                        <h4>Kurikulum Nasional Plus</h4>
+                                        <p>Kurikulum Merdeka diperkaya dengan muatan keislaman dan pengembangan karakter</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="program-card">
+                                        <div class="program-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <line x1="2" y1="12" x2="22" y2="12"/>
+                                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                            </svg>
+                                        </div>
+                                        <h4>Bahasa Asing</h4>
+                                        <p>Pembelajaran intensif Bahasa Arab dan Inggris dengan native speaker</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="fasilitas" class="landing-facilities">
+                        <div class="container">
+                            <div class="section-header text-center">
+                                <h2 class="section-title">Fasilitas</h2>
+                                <p class="section-desc">Sarana dan prasarana lengkap untuk mendukung kegiatan belajar mengajar</p>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 col-6">
+                                    <div class="facility-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                            <polyline points="9 22 9 12 15 12 15 22"/>
+                                        </svg>
+                                        <span>Asrama</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="facility-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                        </svg>
+                                        <span>Perpustakaan</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="facility-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"/>
+                                            <rect x="9" y="9" width="6" height="6"/>
+                                            <line x1="9" y1="1" x2="9" y2="4"/>
+                                            <line x1="15" y1="1" x2="15" y2="4"/>
+                                            <line x1="9" y1="20" x2="9" y2="23"/>
+                                            <line x1="15" y1="20" x2="15" y2="23"/>
+                                            <line x1="20" y1="9" x2="23" y2="9"/>
+                                            <line x1="20" y1="14" x2="23" y2="14"/>
+                                            <line x1="1" y1="9" x2="4" y2="9"/>
+                                            <line x1="1" y1="14" x2="4" y2="14"/>
+                                        </svg>
+                                        <span>Lab Komputer</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="facility-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="5"/>
+                                            <line x1="12" y1="1" x2="12" y2="3"/>
+                                            <line x1="12" y1="21" x2="12" y2="23"/>
+                                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                                            <line x1="1" y1="12" x2="3" y2="12"/>
+                                            <line x1="21" y1="12" x2="23" y2="12"/>
+                                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                                        </svg>
+                                        <span>Lab IPA</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="facility-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+                                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+                                            <line x1="6" y1="1" x2="6" y2="4"/>
+                                            <line x1="10" y1="1" x2="10" y2="4"/>
+                                            <line x1="14" y1="1" x2="14" y2="4"/>
+                                        </svg>
+                                        <span>Kantin Sehat</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="facility-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                                            <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                            <line x1="15" y1="9" x2="15.01" y2="9"/>
+                                        </svg>
+                                        <span>Lapangan Olahraga</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="facility-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/>
+                                        </svg>
+                                        <span>Masjid</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="facility-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                                        </svg>
+                                        <span>Klinik Kesehatan</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="kontak" class="landing-contact">
+                        <div class="container">
+                            <div class="section-header text-center">
+                                <h2 class="section-title">Hubungi Kami</h2>
+                                <p class="section-desc">Informasi lebih lanjut tentang pendaftaran dan program sekolah</p>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-4">
+                                    <div class="contact-card">
+                                        <div class="contact-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                                <circle cx="12" cy="10" r="3"/>
+                                            </svg>
+                                        </div>
+                                        <h5>Alamat</h5>
+                                        <p>Jl. Pendidikan No. 123<br/>Kota, Provinsi 12345</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="contact-card">
+                                        <div class="contact-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                            </svg>
+                                        </div>
+                                        <h5>Telepon</h5>
+                                        <p>(021) 1234-5678<br/>WhatsApp: 0812-3456-7890</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="contact-card">
+                                        <div class="contact-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                                <polyline points="22,6 12,13 2,6"/>
+                                            </svg>
+                                        </div>
+                                        <h5>Email</h5>
+                                        <p>info@smapondokpesantren.sch.id<br/>admin@smapondokpesantren.sch.id</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <footer class="landing-footer">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="footer-brand">
+                                        <span class="brand-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                                            </svg>
+                                        </span>
+                                        <span>SMA Pondok Pesantren</span>
+                                    </div>
+                                    <p class="footer-tagline">Mendidik generasi berilmu dan berakhlak mulia</p>
+                                </div>
+                                <div class="col-md-6 text-md-end">
+                                    <p class="footer-copyright">2024 SMA Pondok Pesantren. All rights reserved.</p>
+                                    <p class="footer-powered">Powered by Sistem Sekolah Odoo 18</p>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+
+                <style>
+                    .landing-page-wrapper {
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        overflow-x: hidden;
+                    }
+
+                    .landing-navbar {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        z-index: 1000;
+                        padding: 1rem 0;
+                        background: rgba(255, 255, 255, 0.95);
+                        backdrop-filter: blur(10px);
+                        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+                    }
+
+                    .landing-navbar .container {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                    }
+
+                    .landing-navbar .navbar-brand {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.75rem;
+                        font-weight: 700;
+                        font-size: 1.25rem;
+                        color: #0ea5e9;
+                        text-decoration: none;
+                    }
+
+                    .landing-navbar .brand-icon {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 40px;
+                        height: 40px;
+                        background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+                        border-radius: 10px;
+                        color: white;
+                    }
+
+                    .landing-navbar .navbar-menu {
+                        display: flex;
+                        list-style: none;
+                        margin: 0;
+                        padding: 0;
+                        gap: 2rem;
+                    }
+
+                    .landing-navbar .navbar-menu a {
+                        color: #374151;
+                        text-decoration: none;
+                        font-weight: 500;
+                        transition: color 0.3s;
+                    }
+
+                    .landing-navbar .navbar-menu a:hover,
+                    .landing-navbar .navbar-menu a.active {
+                        color: #0ea5e9;
+                    }
+
+                    .landing-navbar .btn-login {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        padding: 0.625rem 1.25rem;
+                        background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 8px;
+                        font-weight: 600;
+                        transition: all 0.3s;
+                    }
+
+                    .landing-navbar .btn-login:hover {
+                        background: linear-gradient(135deg, #0284c7, #0ea5e9);
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+                        color: white;
+                    }
+
+                    .landing-navbar .mobile-menu-toggle {
+                        display: none;
+                        background: none;
+                        border: none;
+                        color: #374151;
+                        cursor: pointer;
+                    }
+
+                    .landing-hero {
+                        position: relative;
+                        min-height: 100vh;
+                        display: flex;
+                        align-items: center;
+                        background: url('https://images.pexels.com/photos/8617841/pexels-photo-8617841.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1920') center/cover no-repeat;
+                        padding-top: 80px;
+                    }
+
+                    .landing-hero .hero-overlay {
+                        position: absolute;
+                        inset: 0;
+                        background: linear-gradient(135deg, rgba(14, 165, 233, 0.85), rgba(56, 189, 248, 0.75));
+                    }
+
+                    .landing-hero .hero-content {
+                        position: relative;
+                        z-index: 1;
+                        color: white;
+                    }
+
+                    .landing-hero .hero-title {
+                        font-size: 3.5rem;
+                        font-weight: 800;
+                        margin-bottom: 1.5rem;
+                        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                    }
+
+                    .landing-hero .hero-subtitle {
+                        font-size: 1.25rem;
+                        max-width: 600px;
+                        margin: 0 auto 2.5rem;
+                        opacity: 0.95;
+                        line-height: 1.7;
+                    }
+
+                    .landing-hero .hero-stats {
+                        display: flex;
+                        justify-content: center;
+                        gap: 3rem;
+                        margin-bottom: 2.5rem;
+                    }
+
+                    .landing-hero .stat-item {
+                        text-align: center;
+                    }
+
+                    .landing-hero .stat-number {
+                        font-size: 2.5rem;
+                        font-weight: 800;
+                    }
+
+                    .landing-hero .stat-label {
+                        font-size: 0.875rem;
+                        opacity: 0.9;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    }
+
+                    .landing-hero .hero-cta {
+                        display: flex;
+                        justify-content: center;
+                        gap: 1rem;
+                    }
+
+                    .landing-hero .btn-primary-cta {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        padding: 1rem 2rem;
+                        background: white;
+                        color: #0ea5e9;
+                        text-decoration: none;
+                        border-radius: 12px;
+                        font-weight: 700;
+                        font-size: 1rem;
+                        transition: all 0.3s;
+                    }
+
+                    .landing-hero .btn-primary-cta:hover {
+                        transform: translateY(-3px);
+                        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+                        color: #0284c7;
+                    }
+
+                    .landing-hero .btn-secondary-cta {
+                        display: inline-flex;
+                        align-items: center;
+                        padding: 1rem 2rem;
+                        background: transparent;
+                        color: white;
+                        text-decoration: none;
+                        border: 2px solid rgba(255, 255, 255, 0.5);
+                        border-radius: 12px;
+                        font-weight: 600;
+                        transition: all 0.3s;
+                    }
+
+                    .landing-hero .btn-secondary-cta:hover {
+                        background: rgba(255, 255, 255, 0.1);
+                        border-color: white;
+                        color: white;
+                    }
+
+                    .landing-about {
+                        padding: 6rem 0;
+                        background: #f9fafb;
+                    }
+
+                    .section-header {
+                        margin-bottom: 3rem;
+                    }
+
+                    .section-title {
+                        font-size: 2.25rem;
+                        font-weight: 700;
+                        color: #111827;
+                        margin-bottom: 1rem;
+                    }
+
+                    .section-desc {
+                        font-size: 1.1rem;
+                        color: #6b7280;
+                        max-width: 600px;
+                        margin: 0 auto;
+                    }
+
+                    .about-image img {
+                        width: 100%;
+                        border-radius: 16px;
+                        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                    }
+
+                    .about-content {
+                        padding-left: 2rem;
+                    }
+
+                    .about-content h3 {
+                        font-size: 1.5rem;
+                        font-weight: 700;
+                        color: #0ea5e9;
+                        margin-bottom: 1rem;
+                        margin-top: 1.5rem;
+                    }
+
+                    .about-content h3:first-child {
+                        margin-top: 0;
+                    }
+
+                    .about-content p {
+                        color: #4b5563;
+                        line-height: 1.8;
+                    }
+
+                    .mission-list {
+                        list-style: none;
+                        padding: 0;
+                    }
+
+                    .mission-list li {
+                        position: relative;
+                        padding-left: 1.75rem;
+                        margin-bottom: 0.75rem;
+                        color: #4b5563;
+                    }
+
+                    .mission-list li::before {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        top: 0.5rem;
+                        width: 8px;
+                        height: 8px;
+                        background: #0ea5e9;
+                        border-radius: 50%;
+                    }
+
+                    .landing-programs {
+                        padding: 6rem 0;
+                        background: white;
+                    }
+
+                    .program-card {
+                        background: #f9fafb;
+                        border-radius: 16px;
+                        padding: 2rem;
+                        text-align: center;
+                        height: 100%;
+                        transition: all 0.3s;
+                    }
+
+                    .program-card:hover {
+                        transform: translateY(-5px);
+                        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+                    }
+
+                    .program-icon {
+                        width: 80px;
+                        height: 80px;
+                        background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+                        border-radius: 20px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0 auto 1.5rem;
+                        color: white;
+                    }
+
+                    .program-card h4 {
+                        font-size: 1.25rem;
+                        font-weight: 700;
+                        color: #111827;
+                        margin-bottom: 1rem;
+                    }
+
+                    .program-card p {
+                        color: #6b7280;
+                        line-height: 1.6;
+                    }
+
+                    .landing-facilities {
+                        padding: 6rem 0;
+                        background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+                        color: white;
+                    }
+
+                    .landing-facilities .section-title {
+                        color: white;
+                    }
+
+                    .landing-facilities .section-desc {
+                        color: rgba(255, 255, 255, 0.8);
+                    }
+
+                    .facility-item {
+                        background: rgba(255, 255, 255, 0.1);
+                        border-radius: 12px;
+                        padding: 1.5rem;
+                        text-align: center;
+                        margin-bottom: 1rem;
+                        transition: all 0.3s;
+                    }
+
+                    .facility-item:hover {
+                        background: rgba(255, 255, 255, 0.2);
+                        transform: translateY(-3px);
+                    }
+
+                    .facility-item svg {
+                        margin-bottom: 0.75rem;
+                    }
+
+                    .facility-item span {
+                        display: block;
+                        font-weight: 600;
+                    }
+
+                    .landing-contact {
+                        padding: 6rem 0;
+                        background: #f9fafb;
+                    }
+
+                    .contact-card {
+                        background: white;
+                        border-radius: 16px;
+                        padding: 2rem;
+                        text-align: center;
+                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+                        height: 100%;
+                    }
+
+                    .contact-icon {
+                        width: 60px;
+                        height: 60px;
+                        background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+                        border-radius: 16px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0 auto 1.25rem;
+                        color: white;
+                    }
+
+                    .contact-card h5 {
+                        font-size: 1.125rem;
+                        font-weight: 700;
+                        color: #111827;
+                        margin-bottom: 0.75rem;
+                    }
+
+                    .contact-card p {
+                        color: #6b7280;
+                        font-size: 0.9rem;
+                        line-height: 1.6;
+                        margin: 0;
+                    }
+
+                    .landing-footer {
+                        background: #111827;
+                        color: white;
+                        padding: 2rem 0;
+                    }
+
+                    .footer-brand {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.75rem;
+                        font-weight: 700;
+                        font-size: 1.125rem;
+                        margin-bottom: 0.5rem;
+                    }
+
+                    .footer-brand .brand-icon {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 32px;
+                        height: 32px;
+                        background: #0ea5e9;
+                        border-radius: 8px;
+                    }
+
+                    .footer-tagline {
+                        color: #9ca3af;
+                        margin: 0;
+                    }
+
+                    .footer-copyright {
+                        color: #9ca3af;
+                        margin-bottom: 0.25rem;
+                    }
+
+                    .footer-powered {
+                        color: #6b7280;
+                        font-size: 0.875rem;
+                        margin: 0;
+                    }
+
+                    @media (max-width: 991px) {
+                        .landing-navbar .navbar-menu {
+                            display: none;
+                        }
+
+                        .landing-navbar .mobile-menu-toggle {
+                            display: block;
+                        }
+
+                        .landing-hero .hero-title {
+                            font-size: 2.5rem;
+                        }
+
+                        .landing-hero .hero-stats {
+                            flex-wrap: wrap;
+                            gap: 1.5rem;
+                        }
+
+                        .landing-hero .stat-item {
+                            flex: 0 0 45%;
+                        }
+
+                        .about-content {
+                            padding-left: 0;
+                            margin-top: 2rem;
+                        }
+
+                        .landing-hero .hero-cta {
+                            flex-direction: column;
+                            align-items: center;
+                        }
+                    }
+
+                    @media (max-width: 575px) {
+                        .landing-hero .hero-title {
+                            font-size: 2rem;
+                        }
+
+                        .landing-hero .hero-subtitle {
+                            font-size: 1rem;
+                        }
+
+                        .landing-hero .stat-number {
+                            font-size: 2rem;
+                        }
+                    }
+                </style>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var navbar = document.querySelector('.landing-navbar');
+                        var mobileToggle = document.getElementById('mobileMenuToggle');
+                        var navMenu = document.querySelector('.navbar-menu');
+
+                        window.addEventListener('scroll', function() {
+                            if (window.scrollY > 50) {
+                                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                                navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.15)';
+                            } else {
+                                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                                navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+                            }
+                        });
+
+                        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+                            anchor.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                var target = document.querySelector(this.getAttribute('href'));
+                                if (target) {
+                                    target.scrollIntoView({
+                                        behavior: 'smooth',
+                                        block: 'start'
+                                    });
+                                }
+                            });
+                        });
+                    });
+                </script>
+            </t>
+        </template>
+
     </data>
 </odoo>
