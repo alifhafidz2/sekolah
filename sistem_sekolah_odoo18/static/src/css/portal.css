@@ -175,10 +175,7 @@ header .dropdown-item:hover,
     font-size: 1.2rem;
     font-weight: 700;
     letter-spacing: -0.02em;
-    background: linear-gradient(135deg, var(--white), var(--gold-light));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #111827;
 }
 
 .navbar-menu {

@@ -922,6 +922,38 @@
             </t>
         </template>
 
+        <template id="portal_no_access" name="Portal No Access">
+            <t t-call="portal.portal_layout">
+                <div class="sekolah-home-wrapper" style="min-height: 80vh; display: flex; align-items: center; justify-content: center;">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-6">
+                                <div style="text-align: center; padding: 60px 40px; background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.08);">
+                                    <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 28px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <line x1="12" y1="8" x2="12" y2="12"/>
+                                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                                        </svg>
+                                    </div>
+                                    <h2 style="font-size: 1.8rem; font-weight: 700; color: #1e293b; margin-bottom: 16px;">Akses Tidak Tersedia</h2>
+                                    <p style="font-size: 1.05rem; color: #64748b; line-height: 1.7; margin-bottom: 32px;"><t t-out="message"/></p>
+                                    <a href="/web/login" style="display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; background: linear-gradient(135deg, #0a1628, #1a2d4a); color: white; text-decoration: none; border-radius: 12px; font-weight: 600; transition: all 0.3s;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                                            <polyline points="10 17 15 12 10 7"/>
+                                            <line x1="15" y1="12" x2="3" y2="12"/>
+                                        </svg>
+                                        Kembali ke Login
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
         <template id="portal_siswa_profile" name="Portal Siswa Profile">
             <t t-call="portal.portal_layout">
                 <div class="portal-profile-wrapper">
@@ -2197,11 +2229,7 @@
                     <nav class="landing-navbar">
                         <div class="container">
                             <div class="navbar-brand">
-                                <span class="brand-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
-                                    </svg>
-                                </span>
+                                <img src="/sistem_sekolah_odoo18/static/src/img/logo.png" alt="Logo Sekolah" class="brand-logo"/>
                                 <span class="brand-text">SMA Pondok Pesantren</span>
                             </div>
                             <ul class="navbar-menu">
@@ -2505,11 +2533,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="footer-brand">
-                                        <span class="brand-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
-                                            </svg>
-                                        </span>
+                                        <img src="/sistem_sekolah_odoo18/static/src/img/logo.png" alt="Logo Sekolah" class="footer-logo"/>
                                         <span>SMA Pondok Pesantren</span>
                                     </div>
                                     <p class="footer-tagline">Mendidik generasi berilmu dan berakhlak mulia</p>
@@ -2553,19 +2577,19 @@
                         gap: 0.75rem;
                         font-weight: 700;
                         font-size: 1.25rem;
-                        color: #0ea5e9;
+                        color: #111827;
                         text-decoration: none;
                     }
 
-                    .landing-navbar .brand-icon {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
+                    .landing-navbar .navbar-brand .brand-text {
+                        color: #111827 !important;
+                    }
+
+                    .landing-navbar .brand-logo {
                         width: 40px;
                         height: 40px;
-                        background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-                        border-radius: 10px;
-                        color: white;
+                        object-fit: contain;
+                        border-radius: 8px;
                     }
 
                     .landing-navbar .navbar-menu {
@@ -2928,14 +2952,11 @@
                         margin-bottom: 0.5rem;
                     }
 
-                    .footer-brand .brand-icon {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
+                    .footer-brand .footer-logo {
                         width: 32px;
                         height: 32px;
-                        background: #0ea5e9;
-                        border-radius: 8px;
+                        object-fit: contain;
+                        border-radius: 6px;
                     }
 
                     .footer-tagline {
