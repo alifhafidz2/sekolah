@@ -109,6 +109,7 @@ SUPPORT & GARANSI
         'views/dashboard_views.xml',
 
         'views/portal_templates.xml',
+        'views/portal_wali_templates.xml',
 
         'wizard/absensi_massal_wizard_views.xml',
         'wizard/generate_jadwal_wizard_views.xml',

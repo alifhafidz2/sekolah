@@ -21,6 +21,10 @@ class SekolahPublic(http.Controller):
             'total_mapel': total_mapel,
         })
 
+    @http.route(['/portal'], type='http', auth='user', website=True)
+    def portal_redirect(self, **kw):
+        return redirect('/my/sekolah')
+
 
 class SekolahPortal(CustomerPortal):
 
@@ -76,8 +80,226 @@ class SekolahPortal(CustomerPortal):
         if siswa:
             return redirect('/my/siswa')
 
+        anak_list = request.env['sekolah.siswa'].sudo().search([
+            ('wali_user_id', '=', user.id)
+        ])
+
+        if anak_list:
+            return redirect('/my/wali')
+
         return request.render('sistem_sekolah_odoo18.portal_no_access', {
-            'message': 'Anda tidak terdaftar sebagai guru atau siswa. Silakan hubungi administrator.',
+            'message': 'Anda tidak terdaftar sebagai guru, siswa, atau wali. Silakan hubungi administrator.',
+        })
+
+    @http.route(['/my/wali'], type='http', auth='user', website=True)
+    def portal_wali_home(self, **kw):
+        user = request.env.user
+        anak_list = request.env['sekolah.siswa'].sudo().search([
+            ('wali_user_id', '=', user.id),
+            ('status', '=', 'aktif')
+        ])
+
+        if not anak_list:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Tidak ada data anak yang terdaftar untuk akun ini'
+            })
+
+        summary_data = []
+        for anak in anak_list:
+            absensi_stats = {
+                'total': anak.total_absensi,
+                'hadir': anak.total_hadir,
+                'izin': anak.total_izin,
+                'sakit': anak.total_sakit,
+                'alfa': anak.total_alfa,
+                'persentase': anak.persentase_kehadiran,
+            }
+
+            tagihan_belum_lunas = []
+            total_tunggakan = 0
+            if 'al.spp.tagihan' in request.env:
+                tagihan_belum_lunas = request.env['al.spp.tagihan'].sudo().search([
+                    ('siswa_id', '=', anak.id),
+                    ('state', 'in', ['open', 'partial'])
+                ], order='tanggal_jatuh_tempo asc', limit=3)
+                total_tunggakan = sum(t.sisa_tagihan for t in tagihan_belum_lunas)
+
+            summary_data.append({
+                'anak': anak,
+                'absensi': absensi_stats,
+                'rata_nilai': anak.rata_rata_nilai,
+                'tagihan_belum_lunas': tagihan_belum_lunas,
+                'total_tunggakan': total_tunggakan,
+            })
+
+        return request.render('sistem_sekolah_odoo18.portal_wali_home', {
+            'anak_list': anak_list,
+            'summary_data': summary_data,
+            'page_name': 'wali_home',
+        })
+
+    @http.route(['/my/wali/anak/<int:siswa_id>'], type='http', auth='user', website=True)
+    def portal_wali_anak_detail(self, siswa_id, **kw):
+        user = request.env.user
+        siswa = request.env['sekolah.siswa'].sudo().browse(siswa_id)
+
+        if not siswa.exists() or siswa.wali_user_id.id != user.id:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Data tidak ditemukan atau Anda tidak memiliki akses'
+            })
+
+        return request.render('sistem_sekolah_odoo18.portal_wali_anak_detail', {
+            'siswa': siswa,
+            'page_name': 'wali_anak_detail',
+        })
+
+    @http.route(['/my/wali/absensi/<int:siswa_id>'], type='http', auth='user', website=True)
+    def portal_wali_absensi(self, siswa_id, **kw):
+        user = request.env.user
+        siswa = request.env['sekolah.siswa'].sudo().browse(siswa_id)
+
+        if not siswa.exists() or siswa.wali_user_id.id != user.id:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Data tidak ditemukan atau Anda tidak memiliki akses'
+            })
+
+        absensi_list = request.env['sekolah.absensi'].sudo().search([
+            ('siswa_id', '=', siswa.id)
+        ], order='tanggal desc', limit=100)
+
+        stats = {
+            'total': siswa.total_absensi,
+            'hadir': siswa.total_hadir,
+            'izin': siswa.total_izin,
+            'sakit': siswa.total_sakit,
+            'alfa': siswa.total_alfa,
+            'persentase': siswa.persentase_kehadiran,
+        }
+
+        return request.render('sistem_sekolah_odoo18.portal_wali_absensi', {
+            'siswa': siswa,
+            'absensi_list': absensi_list,
+            'stats': stats,
+            'page_name': 'wali_absensi',
+        })
+
+    @http.route(['/my/wali/nilai/<int:siswa_id>'], type='http', auth='user', website=True)
+    def portal_wali_nilai(self, siswa_id, **kw):
+        user = request.env.user
+        siswa = request.env['sekolah.siswa'].sudo().browse(siswa_id)
+
+        if not siswa.exists() or siswa.wali_user_id.id != user.id:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Data tidak ditemukan atau Anda tidak memiliki akses'
+            })
+
+        nilai_list = request.env['sekolah.nilai'].sudo().search([
+            ('siswa_id', '=', siswa.id)
+        ], order='tahun_ajaran_id desc, semester desc')
+
+        return request.render('sistem_sekolah_odoo18.portal_wali_nilai', {
+            'siswa': siswa,
+            'nilai_list': nilai_list,
+            'rata_rata': siswa.rata_rata_nilai,
+            'page_name': 'wali_nilai',
+        })
+
+    @http.route(['/my/wali/spp/<int:siswa_id>'], type='http', auth='user', website=True)
+    def portal_wali_spp(self, siswa_id, filter_state='all', **kw):
+        user = request.env.user
+        siswa = request.env['sekolah.siswa'].sudo().browse(siswa_id)
+
+        if not siswa.exists() or siswa.wali_user_id.id != user.id:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Data tidak ditemukan atau Anda tidak memiliki akses'
+            })
+
+        if 'al.spp.tagihan' not in request.env:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Modul SPP belum diinstall'
+            })
+
+        domain = [('siswa_id', '=', siswa.id)]
+        if filter_state == 'unpaid':
+            domain.append(('state', 'in', ['open', 'partial']))
+        elif filter_state == 'paid':
+            domain.append(('state', '=', 'paid'))
+
+        tagihan_list = request.env['al.spp.tagihan'].sudo().search(
+            domain, order='tahun desc, bulan desc'
+        )
+
+        total_tagihan = sum(t.total_tagihan for t in tagihan_list if t.state != 'cancel')
+        total_terbayar = sum(t.nominal_terbayar for t in tagihan_list if t.state != 'cancel')
+        total_tunggakan = sum(t.sisa_tagihan for t in tagihan_list if t.state in ['open', 'partial'])
+
+        return request.render('sistem_sekolah_odoo18.portal_wali_spp', {
+            'siswa': siswa,
+            'tagihan_list': tagihan_list,
+            'filter_state': filter_state,
+            'total_tagihan': total_tagihan,
+            'total_terbayar': total_terbayar,
+            'total_tunggakan': total_tunggakan,
+            'page_name': 'wali_spp',
+        })
+
+    @http.route(['/my/wali/spp/<int:siswa_id>/detail/<int:tagihan_id>'], type='http', auth='user', website=True)
+    def portal_wali_spp_detail(self, siswa_id, tagihan_id, **kw):
+        user = request.env.user
+        siswa = request.env['sekolah.siswa'].sudo().browse(siswa_id)
+
+        if not siswa.exists() or siswa.wali_user_id.id != user.id:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Data tidak ditemukan atau Anda tidak memiliki akses'
+            })
+
+        if 'al.spp.tagihan' not in request.env:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Modul SPP belum diinstall'
+            })
+
+        tagihan = request.env['al.spp.tagihan'].sudo().browse(tagihan_id)
+        if not tagihan.exists() or tagihan.siswa_id.id != siswa.id:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Tagihan tidak ditemukan'
+            })
+
+        return request.render('sistem_sekolah_odoo18.portal_wali_spp_detail', {
+            'siswa': siswa,
+            'tagihan': tagihan,
+            'page_name': 'wali_spp_detail',
+        })
+
+    @http.route(['/my/wali/jadwal/<int:siswa_id>'], type='http', auth='user', website=True)
+    def portal_wali_jadwal(self, siswa_id, **kw):
+        user = request.env.user
+        siswa = request.env['sekolah.siswa'].sudo().browse(siswa_id)
+
+        if not siswa.exists() or siswa.wali_user_id.id != user.id:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Data tidak ditemukan atau Anda tidak memiliki akses'
+            })
+
+        if not siswa.kelas_id:
+            return request.render('sistem_sekolah_odoo18.portal_no_data', {
+                'message': 'Siswa belum memiliki kelas'
+            })
+
+        jadwal_list = request.env['sekolah.jadwal'].sudo().search([
+            ('kelas_id', '=', siswa.kelas_id.id)
+        ], order='hari, jam_mulai')
+
+        hari_list = ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu']
+        jadwal_by_hari = {hari: [] for hari in hari_list}
+
+        for jadwal in jadwal_list:
+            jadwal_by_hari[jadwal.hari].append(jadwal)
+
+        return request.render('sistem_sekolah_odoo18.portal_wali_jadwal', {
+            'siswa': siswa,
+            'jadwal_by_hari': jadwal_by_hari,
+            'hari_list': hari_list,
+            'page_name': 'wali_jadwal',
         })
 
 

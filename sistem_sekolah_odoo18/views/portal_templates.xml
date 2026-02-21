@@ -72,7 +72,7 @@
                             </div>
 
                             <div class="row justify-content-center portal-cards">
-                                <div class="col-md-5 col-lg-4">
+                                <div class="col-md-4 col-lg-4">
                                     <a href="/my/guru" class="portal-card guru-card">
                                         <div class="card-icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -95,7 +95,7 @@
                                     </a>
                                 </div>
 
-                                <div class="col-md-5 col-lg-4">
+                                <div class="col-md-4 col-lg-4">
                                     <a href="/my/siswa" class="portal-card siswa-card">
                                         <div class="card-icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -108,6 +108,29 @@
                                             <span class="feature-tag">Jadwal Kelas</span>
                                             <span class="feature-tag">Nilai Rapor</span>
                                             <span class="feature-tag">Rekap Absensi</span>
+                                        </div>
+                                        <div class="card-action">
+                                            <span>Masuk Portal</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                                            </svg>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4">
+                                    <a href="/my/wali" class="portal-card wali-card">
+                                        <div class="card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                                            </svg>
+                                        </div>
+                                        <h3 class="card-title">Portal Orang Tua</h3>
+                                        <p class="card-desc">Pantau perkembangan akademik, kehadiran, nilai, dan pembayaran SPP anak</p>
+                                        <div class="card-features">
+                                            <span class="feature-tag">Kehadiran Anak</span>
+                                            <span class="feature-tag">Nilai Rapor</span>
+                                            <span class="feature-tag">Tagihan SPP</span>
                                         </div>
                                         <div class="card-action">
                                             <span>Masuk Portal</span>
